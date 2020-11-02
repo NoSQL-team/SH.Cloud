@@ -9,15 +9,15 @@ namespace tcp_network {
 
     class Socket {
     public:
-        explicit Descriptor(const int fd) noexcept;
+        explicit Socket(const int fd) noexcept;
 
-        Descriptor() = default;
+        Socket() = default;
 
-        Descriptor(Descriptor&& other) noexcept;
+        explicit Socket(Descriptor&& other) noexcept;
 
-        ~Descriptor() noexcept;
+        ~Socket() noexcept;
 
-        Descriptor& operator=(const int fd);
+        Socket& operator=(const int fd);
 
         void close() noexcept;
 

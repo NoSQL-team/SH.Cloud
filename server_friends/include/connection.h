@@ -15,9 +15,9 @@ namespace tcp_network {
 
         Connection(const std::string& ip, const uint16_t port);
 
-        Connection(int fd);
+        explicit Connection(int fd);
 
-        Connection(Descriptor&& fd);
+        explicit Connection(Socket&& fd);
 
         ~Connection() noexcept;
 

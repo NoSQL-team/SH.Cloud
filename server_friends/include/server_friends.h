@@ -6,6 +6,8 @@
 #define NOSKOOL_SERVER_FRIENDS_H
 
 #include "connection.h"
+#include <unordered_map>
+#include <string>
 
 namespace tcp_network {
 
@@ -52,7 +54,7 @@ namespace tcp_network {
     private:
         Socket listenfd_;
         Socket epoll_;
-        std::unordered_map<int, Connection> connects_;
+        std::unordered_map<int, Connection> сonnections_;
     };
 
 }
