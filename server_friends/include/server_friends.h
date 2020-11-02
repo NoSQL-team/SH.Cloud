@@ -37,6 +37,18 @@ namespace tcp_network {
 
         void modify_epoll(int fd, uint32_t events);
 
+        // Добавит в БД информацию о двух новых друзьях
+        void add_friend();
+
+        // Приходит "что-то определяющее пользователя",
+        // возвращает "что-то" представляющее собой список друзей пользовател
+        void find_friends(int id);
+
+        // Приходит первых аргементов что-то определяющее пользователя,
+        // вторым пользователя, которого нужно удалить из друзей
+        void delete_friends(int person_id, int friend_to_del);
+
+
     private:
         Socket listenfd_;
         Socket epoll_;
