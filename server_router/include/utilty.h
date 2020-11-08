@@ -5,6 +5,11 @@
 #ifndef NOSKOOL_UTILTY_H
 #define NOSKOOL_UTILTY_H
 
+#include <string>
+#include <map>
+#include <unordered_map>
+#incluce "connection.h"
+
 namespace tcp_network {
 
     class Socket {
@@ -61,6 +66,28 @@ namespace tcp_network {
         std::unordered_map<int, Connection> сonnections_;
     };
 
+
+
+    enum RequestDestination {
+        FRIEND_SERV,
+        POST_SERV,
+        AUTH_SERV,
+        USER_SERV
+    };
+
+
+    class ParseJson {
+    public:
+
+        RequestDistanation get_destination(std::string request);
+
+        std::map<std::string, std::string> parse(std::string request);
+
+        std::map<std::string, std::string> get_request();
+
+    private:
+        std::map<std::string, std::string> request_;
+    };
 }
 
 #endif //NOSKOOL_UTILTY_H
