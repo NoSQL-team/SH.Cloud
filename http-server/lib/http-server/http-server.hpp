@@ -13,7 +13,6 @@
 using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
-using namespace std::placeholders;
 
 class ConnectionSend
 {
@@ -43,6 +42,7 @@ class RequestsHandler
     void responseFormation(std::string status, std::string body);
 
 public:
+    RequestsHandler() {};
     std::string getResponse(std::ostream& stream);
 };
 
@@ -50,9 +50,6 @@ class Session
 {
     asio::streambuf buffer;
     RequestsHandler headers;
-    size_t number = 0;
-
-    static void readRequest(std::shared_ptr<Session> pThis);
     
 public:
     ip::tcp::socket socket;
@@ -61,10 +58,7 @@ public:
         :socket(io_service)
     {}
     
-    static void handleRequest(std::shared_ptr<Session> pThis)
-    {
-        readRequest(pThis);
-    }
+    static void handleRequest(std::shared_ptr<Session> pThis);
 };
 
 class ResponsesHandler

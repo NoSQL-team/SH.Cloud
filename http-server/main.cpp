@@ -12,6 +12,7 @@ using namespace boost::asio;
 std::vector<std::string> addrs = {};
 ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
 std::mutex ResponsesHandler::_mutex;
+size_t number = 0;
 
 void accept_and_run(ip::tcp::acceptor& acceptor, io_service& io_service)
 {

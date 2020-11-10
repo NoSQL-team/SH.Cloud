@@ -31,12 +31,16 @@ std::string RequestsHandler::getResponse(std::ostream& stream)
 {
     parseHeaders(stream);
 
-    // кидаем запрос
-    connection;
+    if (true) {
+        // кидаем запрос если запрос это запрос к api
+        connection;
 
-    ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
-    
-    // получаем из responseHandlr + заголовки и отвечаем
+        ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+        
+        // получаем из responseHandlr + заголовки и отвечаем
+    } else {
+        // отдаём статику
+    }
 
     std::string sHTML = "<html></html>\n";
     std::stringstream ssOut;

@@ -1,6 +1,6 @@
 #include "http-server.hpp"
 
-void Session::readRequest(std::shared_ptr<Session> pThis)
+void Session::handleRequest(std::shared_ptr<Session> pThis)
 {
     asio::async_read_until(
         pThis->socket, 
