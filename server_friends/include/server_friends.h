@@ -18,7 +18,7 @@ namespace tcp_network {
         ~ServerFriends() noexcept;
 
         // Добавит в БД информацию о двух новых друзьях
-        void add_friend(std::string request);
+        void add_friend(std::string& request);
 
         // Приходит "что-то определяющее пользователя",
         // возвращает "что-то" представляющее собой список друзей пользовател

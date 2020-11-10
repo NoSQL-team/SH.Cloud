@@ -5,23 +5,24 @@
 #ifndef NOSKOOL_FRIENDS_DATA_BASE_H
 #define NOSKOOL_FRIENDS_DATA_BASE_H
 
+#include <string>
+#include <map>
+
 class FriendsDataBase {
 public:
     // Конектится к базе данных, создается объет таблицы
-    FriendsDataBase()
+    FriendsDataBase();
 
     // Добавить данные в таблице
-    void insert()
+    void insert(std::map<std::string, std::string> request);
 
     // Взять данные из таблицы
-    void select()
+    std::string select();
 
     // Обновить данные в таблице
+    void update();
 
-
-
-
-    private;
+private:
     // Table friends_;
 };
 

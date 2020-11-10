@@ -18,8 +18,6 @@ namespace tcp_network {
 
         ~ServerRouter() noexcept;
 
-        RequestDestination choose_server()
-
     private:
 
     };
