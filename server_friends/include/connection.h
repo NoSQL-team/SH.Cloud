@@ -37,7 +37,7 @@ namespace tcp_network {
 
         void send_size(const size_t data);
 
-        void recv_size(const size_t data);
+        size_t recv_size();
 
         void set_serv_name(const std::string& serv_name);
 

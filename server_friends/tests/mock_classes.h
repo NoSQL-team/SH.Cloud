@@ -44,7 +44,7 @@ public:
     MOCK_CONST_METHOD0(is_opened, bool());
     MOCK_METHOD2(connect, void(const std::string& addr, uint16_t port));
     MOCK_METHOD1(send_size, void(const size_t data));
-    MOCK_METHOD1(recv_size, void(const size_t data));
+    MOCK_METHOD0(recv_size, size_t());
     MOCK_METHOD1(set_serv_name, void(const std::string& serv_name));
     MOCK_METHOD0(get_serv_name, std::string());
     MOCK_METHOD0(get_con, int());
