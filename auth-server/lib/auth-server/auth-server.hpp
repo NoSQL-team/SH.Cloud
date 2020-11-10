@@ -1,0 +1,6 @@
+#ifndef AUTH_SERVER_NOSOOL
+#define AUTH_SERVER_NOSOOL
+
+
+
+#endif // !AUTH_SERVER_NOSOOL
