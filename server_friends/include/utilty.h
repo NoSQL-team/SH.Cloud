@@ -28,6 +28,28 @@ namespace tcp_network {
         int socket_ = -1;
     };
 
+    enum RequestDestination {
+        FRIEND_SERV,
+        POST_SERV,
+        AUTH_SERV,
+        USER_SERV
+    };
+
+    class ParseJson {
+    public:
+
+        ParseJson() = default;
+
+        RequestDestination get_destination(const std::string& request);
+
+        std::map<std::string, std::string> parse(const std::string& request);
+
+        std::map<std::string, std::string> get_request() const;
+
+    private:
+        std::map<std::string, std::string> request_;
+    };
+
 }
 
 #endif //NOSKOOL_UTILTY_H

@@ -8,6 +8,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <server_interface.h>
+#include <memory>
 #include "utilty.h"
 #include "friends_data_base.h"
 
@@ -60,6 +61,23 @@ protected:
 
     }
     tcp_network::Socket socket_ = tcp_network::Socket(4);
+};
+
+class TestParseJson : public ::testing::Test {
+protected:
+    void SetUp() {
+        json_parser = std::make_unique<tcp_network::ParseJson>();
+    }
+
+    void TearDown() {
+        json_parser.reset();
+    }
+    std::unique_ptr<tcp_network::ParseJson> json_parser;
+    std::string request = "123423\ncreate/\n{\"username\": \"Filechka322\",\n\"email\":"
+                          "\"UUU@gmail.com\",\"password\": \"qwerty\"}";
+    std::map<std::string, std::string> result =
+            {{"username", "Filechka322"}, {"email", "UUU@gmail.com"},
+             {"password", "qwerty"}};
 };
 
 #endif //TESTS_MOCK_CLASSES_H

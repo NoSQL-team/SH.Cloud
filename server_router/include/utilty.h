@@ -79,7 +79,7 @@ namespace tcp_network {
     class ParseJson {
     public:
 
-        RequestDistanation get_destination(const std::string& request);
+        RequestDestination get_destination(const std::string& request);
 
         std::map<std::string, std::string> parse(const std::string& request);
 

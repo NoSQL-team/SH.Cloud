@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 
+
 TEST_F(TestSocket, Socket_RAII) {
     EXPECT_EQ(4, socket_.get());
 }
@@ -27,6 +28,20 @@ TEST_F(TestSocket, test_socket_destructro) {
 }
 
     EXPECT_EQ(-1, sock_fd);
+}
+
+// Тест парсера Json
+
+TEST_F(TestParseJson, test_parsing_destination) {
+    EXPECT_EQ("123423",json_parser->get_destination(request));
+}
+
+TEST_F(TestParseJson, test_parsing) {
+    EXPECT_EQ(result,json_parser->parse(request));
+}
+
+TEST_F(TestParseJson, test_getting_request) {
+    EXPECT_EQ(result,json_parser->get_request());
 }
 
 
@@ -86,7 +101,6 @@ TEST(Server_friends, test_writing_to_server) {
     connection.send_size(sizeof("hello"));
     connection.write("hello");
 }
-
 
 
 
