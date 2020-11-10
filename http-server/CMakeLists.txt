@@ -14,6 +14,7 @@ add_library(libhttp-server STATIC
   lib/http-server/connection.cpp
   lib/http-server/session.cpp
   lib/http-server/requests-handler.cpp
+  lib/http-server/responses-handler.cpp
 )
 
 SET(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})

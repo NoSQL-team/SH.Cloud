@@ -15,7 +15,7 @@ using namespace boost::system;
 using namespace boost::asio;
 using namespace std::placeholders;
 
-class Connection
+class ConnectionSend
 {
     int sock;
     struct sockaddr_in addr;
@@ -24,8 +24,8 @@ class Connection
     void close();
 
 public:
-    Connection() {};
-    std::string getResponse(std::string request);
+    ConnectionSend() {};
+    std::string sendRequest(std::string request);
 };
 
 class RequestsHandler
@@ -35,7 +35,7 @@ class RequestsHandler
     std::string version;
     std::string body;
     std::map<std::string, std::string> headers;
-    Connection connection;
+    ConnectionSend connection;
 
     void parseFirstHeader(std::string line);
     void parseNextHeaders(std::string line);
@@ -50,6 +50,7 @@ class Session
 {
     asio::streambuf buffer;
     RequestsHandler headers;
+    size_t number = 0;
 
     static void readRequest(std::shared_ptr<Session> pThis);
     
@@ -64,6 +65,24 @@ public:
     {
         readRequest(pThis);
     }
+};
+
+class ResponsesHandler
+{
+protected:
+    ResponsesHandler() {}
+    ~ResponsesHandler() {}
+
+    static ResponsesHandler* _objPtr;
+    std::vector<std::map<size_t, std::string>> _responses;
+    static std::mutex _mutex;
+
+public:
+    ResponsesHandler(ResponsesHandler &other) = delete;
+    void operator=(const ResponsesHandler &) = delete;
+    static ResponsesHandler* getInstance();
+    std::string getResponse(size_t number);
+    void setResponse(std::string response);
 };
 
 #endif // !HTTTP_SERVER_NOSOOL

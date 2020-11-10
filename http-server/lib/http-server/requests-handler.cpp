@@ -31,7 +31,12 @@ std::string RequestsHandler::getResponse(std::ostream& stream)
 {
     parseHeaders(stream);
 
+    // кидаем запрос
     connection;
+
+    ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+    
+    // получаем из responseHandlr + заголовки и отвечаем
 
     std::string sHTML = "<html></html>\n";
     std::stringstream ssOut;
