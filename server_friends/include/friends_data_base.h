@@ -6,6 +6,7 @@
 #define NOSKOOL_FRIENDS_DATA_BASE_H
 
 #include <string>
+#include <pqxx/pqxx>
 #include <map>
 
 class FriendsDataBase {
@@ -15,17 +16,20 @@ public:
 
     ~FriendsDataBase();
 
+//    FriendsDataBase& operator()(FriendsDataBase* other);
+
     // Добавить данные в таблице
-    void insert(std::map<std::string, std::string> request);
+    virtual void insert(std::map<std::string, std::string>& request) {}
 
     // Взять данные из таблицы
-    std::string select();
+    virtual void select() {}
 
     // Обновить данные в таблице
-    void update();
+    virtual void update() {}
 
 private:
     // Table friends_;
+    pqxx::connection _db;
 };
 
 #endif //NOSKOOL_FRIENDS_DATA_BASE_H

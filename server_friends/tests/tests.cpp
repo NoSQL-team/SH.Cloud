@@ -12,48 +12,80 @@
 
 
 TEST_F(TestSocket, Socket_RAII) {
+    ASSERT_TRUE(true);
     EXPECT_EQ(4, socket_.get());
 }
 
 TEST_F(TestSocket, test_socket_close) {
+    ASSERT_TRUE(true);
     socket_.close();
     EXPECT_EQ(-1, socket_.get());
 }
 
-TEST_F(TestSocket, test_socket_destructro) {
-    int sock_fd  = 5;
 
-    {
-        tcp_network::Socket sock(sock_fd);
-}
-
-    EXPECT_EQ(-1, sock_fd);
-}
+//TEST(test_soket, close) {
+//    MockSocket socket;
+//
+//    EXPECT_CALL(socket, close()).Times(1);
+//
+//    tcp_network::Connection con(socket.);
+//    con.close();
+//}
 
 // Тест парсера Json
 
 TEST_F(TestParseJson, test_parsing_destination) {
-    EXPECT_EQ("123423",json_parser->get_destination(request));
+    ASSERT_TRUE(true);
+    std::string request = "fsfds";
+    tcp_network::ParseJson json_parser;
+    EXPECT_EQ(tcp_network::RequestDestination::POST_SERV,json_parser.get_destination(request));
 }
 
 TEST_F(TestParseJson, test_parsing) {
+    ASSERT_TRUE(true);
     EXPECT_EQ(result,json_parser->parse(request));
 }
 
 TEST_F(TestParseJson, test_getting_request) {
+    ASSERT_TRUE(true);
     EXPECT_EQ(result,json_parser->get_request());
 }
 
 
-TEST(Server_friends, test_reading_from_client) {
+TEST(Databasetest, data_base) {
+    MockFriendsDataBase dataBase;
+    ASSERT_TRUE(true);
+
+    EXPECT_CALL(dataBase, insert()).Times(1);
+
+    tcp_network::ServerFriends server;
+
+    server.open("127.0.0.1", 1234);
+    server.event_loop();
+}
+
+
+TEST(MockServerFriends, test_reading_from_client) {
+    ASSERT_TRUE(true);
     MockServerFriends server("127.0.0.1", 1234);
 
     EXPECT_CALL(server, create_epoll()).Times(1);
 }
 
-void echo_serv_for_connection(int* serv_sock, int* listen_sock) {
+TEST(Server_friends, test_writing_to_server) {
+    ASSERT_TRUE(true);
     MockServerFriends server("127.0.0.1", 1234);
 
+    EXPECT_CALL(server, handle_client(testing::_, testing::_)).Times(1);
+    server.event_loop();
+
+    tcp_network::Connection connection;
+    connection.send_size(sizeof("hello"));
+    connection.write("hello");
+}
+
+
+void echo_serv_for_connection(int* serv_sock, int* listen_sock) {
     struct sockaddr_in local;
 
     *serv_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -72,11 +104,14 @@ void echo_serv_for_connection(int* serv_sock, int* listen_sock) {
 }
 
 TEST(Connection, test_connection_write) {
+    ASSERT_TRUE(true);
     int serv_sock, listen_sock;
 
     echo_serv_for_connection(&serv_sock, &listen_sock);
 
-    tcp_network::Connection connection("127.0.0.1", 1234);
+    uint16_t i = 1234;
+    std::string ip = "127.0.0.1";
+    tcp_network::Connection connection(ip, i);
     connection.send_size(sizeof("hello"));
     connection.write("hello");
 
@@ -89,17 +124,6 @@ TEST(Connection, test_connection_write) {
     close(listen_sock);
     close(serv_sock);
     EXPECT_EQ(true, strcmp("hello", buf));
-}
-
-TEST(Server_friends, test_writing_to_server) {
-    MockServerFriends server("127.0.0.1", 1234);
-
-    EXPECT_CALL(server, handle_client(testing::_, testing::_)).Times(1);
-    server.event_loop();
-
-    tcp_network::Connection connection("127.0.0.1", 1234);
-    connection.send_size(sizeof("hello"));
-    connection.write("hello");
 }
 
 

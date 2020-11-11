@@ -18,6 +18,8 @@ namespace tcp_network {
     public:
         ServerFriends(const std::string& ip, uint16_t port);
 
+        ServerFriends() = default;
+
         ~ServerFriends() noexcept;
 
         // Добавит в БД информацию о двух новых друзьях

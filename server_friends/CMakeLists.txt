@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.9.2)
 project(tests CXX)
 
-set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-g -Wall -O3 -lgmock")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+#set(CMAKE_CXX_FLAGS "-g -Wall -O3 -fprofile-arcs -ftest-coverage")
+set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib -lpqxx -lpq")
 
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
@@ -21,17 +25,23 @@ set(TESTS_DIR ${DIR}/tests)
 
 include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(include/)
+include_directories(tests/)
 
-add_library(server_friends SHARED
-        ${INC_DIR}/utilty.h
-        ${INC_DIR}/connection.h
-        ${INC_DIR}/server_friends.h
-        ${INC_DIR}/friends_data_base.h
+add_library(server_friends STATIC
+        ${SRC_DIR}/utility.cpp
+        ${SRC_DIR}/connection.cpp
+        ${SRC_DIR}/friends_data_base.cpp
         ${SRC_DIR}/server_friends.cpp)
 
 add_executable(TESTS
-        tests/tests.cpp)
+        tests/tests.cpp
+        ${TESTS_DIR}/mock_classes.h)
 
 target_include_directories(TESTS PUBLIC ${INC_DIR})
 
-target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads server_friends)
+target_include_directories(TESTS PUBLIC ${TESTS_DIR})
+
+target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
+
+enable_testing()
+add_test(NAME TEST_ONE COMMAND tests1)

@@ -6,10 +6,13 @@
 #define TESTS_SERVER_INTERFACE_H
 
 #include "connection.h"
+#include <unordered_map>
 
 namespace tcp_network {
     class IServer {
     public:
+        IServer() = default;
+
         IServer(const std::string& ip, uint16_t port);
 
         virtual ~IServer() noexcept;
@@ -39,9 +42,10 @@ namespace tcp_network {
     protected:
         Socket listenfd_;
         Socket epoll_;
-        std::unordered_map<Socket, Connection> сonnections_;
-        std::unique_ptr<ParseJson> parser_;
+        std::map<int, Connection> сonnections_;
+        ParseJson parser_;
     };
+
 }
 
 #endif //TESTS_SERVER_INTERFACE_H

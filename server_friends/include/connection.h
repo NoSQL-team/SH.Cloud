@@ -15,11 +15,19 @@ namespace tcp_network {
     public:
         friend class IServer;
 
-        Connection(const std::string& ip, const uint16_t port);
+        explicit Connection() = default;
 
-        explicit Connection(Socket& fd);
+        template <typename... Args>
+        Connection(Args&&...);
+
+        Connection(std::string& ip, uint16_t port);
+        explicit Connection(const Socket& fd) {}
 
         explicit Connection(Socket&& fd);
+
+        Connection(Connection&& con) noexcept;
+
+        Connection(const Connection& con) = default;
 
         virtual ~Connection() noexcept;
 

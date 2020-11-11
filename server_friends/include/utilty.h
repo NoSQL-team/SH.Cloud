@@ -5,12 +5,14 @@
 #ifndef NOSKOOL_UTILTY_H
 #define NOSKOOL_UTILTY_H
 
+#include <map>
+
 
 namespace tcp_network {
 
     class Socket {
     public:
-        explicit Socket(const int fd) noexcept;
+        explicit Socket(int& fd) noexcept;
 
         Socket() = default;
 
@@ -20,7 +22,7 @@ namespace tcp_network {
 
         Socket& operator=(const int fd);
 
-        void close() noexcept;
+        virtual void close() noexcept;
 
         int get() const;
 
@@ -40,9 +42,9 @@ namespace tcp_network {
 
         ParseJson() = default;
 
-        RequestDestination get_destination(const std::string& request);
+        RequestDestination get_destination(std::string& request);
 
-        std::map<std::string, std::string> parse(const std::string& request);
+        std::map<std::string, std::string> parse(std::string& request);
 
         std::map<std::string, std::string> get_request() const;
 
