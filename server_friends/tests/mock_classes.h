@@ -13,11 +13,6 @@
 #include "friends_data_base.h"
 #include "server_friends.h"
 
-
-
-//test
-
-
 class MockSocket : public FriendsDataBase {
 public:
     MockSocket() = default;
@@ -53,9 +48,8 @@ public:
 
 class MockConnection : public tcp_network::Connection {
 public:
-//    template <typename T, typename... Args>
-//    MockConnection(T fd, Args...);
-
+    MockConnection(std::string& ip, uint16_t port) :
+    tcp_network::Connection(ip, port) {}
     MOCK_METHOD1(write, size_t(const std::string& message));
     MOCK_METHOD1(read, size_t(const std::string& message));
     MOCK_METHOD0(close, void());

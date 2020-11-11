@@ -16,8 +16,6 @@ public:
 
     ~FriendsDataBase();
 
-//    FriendsDataBase& operator()(FriendsDataBase* other);
-
     // Добавить данные в таблице
     virtual void insert(std::map<std::string, std::string>& request) {}
 
@@ -29,7 +27,7 @@ public:
 
 private:
     // Table friends_;
-    pqxx::connection _db;
+    pqxx::connection database_;
 };
 
 #endif //NOSKOOL_FRIENDS_DATA_BASE_H

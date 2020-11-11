@@ -10,14 +10,9 @@ FriendsDataBase::FriendsDataBase() {}
 
 FriendsDataBase::~FriendsDataBase() {}
 
+void insert(std::map<std::string, std::string>& request) { }
 
-void insert(std::map<std::string, std::string>& request) {
-
-}
-
-void select() {
-
-}
+void select() {}
 
 void update() {}
 

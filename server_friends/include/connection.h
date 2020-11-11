@@ -17,17 +17,11 @@ namespace tcp_network {
 
         explicit Connection() = default;
 
-        template <typename... Args>
-        Connection(Args&&...);
-
         Connection(std::string& ip, uint16_t port);
+
         explicit Connection(const Socket& fd) {}
 
-        explicit Connection(Socket&& fd);
-
         Connection(Connection&& con) noexcept;
-
-        Connection(const Connection& con) = default;
 
         virtual ~Connection() noexcept;
 

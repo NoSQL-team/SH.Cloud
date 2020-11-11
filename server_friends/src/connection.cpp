@@ -8,12 +8,7 @@
 
 namespace tcp_network {
 
-    template <typename... Args>
-    Connection::Connection(Args&&...) {}
-
     Connection::~Connection() {}
-
-    Connection::Connection(Socket&& fd) {}
 
     Connection::Connection(Connection&& con) noexcept {}
 

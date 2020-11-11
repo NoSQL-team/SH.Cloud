@@ -58,11 +58,24 @@ TEST(Databasetest, data_base) {
 
     EXPECT_CALL(dataBase, insert()).Times(1);
 
-    tcp_network::ServerFriends server;
+    MockServerFriends server;
 
     server.open("127.0.0.1", 1234);
     server.event_loop();
+
+    uint16_t port = 1234;
+    std::string ip = "127.0.0.1";
+    EXPECT_CALL(server, handle_client(testing::_,
+                                    testing::_)).Times(testing::AtLeast(1));
+    tcp_network::Connection con(ip, port);
+
+    std::string request = "1234230\ncreate/\n{'username': 'Filechka322','email':"
+                          "'UUU@gmail.com','password': 'qwerty'}";
+    con.send_size(sizeof(request));
+    con.write(request);
 }
+
+
 
 
 TEST(MockServerFriends, test_reading_from_client) {
@@ -109,9 +122,9 @@ TEST(Connection, test_connection_write) {
 
     echo_serv_for_connection(&serv_sock, &listen_sock);
 
-    uint16_t i = 1234;
+    uint16_t port = 1234;
     std::string ip = "127.0.0.1";
-    tcp_network::Connection connection(ip, i);
+    tcp_network::Connection connection(ip, port);
     connection.send_size(sizeof("hello"));
     connection.write("hello");
 
@@ -124,6 +137,28 @@ TEST(Connection, test_connection_write) {
     close(listen_sock);
     close(serv_sock);
     EXPECT_EQ(true, strcmp("hello", buf));
+}
+
+TEST(test_function_calling, ServerFrineds) {
+    ASSERT_TRUE(true);
+    uint16_t port = 1234;
+    std::string ip = "127.0.0.1";
+    MockServerFriends serv(ip, port);
+
+    EXPECT_CALL(serv, create_epoll()).Times(testing::AtLeast(1));
+    EXPECT_CALL(serv, add_epoll(testing::_,
+            testing::_)).Times(testing::AtLeast(1));
+
+    EXPECT_CALL(serv, handle_client(testing::_,
+                                    testing::_)).Times(testing::AtLeast(1));
+
+    serv.event_loop();
+
+    tcp_network::Connection con(ip, port);
+    con.send_size(sizeof("hello"));
+    con.write("hello");
+    con.close();
+    serv.close();
 }
 
 
