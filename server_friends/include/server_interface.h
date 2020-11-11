@@ -18,29 +18,29 @@ namespace tcp_network {
 
         virtual Connection accept();
 
-        virtual void open(const std::string& ip, int port);
+        virtual void open(const std::string& ip, uint16_t port);
 
         virtual void create_epoll();
 
-        virtual void add_epoll(int fd,  uint32_t events);
+        virtual void add_epoll(Socket& fd,  uint32_t events);
 
         virtual void event_loop();
 
         virtual void accept_clients();
 
-        virtual void handle_client(int fd, uint32_t event);
+        virtual void handle_client(Socket& fd, uint32_t event);
 
         virtual void close_epoll();
 
         virtual void erase_connection(const Connection& con);
 
-        virtual void modify_epoll(int fd, uint32_t events);
+        virtual void modify_epoll(Socket& fd, uint32_t events);
 
     protected:
         Socket listenfd_;
         Socket epoll_;
-        std::unordered_map<int, Connection> сonnections_;
-
+        std::unordered_map<Socket, Connection> сonnections_;
+        std::unique_ptr<ParseJson> parser_;
     };
 }
 

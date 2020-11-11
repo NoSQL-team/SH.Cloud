@@ -6,6 +6,7 @@
 #define NOSKOOL_SERVER_FRIENDS_H
 
 #include "connection.h"
+
 #include "server_interface.h"
 #include "friends_data_base.h"
 #include <unordered_map>
@@ -20,7 +21,7 @@ namespace tcp_network {
         ~ServerFriends() noexcept;
 
         // Добавит в БД информацию о двух новых друзьях
-        void add_friend(std::string& request);
+        void add_friend(std::map<std::string, std::string>& request);
 
         // Приходит "что-то определяющее пользователя",
         // возвращает "что-то" представляющее собой список друзей пользовател

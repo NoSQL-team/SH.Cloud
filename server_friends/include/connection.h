@@ -17,7 +17,7 @@ namespace tcp_network {
 
         Connection(const std::string& ip, const uint16_t port);
 
-        explicit Connection(int fd);
+        explicit Connection(Socket& fd);
 
         explicit Connection(Socket&& fd);
 
@@ -35,7 +35,7 @@ namespace tcp_network {
 
         void connect(const std::string& addr, uint16_t port);
 
-        void send_size(const size_t data);
+        void send_size(const size_t size);
 
         size_t recv_size();
 
@@ -43,12 +43,12 @@ namespace tcp_network {
 
         std::string get_serv_name() const;
 
-        int get_con() const;
+        int get_connnection() const;
 
     private:
 
         Socket sock_fd_;
-        bool is_readable = false;
+        bool is_readable_ = false;
         std::string server_name_;
     };
 

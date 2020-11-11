@@ -10,7 +10,7 @@ namespace tcp_network {
 
     class Socket {
     public:
-        explicit Socket(const int& fd) noexcept;
+        explicit Socket(const int fd) noexcept;
 
         Socket() = default;
 
