@@ -13,6 +13,8 @@ public:
     // Конектится к базе данных, создается объет таблицы
     FriendsDataBase();
 
+    ~FriendsDataBase();
+
     // Добавить данные в таблице
     void insert(std::map<std::string, std::string> request);
 

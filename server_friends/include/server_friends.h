@@ -6,6 +6,8 @@
 #define NOSKOOL_SERVER_FRIENDS_H
 
 #include "connection.h"
+#include "server_interface.h"
+#include "friends_data_base.h"
 #include <unordered_map>
 #include <string>
 
@@ -29,9 +31,7 @@ namespace tcp_network {
         void delete_friends(int person_id, int friend_to_del);
 
     private:
-        Socket listenfd_;
-        Socket epoll_;
-        std::unordered_map<int, Connection> сonnections_;
+        std::unique_ptr<FriendsDataBase> database_connector_;
     };
 
 }

@@ -36,7 +36,7 @@ namespace tcp_network {
 
         virtual void modify_epoll(int fd, uint32_t events);
 
-    private:
+    protected:
         Socket listenfd_;
         Socket epoll_;
         std::unordered_map<int, Connection> сonnections_;
