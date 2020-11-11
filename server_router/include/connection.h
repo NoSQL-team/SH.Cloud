@@ -11,7 +11,7 @@ namespace tcp_network {
 
     class Connection {
     public:
-        friend class Server;
+        friend class IServer;
 
         Connection(const std::string& ip, const uint16_t port);
 
@@ -19,13 +19,11 @@ namespace tcp_network {
 
         explicit Connection(Socket&& fd);
 
-        ~Connection() noexcept;
+        virtual ~Connection() noexcept;
 
-        template <typename Message>
-        size_t write(Message& msg);
+        size_t write(const std::string& message);
 
-        template <typename Message>
-        size_t read(Message& msg);
+        size_t read(const std::string& message);
 
         void close();
 
@@ -35,11 +33,13 @@ namespace tcp_network {
 
         void connect(const std::string& addr, uint16_t port);
 
-        void send_size(const size_t& data);
+        void send_size(const size_t data);
 
-        void recv_size(size_t& data);
+        size_t recv_size();
 
-        std::string get_buffer() const;
+        void set_serv_name(const std::string& serv_name);
+
+        std::string get_serv_name() const;
 
         int get_con() const;
 
@@ -47,7 +47,10 @@ namespace tcp_network {
 
         Socket sock_fd_;
         bool is_readable = false;
+        std::string server_name_;
     };
+
+}
 
 }
 
