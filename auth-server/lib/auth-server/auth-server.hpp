@@ -10,8 +10,8 @@ class DateBaseConnection
 private:
     pqxx::connection _db;
 public:
-    DateBaseConnection();
-    ~DateBaseConnection();
+    DateBaseConnection() {};
+    ~DateBaseConnection() {};
     std::string select(std::string request);
     size_t add_entry(std::string entry);
     size_t delete_entry(std::string request);
@@ -22,9 +22,10 @@ class parserJSON
 private:
     
 public:
-    parserJSON();
-    ~parserJSON();
+    parserJSON() {};
+    ~parserJSON() {};
     std::map<std::string, std::string> parse(std::string str);
+    std::string jsonfication(std::map<std::string, std::string> object);
 };
 
 class Connection
@@ -32,8 +33,8 @@ class Connection
 private:
 
 public:
-    Connection();
-    ~Connection();
+    Connection() {};
+    ~Connection() {};
 };
 
 class AuthService
@@ -41,11 +42,16 @@ class AuthService
 private:
     DateBaseConnection _dbConn;
     parserJSON _JSONparser;
-public:
-    AuthService();
-    ~AuthService();
+    std::string requestHandlerIsAuth(std::string body);
+    std::string requestHandlerAuth(std::string body);
+    std::string requestHandlerLogout(std::string body);
+    std::string requestHandlerAddUser(std::string body);
+    std::string genToken(std::string nick, std::string email);
     void sendResponse();
     std::string getRequest();
+public:
+    AuthService() {};
+    void run();
     void setServerHTTP(std::string port, std::string ip);
     void setServerQueue(std::string port, std::string ip);
 };
