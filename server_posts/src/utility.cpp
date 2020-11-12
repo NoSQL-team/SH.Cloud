@@ -3,7 +3,7 @@
 //
 
 #include <zconf.h>  // компрессия и сжатие
-#include "utilty.h"
+#include "utility.h"
 #include <string>
 #include <map>
 
@@ -37,8 +37,6 @@ namespace tcp_server {
     int Socket::get() const {
         return socket_;
     }
-
-
 
 
     RequestDestination JsonParser::get_destination(std::string& request) {

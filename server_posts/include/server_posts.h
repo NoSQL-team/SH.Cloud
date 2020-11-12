@@ -11,14 +11,11 @@
 #include <string>
 
 
-
-
-
 namespace tcp_server {
 
 class Post {
 public:
-    Post();
+    Post(int i, int i1, const char string[1], const char string1[1], const char string2[1], int i2);
     ~Post();
 public:
     int id;
@@ -33,7 +30,7 @@ public:
     public:
         ServerPosts(const std::string& ip, uint16_t port) = default;
 
-        ~ServerPosts() noexcept;
+        ~ServerPosts() noexcept override;
 
         /*
         Нахождение постов конкретного пользователя
@@ -93,7 +90,7 @@ public:
 
 
         /*Возвращает один конкретный пост c post_id*/
-        Post& get_one_post(int post_id);
+        static Post& get_one_post(int post_id);
 
 
     private:

@@ -2,6 +2,7 @@
 // Created by amartery on 08.11.2020.
 //
 
+#include <server_posts_interface.h>
 #include "server_posts.h"
 
 
@@ -21,9 +22,10 @@ namespace tcp_server {
 
     void TCPServer::set_max_connection(int num_connections);
 
-    ServerPosts::~ServerPosts() noexcept {}
+    ServerPosts::ServerPosts(const std::string& ip, uint16_t port);
+    ServerPosts::~ServerPosts() noexcept = default;
 
-    ServerPosts::ServerPosts(const std::string& ip, uint16_t port) {}
+
 
     // void ServerPosts::add_friend(std::map<std::string, std::string>& request) {}
 
@@ -40,7 +42,7 @@ namespace tcp_server {
     void ServerPosts::delete_post(int id, int post_id) {}
 
     Post& ServerPosts::get_one_post(int post_id) {
-        Post test = {0, 0, "", "", "", 0};
+        Post test = {0, 0, nullptr, nullptr, nullptr, 0};
         return test;
     }
 }
