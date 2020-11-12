@@ -48,6 +48,7 @@ public:
     MOCK_METHOD2(is_friends, void(int id_first, int id_second));
     MOCK_METHOD2(delete_friends, void(int person_id, int friend_to_del));
     MOCK_METHOD1(get_all_friends, std::string(int id));
+    MOCK_METHOD1(add_friend, void(std::map<std::string, std::string>& request));
 };
 
 class MockConnection : public tcp_network::Connection {

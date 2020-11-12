@@ -70,10 +70,13 @@ TEST(Databasetest, data_base_insert) {
     std::string ip = "127.0.0.1";
     EXPECT_CALL(server, handle_client(testing::_,
                                     testing::_)).Times(testing::AtLeast(1));
+
+    EXPECT_CALL(server, add_friend(testing::_)).Times(testing::AtLeast(1));
+
     tcp_network::Connection con(ip, port);
 
-    std::string request = "1234230\ncreate/\n{'username': 'Filechka322','email':"
-                          "'UUU@gmail.com','password': 'qwerty'}";
+    std::string request = "1234230\nadd/\n{'id_1': '434324',"
+                          "'id_2': '43432432'}";
     con.send_size(sizeof(request));
     con.write(request);
 }
@@ -93,6 +96,9 @@ TEST(Databasetest, data_base_select) {
     std::string ip = "127.0.0.1";
     EXPECT_CALL(server, handle_client(testing::_,
                                       testing::_)).Times(testing::AtLeast(1));
+
+    EXPECT_CALL(server, get_all_friends(testing::_)).Times(testing::AtLeast(1));
+
     tcp_network::Connection con(ip, port);
 
     std::string request = "1234230\nget_all_friends/\n{'id': '432534'}";
