@@ -31,7 +31,8 @@ add_library(server_friends STATIC
         ${SRC_DIR}/utility.cpp
         ${SRC_DIR}/connection.cpp
         ${SRC_DIR}/friends_data_base.cpp
-        ${SRC_DIR}/server_friends.cpp)
+        ${SRC_DIR}/server_friends.cpp
+        ${SRC_DIR}/server_interface.cpp)
 
 add_executable(TESTS
         tests/tests.cpp
