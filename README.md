@@ -101,3 +101,5 @@ __________________________________________________________________________
 * Программа для тестов http запросов (для того, кто http сервер делать будет): [сайт](https://www.postman.com/)
 * Генератор JWT-токенов для аутентификации: [github](https://github.com/jpadilla/pyjwt)
 * Про JWT: [habr](https://habr.com/ru/post/340146/)
+* JSONparser: https://github.com/nlohmann/json
+* PostgreSQL for C/C++: [сайт](http://pqxx.org/development/libpqxx/)
