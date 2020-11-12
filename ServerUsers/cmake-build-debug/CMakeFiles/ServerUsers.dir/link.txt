@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/ServerUsers.dir/main.cpp.o  -o ServerUsers 

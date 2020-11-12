@@ -38,25 +38,25 @@ Parser.h
 
 ../project/headers/Socket.h
 
-/home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.cpp
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Connection.cpp
 Connection.h
-/home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.h
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Connection.h
 
-/home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.cpp
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Parser.cpp
 Parser.h
-/home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.h
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Parser.h
 
-/home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.cpp
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.cpp
 SServer.h
-/home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.h
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.h
 
-/home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.cpp
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/ServerUser.cpp
 ServerUser.h
-/home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.h
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/ServerUser.h
 SServer.h
-/home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.h
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.h
 
-/home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.cpp
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Socket.cpp
 Socket.h
-/home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.h
+/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Socket.h
 

@@ -54,19 +54,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/129/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = "/Users/andrewkireev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/CLion.app/Contents/bin/cmake/mac/bin/cmake"
 
 # The command to remove a file.
-RM = /snap/clion/129/bin/cmake/linux/bin/cmake -E rm -f
+RM = "/Users/andrewkireev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lerakry/tp/program_c++/ServerUsers
+CMAKE_SOURCE_DIR = /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/server_users.dir/depend.make
@@ -79,68 +79,68 @@ include CMakeFiles/server_users.dir/flags.make
 
 CMakeFiles/server_users.dir/project/src/Connection.cpp.o: CMakeFiles/server_users.dir/flags.make
 CMakeFiles/server_users.dir/project/src/Connection.cpp.o: ../project/src/Connection.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/server_users.dir/project/src/Connection.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/Connection.cpp.o -c /home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/server_users.dir/project/src/Connection.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/Connection.cpp.o -c /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Connection.cpp
 
 CMakeFiles/server_users.dir/project/src/Connection.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server_users.dir/project/src/Connection.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.cpp > CMakeFiles/server_users.dir/project/src/Connection.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Connection.cpp > CMakeFiles/server_users.dir/project/src/Connection.cpp.i
 
 CMakeFiles/server_users.dir/project/src/Connection.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server_users.dir/project/src/Connection.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.cpp -o CMakeFiles/server_users.dir/project/src/Connection.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Connection.cpp -o CMakeFiles/server_users.dir/project/src/Connection.cpp.s
 
 CMakeFiles/server_users.dir/project/src/SServer.cpp.o: CMakeFiles/server_users.dir/flags.make
 CMakeFiles/server_users.dir/project/src/SServer.cpp.o: ../project/src/SServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/server_users.dir/project/src/SServer.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/SServer.cpp.o -c /home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/server_users.dir/project/src/SServer.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/SServer.cpp.o -c /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.cpp
 
 CMakeFiles/server_users.dir/project/src/SServer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server_users.dir/project/src/SServer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.cpp > CMakeFiles/server_users.dir/project/src/SServer.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.cpp > CMakeFiles/server_users.dir/project/src/SServer.cpp.i
 
 CMakeFiles/server_users.dir/project/src/SServer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server_users.dir/project/src/SServer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.cpp -o CMakeFiles/server_users.dir/project/src/SServer.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.cpp -o CMakeFiles/server_users.dir/project/src/SServer.cpp.s
 
 CMakeFiles/server_users.dir/project/src/Socket.cpp.o: CMakeFiles/server_users.dir/flags.make
 CMakeFiles/server_users.dir/project/src/Socket.cpp.o: ../project/src/Socket.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/server_users.dir/project/src/Socket.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/Socket.cpp.o -c /home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/server_users.dir/project/src/Socket.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/Socket.cpp.o -c /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Socket.cpp
 
 CMakeFiles/server_users.dir/project/src/Socket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server_users.dir/project/src/Socket.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.cpp > CMakeFiles/server_users.dir/project/src/Socket.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Socket.cpp > CMakeFiles/server_users.dir/project/src/Socket.cpp.i
 
 CMakeFiles/server_users.dir/project/src/Socket.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server_users.dir/project/src/Socket.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.cpp -o CMakeFiles/server_users.dir/project/src/Socket.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Socket.cpp -o CMakeFiles/server_users.dir/project/src/Socket.cpp.s
 
 CMakeFiles/server_users.dir/project/src/Parser.cpp.o: CMakeFiles/server_users.dir/flags.make
 CMakeFiles/server_users.dir/project/src/Parser.cpp.o: ../project/src/Parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/server_users.dir/project/src/Parser.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/Parser.cpp.o -c /home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/server_users.dir/project/src/Parser.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/Parser.cpp.o -c /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Parser.cpp
 
 CMakeFiles/server_users.dir/project/src/Parser.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server_users.dir/project/src/Parser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.cpp > CMakeFiles/server_users.dir/project/src/Parser.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Parser.cpp > CMakeFiles/server_users.dir/project/src/Parser.cpp.i
 
 CMakeFiles/server_users.dir/project/src/Parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server_users.dir/project/src/Parser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.cpp -o CMakeFiles/server_users.dir/project/src/Parser.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Parser.cpp -o CMakeFiles/server_users.dir/project/src/Parser.cpp.s
 
 CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o: CMakeFiles/server_users.dir/flags.make
 CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o: ../project/src/ServerUser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o -c /home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o -c /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/ServerUser.cpp
 
 CMakeFiles/server_users.dir/project/src/ServerUser.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server_users.dir/project/src/ServerUser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.cpp > CMakeFiles/server_users.dir/project/src/ServerUser.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/ServerUser.cpp > CMakeFiles/server_users.dir/project/src/ServerUser.cpp.i
 
 CMakeFiles/server_users.dir/project/src/ServerUser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server_users.dir/project/src/ServerUser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.cpp -o CMakeFiles/server_users.dir/project/src/ServerUser.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/ServerUser.cpp -o CMakeFiles/server_users.dir/project/src/ServerUser.cpp.s
 
 # Object files for target server_users
 server_users_OBJECTS = \
@@ -160,7 +160,7 @@ libserver_users.a: CMakeFiles/server_users.dir/project/src/Parser.cpp.o
 libserver_users.a: CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o
 libserver_users.a: CMakeFiles/server_users.dir/build.make
 libserver_users.a: CMakeFiles/server_users.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libserver_users.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libserver_users.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/server_users.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server_users.dir/link.txt --verbose=$(VERBOSE)
 
@@ -174,6 +174,6 @@ CMakeFiles/server_users.dir/clean:
 .PHONY : CMakeFiles/server_users.dir/clean
 
 CMakeFiles/server_users.dir/depend:
-	cd /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lerakry/tp/program_c++/ServerUsers /home/lerakry/tp/program_c++/ServerUsers /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/server_users.dir/depend
 

@@ -4,21 +4,22 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.cpp" "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/Connection.cpp.o"
-  "/home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.cpp" "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/Parser.cpp.o"
-  "/home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.cpp" "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/SServer.cpp.o"
-  "/home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.cpp" "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o"
-  "/home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.cpp" "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/Socket.cpp.o"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Connection.cpp" "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/Connection.cpp.o"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Parser.cpp" "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/Parser.cpp.o"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/SServer.cpp" "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/SServer.cpp.o"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/ServerUser.cpp" "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/project/src/Socket.cpp" "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/project/src/Socket.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
-  "SOURCE_DIR=\"/home/lerakry/tp/program_c++/ServerUsers\""
+  "SOURCE_DIR=\"/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers\""
   )
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/local/include"
   "../project/headers"
   "../tests"
   )

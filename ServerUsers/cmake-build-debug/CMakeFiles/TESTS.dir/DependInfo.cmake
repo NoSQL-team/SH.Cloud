@@ -4,24 +4,25 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/lerakry/tp/program_c++/ServerUsers/tests/tests_gmock.cpp" "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/TESTS.dir/tests/tests_gmock.cpp.o"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/tests/tests_gmock.cpp" "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/TESTS.dir/tests/tests_gmock.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
-  "SOURCE_DIR=\"/home/lerakry/tp/program_c++/ServerUsers\""
+  "SOURCE_DIR=\"/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers\""
   )
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/local/include"
   "../project/headers"
   "../tests"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/DependInfo.cmake"
+  "/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -55,26 +55,26 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/129/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = "/Users/andrewkireev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/CLion.app/Contents/bin/cmake/mac/bin/cmake"
 
 # The command to remove a file.
-RM = /snap/clion/129/bin/cmake/linux/bin/cmake -E rm -f
+RM = "/Users/andrewkireev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lerakry/tp/program_c++/ServerUsers
+CMAKE_SOURCE_DIR = /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/server_users.dir/all
 all: CMakeFiles/TESTS.dir/all
+all: CMakeFiles/server_users.dir/all
 
 .PHONY : all
 
@@ -84,37 +84,10 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/server_users.dir/clean
 clean: CMakeFiles/TESTS.dir/clean
+clean: CMakeFiles/server_users.dir/clean
 
 .PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/server_users.dir
-
-# All Build rule for target.
-CMakeFiles/server_users.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_users.dir/build.make CMakeFiles/server_users.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_users.dir/build.make CMakeFiles/server_users.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=3,4,5,6,7,8 "Built target server_users"
-.PHONY : CMakeFiles/server_users.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/server_users.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles 6
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/server_users.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/server_users.dir/rule
-
-# Convenience name for target.
-server_users: CMakeFiles/server_users.dir/rule
-
-.PHONY : server_users
-
-# clean rule for target.
-CMakeFiles/server_users.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_users.dir/build.make CMakeFiles/server_users.dir/clean
-.PHONY : CMakeFiles/server_users.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/TESTS.dir
@@ -123,14 +96,14 @@ CMakeFiles/server_users.dir/clean:
 CMakeFiles/TESTS.dir/all: CMakeFiles/server_users.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TESTS.dir/build.make CMakeFiles/TESTS.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TESTS.dir/build.make CMakeFiles/TESTS.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target TESTS"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target TESTS"
 .PHONY : CMakeFiles/TESTS.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/TESTS.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/TESTS.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/TESTS.dir/rule
 
 # Convenience name for target.
@@ -142,6 +115,33 @@ TESTS: CMakeFiles/TESTS.dir/rule
 CMakeFiles/TESTS.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TESTS.dir/build.make CMakeFiles/TESTS.dir/clean
 .PHONY : CMakeFiles/TESTS.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/server_users.dir
+
+# All Build rule for target.
+CMakeFiles/server_users.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_users.dir/build.make CMakeFiles/server_users.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_users.dir/build.make CMakeFiles/server_users.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles --progress-num=3,4,5,6,7,8 "Built target server_users"
+.PHONY : CMakeFiles/server_users.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/server_users.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/server_users.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/server_users.dir/rule
+
+# Convenience name for target.
+server_users: CMakeFiles/server_users.dir/rule
+
+.PHONY : server_users
+
+# clean rule for target.
+CMakeFiles/server_users.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_users.dir/build.make CMakeFiles/server_users.dir/clean
+.PHONY : CMakeFiles/server_users.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
