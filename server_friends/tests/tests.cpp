@@ -28,7 +28,7 @@ TEST_F(TestSocket, test_socket_close) {
 //
 //    EXPECT_CALL(socket, close()).Times(1);
 //
-//    tcp_network::Connection con(socket.);
+//    tcp_network::Connection con(socket);
 //    con.close();
 //}
 
