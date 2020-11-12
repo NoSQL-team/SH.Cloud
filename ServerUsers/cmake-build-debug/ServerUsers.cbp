@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ServerUsers"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server_users">
+				<Option output="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/libserver_users.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSOURCE_DIR=&quot;/home/lerakry/tp/program_c++/ServerUsers&quot;"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/project/headers"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/tests"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 server_users"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server_users/fast">
+				<Option output="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/libserver_users.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSOURCE_DIR=&quot;/home/lerakry/tp/program_c++/ServerUsers&quot;"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/project/headers"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/tests"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 server_users/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="TESTS">
+				<Option output="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/TESTS" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSOURCE_DIR=&quot;/home/lerakry/tp/program_c++/ServerUsers&quot;"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/project/headers"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/tests"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 TESTS"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="TESTS/fast">
+				<Option output="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/TESTS" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DSOURCE_DIR=&quot;/home/lerakry/tp/program_c++/ServerUsers&quot;"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/project/headers"/>
+					<Add directory="/home/lerakry/tp/program_c++/ServerUsers/tests"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 TESTS/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test">
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/lerakry/tp/program_c++/ServerUsers/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/project/headers/Connection.h">
+			<Option target="server_users"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/project/src/Connection.cpp">
+			<Option target="server_users"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/project/src/Parser.cpp">
+			<Option target="server_users"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/project/src/SServer.cpp">
+			<Option target="server_users"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/project/src/ServerUser.cpp">
+			<Option target="server_users"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/project/src/Socket.cpp">
+			<Option target="server_users"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/tests/tests_gmock.cpp">
+			<Option target="TESTS"/>
+		</Unit>
+		<Unit filename="/home/lerakry/tp/program_c++/ServerUsers/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
