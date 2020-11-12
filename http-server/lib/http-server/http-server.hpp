@@ -19,12 +19,12 @@ class ConnectionSend
     int sock;
     struct sockaddr_in addr;
 
-    void connect();
-    void close();
+    int connect();
+    int close();
 
 public:
     ConnectionSend() {};
-    std::string sendRequest(std::string request);
+    int sendRequest(std::string request);
 };
 
 class RequestsHandler
@@ -65,7 +65,6 @@ class ResponsesHandler
 {
 protected:
     ResponsesHandler() {}
-    ~ResponsesHandler() {}
 
     static ResponsesHandler* _objPtr;
     std::vector<std::map<size_t, std::string>> _responses;

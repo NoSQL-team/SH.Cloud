@@ -4,7 +4,7 @@ ResponsesHandler* ResponsesHandler::_objPtr= nullptr;;
 
 ResponsesHandler *ResponsesHandler::getInstance()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    // std::lock_guard<std::mutex> lock(_mutex);
     if (_objPtr == nullptr)
     {
         _objPtr = new ResponsesHandler();

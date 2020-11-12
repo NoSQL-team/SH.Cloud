@@ -1,14 +1,28 @@
-cmake_minimum_required(VERSION 2.6)
-PROJECT(boost-asio-examples)
+cmake_minimum_required(VERSION 3.13.4)
 
+project(boost-asio-examples)
+#======================================================================================
 
-SET(Boost_USE_STATIC_LIBS OFF)
-SET(Boost_USE_MULTITHREAD ON)
-FIND_PACKAGE(Boost 1.67.0 REQUIRED COMPONENTS system thread regex)
-IF(Boost_FOUND)
-  INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-  LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-ENDIF(Boost_FOUND)
+option(TESTS "" OFF)
+
+#======================================================================================
+
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREAD ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+set(CMAKE_CXX_FLAGS "-lpthread -lgtest")
+
+#======================================================================================
+
+find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex)
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+  link_directories(${Boost_LIBRARY_DIRS})
+endif(Boost_FOUND)
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+
+#======================================================================================
 
 add_library(libhttp-server STATIC 
   lib/http-server/connection.cpp
@@ -17,9 +31,29 @@ add_library(libhttp-server STATIC
   lib/http-server/responses-handler.cpp
 )
 
-SET(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+if(TESTS)
+  find_package(GTest REQUIRED)
+  find_package(Threads REQUIRED)
 
-set(CMAKE_CXX_FLAGS "-lpthread")
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED on)
 
-ADD_EXECUTABLE(main main.cpp)
-TARGET_LINK_LIBRARIES(main ${USED_LIBS} libhttp-server)
+  add_executable(mainTest 
+    tests/tests.cpp
+    tests/mock_classes.h
+  )
+
+  include_directories(${GTEST_INCLUDE_DIRS})
+  target_link_libraries(
+      mainTest  
+      ${GTEST_LIBRARIES} 
+      Threads::Threads
+      ${USED_LIBS} 
+      libhttp-server
+      -lgmock
+  )
+
+else()
+  add_executable(main main.cpp)
+  target_link_libraries(main ${USED_LIBS} libhttp-server)
+endif()
