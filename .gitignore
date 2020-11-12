@@ -32,4 +32,4 @@
 *.app
 
 .idea
-ServerUsers/cmake-build-debug
+ServerUsers/cmake-build-debug/
