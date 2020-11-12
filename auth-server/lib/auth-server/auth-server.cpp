@@ -4,10 +4,10 @@ void AuthService::run() {
 
 }
 
-void AuthService::setServerHTTP(std::string port, std::string ip) {
+void AuthService::setServerHTTP(uint16_t port, std::string ip) {
 
 }
 
-void AuthService::setServerQueue(std::string port, std::string ip) {
+void AuthService::setServerQueue(uint16_t port, std::string ip) {
     
 }

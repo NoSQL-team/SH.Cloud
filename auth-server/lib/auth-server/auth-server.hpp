@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <pqxx/pqxx>
+#include <netinet/in.h>
 
 class DateBaseConnection
 {
@@ -13,35 +14,35 @@ public:
     DateBaseConnection() {};
     ~DateBaseConnection() {};
     std::string select(std::string request);
-    size_t add_entry(std::string entry);
-    size_t delete_entry(std::string request);
+    int add_entry(std::string entry);
+    int delete_entry(std::string request);
 };
 
-class parserJSON
+class ParserJSON
 {
-private:
-    
 public:
-    parserJSON() {};
-    ~parserJSON() {};
+    ParserJSON() {};
     std::map<std::string, std::string> parse(std::string str);
     std::string jsonfication(std::map<std::string, std::string> object);
 };
 
 class Connection
 {
-private:
-
+    int sock;
+    struct sockaddr_in addr;
+    int connect();
+    int close();
 public:
-    Connection() {};
-    ~Connection() {};
+    Connection(uint16_t port, std::string ip) {};
+    std::string sendRequest(std::string request);
+    std::string getResponse();
 };
 
 class AuthService
 {
 private:
     DateBaseConnection _dbConn;
-    parserJSON _JSONparser;
+    ParserJSON _JSONparser;
     std::string requestHandlerIsAuth(std::string body);
     std::string requestHandlerAuth(std::string body);
     std::string requestHandlerLogout(std::string body);
@@ -52,8 +53,8 @@ private:
 public:
     AuthService() {};
     void run();
-    void setServerHTTP(std::string port, std::string ip);
-    void setServerQueue(std::string port, std::string ip);
+    void setServerHTTP(uint16_t port, std::string ip);
+    void setServerQueue(uint16_t port, std::string ip);
 };
 
 #endif // AUTH_SERVER_NOSOOL
