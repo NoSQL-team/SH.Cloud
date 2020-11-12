@@ -45,6 +45,9 @@ public:
     MOCK_METHOD0(close_epoll, void());
     MOCK_METHOD1(erase_connection, void(const tcp_network::Connection& con));
     MOCK_METHOD2(modify_epoll, void(tcp_network::Socket& fd, uint32_t events));
+    MOCK_METHOD2(is_friends, void(int id_first, int id_second));
+    MOCK_METHOD2(delete_friends, void(int person_id, int friend_to_del));
+    MOCK_METHOD1(get_all_friends, std::string(int id));
 };
 
 class MockConnection : public tcp_network::Connection {

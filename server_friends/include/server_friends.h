@@ -25,13 +25,15 @@ namespace tcp_network {
         // Добавит в БД информацию о двух новых друзьях
         void add_friend(std::map<std::string, std::string>& request);
 
-        // Приходит "что-то определяющее пользователя",
-        // возвращает "что-то" представляющее собой список друзей пользовател
-        std::string find_friends(int id);
+        // Проверяет есть ли такой друг у пользователя
+        std::string is_friends(int id_first, int id_second);
 
         // Приходит первых аргементов что-то определяющее пользователя,
         // вторым пользователя, которого нужно удалить из друзей
         void delete_friends(int person_id, int friend_to_del);
+
+        // Возвращает список всех друзей пользователя в json
+        std::string get_all_friends(int id);
 
     private:
         std::unique_ptr<FriendsDataBase> database_connector_;

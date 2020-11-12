@@ -13,7 +13,11 @@ namespace tcp_network {
 
     void ServerFriends::add_friend(std::map<std::string, std::string>& request) {}
 
-    std::string ServerFriends::find_friends(int id) {
+    std::string ServerFriends::is_friends(int id_first, int id_second) {
+        return std::string("");
+    }
+
+    std::string ServerFriends::get_all_friends(int id) {
         return std::string("");
     }
 
