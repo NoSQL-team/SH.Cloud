@@ -1,2 +1,0 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libserver_users.a  CMakeFiles/server_users.dir/project/src/Connection.cpp.o CMakeFiles/server_users.dir/project/src/SServer.cpp.o CMakeFiles/server_users.dir/project/src/Socket.cpp.o CMakeFiles/server_users.dir/project/src/Parser.cpp.o CMakeFiles/server_users.dir/project/src/ServerUser.cpp.o
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libserver_users.a
