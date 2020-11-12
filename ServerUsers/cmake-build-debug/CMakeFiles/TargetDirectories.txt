@@ -1,5 +1,0 @@
-/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/test.dir
-/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/TESTS.dir
-/Users/andrewkireev/Downloads/noskool-server_users/ServerUsers/cmake-build-debug/CMakeFiles/server_users.dir
