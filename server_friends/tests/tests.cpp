@@ -52,14 +52,14 @@ TEST_F(TestParseJson, test_getting_request) {
 }
 
 
-TEST(Databasetest, data_base) {
+TEST(Databasetest, data_base_insert) {
     MockFriendsDataBase dataBase;
     ASSERT_TRUE(true);
 
     std::map<std::string, std::string> user = {{"id", "Anton1"},
                                                {"id2", "Anton2"}};
 
-    EXPECT_CALL(dataBase, insert(user)).Times(1);
+    EXPECT_CALL(dataBase, insert(testing::_)).Times(1);
 
     MockServerFriends server;
 
@@ -74,6 +74,28 @@ TEST(Databasetest, data_base) {
 
     std::string request = "1234230\ncreate/\n{'username': 'Filechka322','email':"
                           "'UUU@gmail.com','password': 'qwerty'}";
+    con.send_size(sizeof(request));
+    con.write(request);
+}
+
+TEST(Databasetest, data_base_select) {
+    MockFriendsDataBase dataBase;
+    ASSERT_TRUE(true);
+
+    EXPECT_CALL(dataBase, select(testing::_)).Times(1);
+
+    MockServerFriends server;
+
+    server.open("127.0.0.1", 1234);
+    server.event_loop();
+
+    uint16_t port = 1234;
+    std::string ip = "127.0.0.1";
+    EXPECT_CALL(server, handle_client(testing::_,
+                                      testing::_)).Times(testing::AtLeast(1));
+    tcp_network::Connection con(ip, port);
+
+    std::string request = "1234230\nget_all_friends/\n{'id': '432534'}";
     con.send_size(sizeof(request));
     con.write(request);
 }
