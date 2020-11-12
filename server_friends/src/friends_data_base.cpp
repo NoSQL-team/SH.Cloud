@@ -10,9 +10,13 @@ FriendsDataBase::FriendsDataBase() {}
 
 FriendsDataBase::~FriendsDataBase() {}
 
-void insert(std::map<std::string, std::string>& request) { }
+void FriendsDataBase::insert(std::map<std::string, std::string>& request) {}
 
-void select() {}
+// Взять данные из таблицы
+std::string FriendsDataBase::select(std::map<std::string, std::string>& request) {
+    return std::string(" ");
+}
 
-void update() {}
+// Обновить данные в таблице
+void FriendsDataBase::update() {}
 

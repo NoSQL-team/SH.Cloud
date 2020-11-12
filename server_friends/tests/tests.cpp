@@ -56,7 +56,10 @@ TEST(Databasetest, data_base) {
     MockFriendsDataBase dataBase;
     ASSERT_TRUE(true);
 
-    EXPECT_CALL(dataBase, insert()).Times(1);
+    std::map<std::string, std::string> user = {{"id", "Anton1"},
+                                               {"id2", "Anton2"}};
+
+    EXPECT_CALL(dataBase, insert(user)).Times(1);
 
     MockServerFriends server;
 

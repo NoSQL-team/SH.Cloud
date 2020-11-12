@@ -17,13 +17,13 @@ public:
     ~FriendsDataBase();
 
     // Добавить данные в таблице
-    virtual void insert(std::map<std::string, std::string>& request) {}
+    virtual void insert(std::map<std::string, std::string>& request);
 
     // Взять данные из таблицы
-    virtual void select() {}
+    virtual std::string select(std::map<std::string, std::string>& request);
 
     // Обновить данные в таблице
-    virtual void update() {}
+    virtual void update();
 
 private:
     // Table friends_;

@@ -22,8 +22,9 @@ public:
 
 class MockFriendsDataBase : public FriendsDataBase {
 public:
-    MOCK_METHOD0(insert, void());
-    MOCK_METHOD0(select, void());
+    MockFriendsDataBase(){}
+    MOCK_METHOD1(insert, void(std::map<std::string, std::string> request));
+    MOCK_METHOD1(select, std::string(std::map<std::string, std::string>& request));
     MOCK_METHOD0(update, void());
 };
 
