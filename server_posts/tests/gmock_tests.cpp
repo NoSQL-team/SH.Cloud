@@ -135,3 +135,10 @@ TEST(Server_friends, test_writing_to_server) {
     connection.send_size(sizeof("hi"));
     connection.write("hi");
 }
+
+int main(int argc, char **argv) {
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
+
