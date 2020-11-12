@@ -1,1 +1,0 @@
-/usr/bin/c++  -g -Wall -lpthread -lgtest -L/usr/local/lib -lpqxx -lpq -g   CMakeFiles/TESTS.dir/tests/test.cpp.o  -o TESTS  /usr/lib/libgtest.so -lpthread libserver_users.a -lgmock -lpthread 

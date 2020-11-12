@@ -15,7 +15,7 @@ namespace tcp_server {
     public:
         SServer() = default;
 
-        SServer(std::string ip, const uint16_t port);
+        SServer(const std::string& ip, const uint16_t port);
 
         ~SServer() noexcept;
 
@@ -25,7 +25,7 @@ namespace tcp_server {
 
         Connection accept();
 
-        void client(Socket &socket, uint32_t);
+        void client(Socket& socket, uint16_t port);
 
         void erase_connection(Connection &connection);
 

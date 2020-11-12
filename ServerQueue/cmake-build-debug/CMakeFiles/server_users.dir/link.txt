@@ -1,2 +1,0 @@
-/usr/bin/ar qc libserver_users.a  CMakeFiles/server_users.dir/project/src/ServerQueue.cpp.o
-/usr/bin/ranlib libserver_users.a

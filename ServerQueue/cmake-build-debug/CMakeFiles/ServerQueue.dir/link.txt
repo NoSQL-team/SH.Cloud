@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/ServerQueue.dir/project/src/main.cpp.o  -o ServerQueue 

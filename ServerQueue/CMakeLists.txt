@@ -25,7 +25,10 @@ include_directories(tests/)
 
 add_library(server_users STATIC
         ${SRC_DIR}/ServerQueue.cpp
-        ${INC_DIR}/ServerQueue.h)
+        ${INC_DIR}/ServerQueue.h
+        ${SRC_DIR}/Connection.cpp
+        ${SRC_DIR}/SServer.cpp
+        ${SRC_DIR}/Socket.cpp)
 #        project/src/SServer.cpp project/src/Socket.cpp project/src/Parser.cpp project/src/ServerUser.cpp)
 
 add_executable(TESTS

@@ -13,6 +13,8 @@ namespace tcp_server {
 
     class ServerQueue : public SServer {
     public:
+        ServerQueue() = default;
+
         ServerQueue(const std::string &ip, uint16_t port);
 
         ~ServerQueue() noexcept;

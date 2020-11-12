@@ -14,6 +14,8 @@ namespace tcp_server {
 
     class Connection {
     public:
+        Connection() = default;
+
         Connection(std::string ip, const uint16_t port);
 
         Connection(const Connection& con) = default;
@@ -23,6 +25,7 @@ namespace tcp_server {
         Connection(Socket& socket);
 
         ~Connection() = default;
+
 
         size_t write(const std::string &data);
 
