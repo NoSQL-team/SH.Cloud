@@ -1,60 +1,91 @@
-#ifndef AUTH_SERVER_NOSOOL
-#define AUTH_SERVER_NOSOOL
+#ifndef HTTTP_SERVER_NOSOOL
+#define HTTP_SERVER_NOSKOOL
 
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <string>
-#include <map>
+#include <boost/asio.hpp>
+#include <string>
+#include <memory>
+#include <iostream>
+#include <vector>
 #include <pqxx/pqxx>
-#include <netinet/in.h>
 
-class DateBaseConnection
-{
-private:
-    pqxx::connection _db;
-public:
-    DateBaseConnection() {};
-    ~DateBaseConnection() {};
-    std::string select(std::string request);
-    int add_entry(std::string entry);
-    int delete_entry(std::string request);
-};
+using namespace boost;
+using namespace boost::system;
+using namespace boost::asio;
 
-class ParserJSON
-{
-public:
-    ParserJSON() {};
-    std::map<std::string, std::string> parse(std::string str);
-    std::string jsonfication(std::map<std::string, std::string> object);
-};
-
-class Connection
+class ConnectionSend
 {
     int sock;
     struct sockaddr_in addr;
+
     int connect();
     int close();
+
 public:
-    Connection(uint16_t port, std::string ip) {};
-    std::string sendRequest(std::string request);
-    std::string getResponse();
+    ConnectionSend() {};
+    int sendRequest(std::string request);
 };
 
-class AuthService
+class RequestsHandler
+{
+    std::string method;
+    std::string url;
+    std::string version;
+    std::string body;
+    std::map<std::string, std::string> headers;
+    ConnectionSend connection;
+
+    void parseHeaders(std::ostream& line);
+    void responseFormation(std::string status, std::string body);
+
+public:
+    RequestsHandler() {};
+    std::string getResponse(std::ostream& stream);
+};
+
+class Session
+{
+    asio::streambuf buffer;
+    RequestsHandler headers;
+
+public:
+    ip::tcp::socket socket;
+
+    Session(io_service& io_service)
+        :socket(io_service)
+    {}
+
+    static void handleRequest(std::shared_ptr<Session> pThis);
+};
+
+class DateBaseConnection
+{
+protected:
+    DateBaseConnection() {}
+
+    static DateBaseConnection* _objPtr;
+    static std::mutex _mutex;
+    pqxx::connection _db;
+
+public:
+    DateBaseConnection(DateBaseConnection &other) = delete;
+    void operator=(const DateBaseConnection &) = delete;
+    static DateBaseConnection* getInstance();
+    std::string getResponse(size_t number);
+    void setResponse(std::string response);
+};
+
+class AuthServer
 {
 private:
-    DateBaseConnection _dbConn;
-    ParserJSON _JSONparser;
-    std::string requestHandlerIsAuth(std::string body);
-    std::string requestHandlerAuth(std::string body);
-    std::string requestHandlerLogout(std::string body);
-    std::string requestHandlerAddUser(std::string body);
-    std::string genToken(std::string nick, std::string email);
-    void sendResponse();
-    std::string getRequest();
+    
 public:
-    AuthService() {};
-    void run();
-    void setServerHTTP(uint16_t port, std::string ip);
-    void setServerQueue(uint16_t port, std::string ip);
+    void acceptAndRun(ip::tcp::acceptor& acceptor, io_service& io_service);
+    void run(uint16_t port);
+    AuthServer() {};
+    ~AuthServer() {};
 };
 
-#endif // AUTH_SERVER_NOSOOL
+#endif // !HTTTP_SERVER_NOSOOL

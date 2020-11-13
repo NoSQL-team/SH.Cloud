@@ -13,8 +13,20 @@ set(CMAKE_CXX_FLAGS "-lpthread -lgtest -lpqxx -lpq")
 
 #======================================================================================
 
+find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex)
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+  link_directories(${Boost_LIBRARY_DIRS})
+endif(Boost_FOUND)
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+
+#======================================================================================
+
 add_library(libauth-server STATIC 
   lib/auth-server/auth-server.cpp
+  lib/auth-server/requests-handler.cpp
+  lib/auth-server/session.cpp
+  lib/auth-server/data-base-connection.cpp
 )
 
 if(TESTS)
@@ -36,9 +48,10 @@ if(TESTS)
       Threads::Threads
       libauth-server
       -lgmock
+      ${USED_LIBS}
   )
 
 else()
   add_executable(main main.cpp)
-  target_link_libraries(main libauth-server)
+  target_link_libraries(main libauth-server ${USED_LIBS})
 endif()
