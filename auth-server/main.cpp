@@ -10,8 +10,6 @@ using namespace boost::asio;
 
 // DateBaseConnection* responsesHandler = DateBaseConnection::getInstance();
 // std::mutex DateBaseConnection::_mutex;
-size_t number = 0;
-
 
 int main(int argc, const char * argv[])
 {

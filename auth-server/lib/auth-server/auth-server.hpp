@@ -73,16 +73,15 @@ public:
     DateBaseConnection(DateBaseConnection &other) = delete;
     void operator=(const DateBaseConnection &) = delete;
     static DateBaseConnection* getInstance();
-    std::string getResponse(size_t number);
-    void setResponse(std::string response);
+    std::string selectEnrty(std::string table, std::string id);
+    std::string createEntry(std::string table, std::string id);
+    std::string deleteEntry(std::string table, std::string id);
 };
 
 class AuthServer
 {
-private:
-    
-public:
     void acceptAndRun(ip::tcp::acceptor& acceptor, io_service& io_service);
+public:
     void run(uint16_t port);
     AuthServer() {};
     ~AuthServer() {};
