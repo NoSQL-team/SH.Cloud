@@ -29,6 +29,7 @@ add_library(libhttp-server STATIC
   lib/http-server/session.cpp
   lib/http-server/requests-handler.cpp
   lib/http-server/responses-handler.cpp
+  lib/http-server/http-server.cpp
 )
 
 if(TESTS)

@@ -78,4 +78,13 @@ public:
     void setResponse(std::string response);
 };
 
+class HTTPServer
+{
+    void acceptAndRun(ip::tcp::acceptor& acceptor, io_service& io_service);
+public:
+    void run(uint16_t port);
+    HTTPServer() {};
+    ~HTTPServer() {};
+};
+
 #endif // !HTTTP_SERVER_NOSOOL
