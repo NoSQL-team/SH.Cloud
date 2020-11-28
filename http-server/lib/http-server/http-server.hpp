@@ -14,41 +14,37 @@ using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
 
-class ConnectionSend
-{
-    int sock;
-    struct sockaddr_in addr;
-
-    int connect();
-    int close();
-
-public:
-    ConnectionSend() {};
-    int sendRequest(std::string request);
-};
-
 class RequestsHandler
 {
-    std::string method;
-    std::string url;
-    std::string version;
-    std::string body;
-    std::map<std::string, std::string> headers;
-    ConnectionSend connection;
+    std::string _method;
+    std::string _url;
+    std::string _version;
+    std::string _body;
+    std::string _httpVersion;
+    std::string _contentType;
+    std::string _responseFirstStr;
+    std::map<std::string, std::string> _requestHeaders;
+    std::map<std::string, std::string> _responseHeaders;
+    int isOurServer = 0;
 
-    void parseFirstHeader(std::string line);
-    void parseNextHeaders(std::string line);
-    void parseHeaders(std::ostream& stream);
-    void responseFormation(std::string status, std::string body);
+    void parseHeaders(std::istream& stream);
+    std::string readResponseFile(const std::string& staticPath);
+    std::string responseFormation(std::string body);
+    std::string getExt(const std::string& st);
+    void setMIMEType(const std::string& st);
+    std::string encodeSStream(std::stringstream& stream);
+    std::string gzipSStream(std::stringstream& stream);
+    void logRequest();
 
 public:
     RequestsHandler() {};
-    std::string getResponse(std::ostream& stream);
+    std::string getResponse(std::istream& stream, const std::string& staticPath);
 };
 
 class Session
 {
-    asio::streambuf buffer;
+    asio::streambuf _buffer;
+    std::string _responseBuffer;
     RequestsHandler headers;
     
 public:
@@ -58,7 +54,7 @@ public:
         :socket(io_service)
     {}
     
-    static void handleRequest(std::shared_ptr<Session> pThis);
+    static void handleRequest(std::shared_ptr<Session> pThis, std::string staticPath);
 };
 
 class ResponsesHandler
@@ -80,9 +76,17 @@ public:
 
 class HTTPServer
 {
+    uint16_t _port;
+    std::string _loggerPath;
+    std::string _loggerLevel;
+    std::string _staticPath;
     void acceptAndRun(ip::tcp::acceptor& acceptor, io_service& io_service);
+    void initServer();
+    void getConfFile();
+    void initLogger();
+    void setLoggerLevel();
 public:
-    void run(uint16_t port);
+    void run();
     HTTPServer() {};
     ~HTTPServer() {};
 };

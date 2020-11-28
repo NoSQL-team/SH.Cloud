@@ -1,4 +1,3 @@
-
 #include <boost/asio.hpp>
 #include <string>
 #include <memory>
@@ -17,6 +16,6 @@ size_t number = 0;
 int main(int argc, const char * argv[])
 {
     HTTPServer server;
-    server.run(9999);
+    server.run();
     return 0;
 }

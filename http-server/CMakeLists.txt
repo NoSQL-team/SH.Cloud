@@ -15,17 +15,17 @@ set(CMAKE_CXX_FLAGS "-lpthread -lgtest")
 
 #======================================================================================
 
-find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex)
+find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex log_setup log)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
-set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+set(USED_LIBS ${Boost_LIBRARIES})
+add_definitions(-DBOOST_LOG_DYN_LINK)
 
 #======================================================================================
 
 add_library(libhttp-server STATIC 
-  lib/http-server/connection.cpp
   lib/http-server/session.cpp
   lib/http-server/requests-handler.cpp
   lib/http-server/responses-handler.cpp
@@ -56,5 +56,5 @@ if(TESTS)
 
 else()
   add_executable(main main.cpp)
-  target_link_libraries(main ${USED_LIBS} libhttp-server)
+  target_link_libraries(main ${USED_LIBS} libhttp-server -lboost_iostreams)
 endif()
