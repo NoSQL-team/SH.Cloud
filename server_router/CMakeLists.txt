@@ -11,7 +11,12 @@ set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib")
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
-
+find_package(Boost 1.74.0 REQUIRED COMPONENTS system thread regex)
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_directories(${Boost_LIBRARY_DIRS})
+endif(Boost_FOUND)
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -35,6 +40,20 @@ add_library(server_friends STATIC
 add_executable(TESTS
         ${TESTS_DIR}/tests.cpp
         ${TESTS_DIR}/mock_classes.h)
+
+add_executable(test_boost
+        test.cpp)
+
+add_executable(echo_server
+        echo_server_for_tests.cpp)
+
+target_include_directories(test_boost PUBLIC ${INC_DIR})
+
+target_include_directories(test_boost PUBLIC ${TESTS_DIR})
+
+target_link_libraries(test_boost ${USED_LIBS} server_friends)
+
+target_link_libraries(echo_server ${USED_LIBS})
 
 target_include_directories(TESTS PUBLIC ${INC_DIR})
 

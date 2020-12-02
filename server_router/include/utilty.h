@@ -38,6 +38,11 @@ namespace tcp_network {
         USER_SERV
     };
 
+    struct Destination {
+    	std::string ip;
+		uint16_t port;
+    };
+
 
     class ParseJson {
     public:
