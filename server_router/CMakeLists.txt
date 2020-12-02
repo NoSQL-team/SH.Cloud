@@ -33,9 +33,8 @@ include_directories(tests/)
 
 add_library(server_friends STATIC
         ${SRC_DIR}/utility.cpp
-        ${SRC_DIR}/connection.cpp
-        ${SRC_DIR}/server_router.cpp
-        ${SRC_DIR}/server_interface.cpp)
+        ${SRC_DIR}/session.cpp
+        ${SRC_DIR}/server_router.cpp)
 
 add_executable(TESTS
         ${TESTS_DIR}/tests.cpp
