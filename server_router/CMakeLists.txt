@@ -18,6 +18,10 @@ if(Boost_FOUND)
 endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
 
+set(nlohmann_json_DIR "/Users/andrewkireev/json")
+
+find_package(nlohmann_json REQUIRED)
+
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
@@ -29,6 +33,7 @@ set(TESTS_DIR ${DIR}/tests)
 
 include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(include/)
+include_directories(${nlohmann_json_DIR}/include/)
 include_directories(tests/)
 
 # Server-router library
@@ -37,13 +42,18 @@ add_library(server_router STATIC
         ${SRC_DIR}/session.cpp
         ${SRC_DIR}/server_router.cpp)
 
+target_link_libraries(server_router
+        PRIVATE nlohmann_json::nlohmann_json -I/usr/local/homebrew/Cellar/nlohmann_json/3.9.1/include)
+
 add_executable(TESTS
         ${TESTS_DIR}/tests.cpp
         ${TESTS_DIR}/mock_classes.h)
 
-
 add_executable(server_router_test
         server_router_for_tests.cpp)
+
+add_executable(test_parser
+        test_parser.cpp)
 
 
 # Эхо сервер для теста роутинга запросов с rout-сервера
@@ -56,6 +66,8 @@ target_include_directories(server_router_test PUBLIC ${INC_DIR})
 target_include_directories(server_router_test PUBLIC ${TESTS_DIR})
 
 target_link_libraries(server_router_test ${USED_LIBS} server_router)
+
+target_link_libraries(test_parser ${USED_LIBS})
 
 
 # Echo-server
