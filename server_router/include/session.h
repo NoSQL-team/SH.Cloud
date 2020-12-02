@@ -17,7 +17,7 @@ namespace tcp_network {
 
 	class Session : public std::enable_shared_from_this<Session> {
 	public:
-		Session(boost::asio::io_service &io_service);
+		explicit Session(boost::asio::io_service& io_service);
 
 		ip::tcp::socket &socket();
 

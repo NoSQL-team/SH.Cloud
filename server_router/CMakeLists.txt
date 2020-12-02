@@ -31,7 +31,8 @@ include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(include/)
 include_directories(tests/)
 
-add_library(server_friends STATIC
+# Server-router library
+add_library(server_router STATIC
         ${SRC_DIR}/utility.cpp
         ${SRC_DIR}/session.cpp
         ${SRC_DIR}/server_router.cpp)
@@ -40,25 +41,32 @@ add_executable(TESTS
         ${TESTS_DIR}/tests.cpp
         ${TESTS_DIR}/mock_classes.h)
 
-add_executable(test_boost
-        test.cpp)
 
+add_executable(server_router_test
+        server_router_for_tests.cpp)
+
+
+# Эхо сервер для теста роутинга запросов с rout-сервера
 add_executable(echo_server
         echo_server_for_tests.cpp)
 
-target_include_directories(test_boost PUBLIC ${INC_DIR})
+# Router-server
+target_include_directories(server_router_test PUBLIC ${INC_DIR})
 
-target_include_directories(test_boost PUBLIC ${TESTS_DIR})
+target_include_directories(server_router_test PUBLIC ${TESTS_DIR})
 
-target_link_libraries(test_boost ${USED_LIBS} server_friends)
+target_link_libraries(server_router_test ${USED_LIBS} server_router)
 
+
+# Echo-server
 target_link_libraries(echo_server ${USED_LIBS})
 
+# Тесты
 target_include_directories(TESTS PUBLIC ${INC_DIR})
 
 target_include_directories(TESTS PUBLIC ${TESTS_DIR})
 
-target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
+target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_router -lgmock)
 
 enable_testing()
 add_test(NAME TEST_ONE COMMAND tests1)

@@ -11,26 +11,6 @@
 
 namespace tcp_network {
 
-    class Socket {
-    public:
-        explicit Socket(int& fd) noexcept;
-
-        Socket() = default;
-
-        explicit Socket(Socket&& other) noexcept;
-
-        ~Socket() noexcept;
-
-        Socket& operator=(const int fd);
-
-        virtual void close() noexcept;
-
-        int get() const;
-
-    private:
-        int socket_ = -1;
-    };
-
     enum RequestDestination {
         FRIEND_SERV,
         POST_SERV,
@@ -43,7 +23,6 @@ namespace tcp_network {
 		uint16_t port;
     };
 
-
     class ParseJson {
     public:
 
@@ -53,10 +32,6 @@ namespace tcp_network {
 
         std::map<std::string, std::string> parse(std::string& request);
 
-        std::map<std::string, std::string> get_request() const;
-
-    private:
-        std::map<std::string, std::string> request_;
     };
 }
 
