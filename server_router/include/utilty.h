@@ -18,7 +18,8 @@ namespace tcp_network {
         FRIEND_SERV,
         POST_SERV,
         AUTH_SERV,
-        USER_SERV
+        USER_SERV,
+        UNKNOWN
     };
 
     void print_destination(RequestDestination destination);
@@ -39,7 +40,8 @@ namespace tcp_network {
 
 	private:
 		std::map<std::string, RequestDestination> servers_adrs_ =
-				{{"5", RequestDestination::POST_SERV}};
+				{{"5", RequestDestination::POST_SERV},
+				 {"4", RequestDestination::FRIEND_SERV}};
     };
 }
 

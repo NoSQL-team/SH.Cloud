@@ -10,7 +10,11 @@ namespace tcp_network {
 
     RequestDestination ParseJson::get_destination(std::string& request) {
         std::string destination = request.substr(0, request.find('\n'));
-        std::cout << destination << std::endl;
+//        std::cout << destination << std::endl;
+        if (servers_adrs_.count(destination) == 0) {
+        	std::cerr << "Несуществующй адрес" << std::endl;
+			return RequestDestination::UNKNOWN;
+		}
         return servers_adrs_.at(destination);
     }
 

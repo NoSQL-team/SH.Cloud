@@ -49,16 +49,21 @@ add_executable(TESTS
         ${TESTS_DIR}/tests.cpp
         ${TESTS_DIR}/mock_classes.h)
 
+# Исполняймый файл для теста Router-servera
 add_executable(server_router_test
         server_router_for_tests.cpp)
 
+# Исполняймый файл для теста парсера
 add_executable(test_parser
         test_parser.cpp)
 
 
-# Эхо сервер для теста роутинга запросов с rout-сервера
-add_executable(echo_server
-        echo_server_for_tests.cpp)
+# Эхо серверы для теста роутинга запросов с rout-сервера
+add_executable(echo_server_1
+        echo_server_for_tests_1.cpp)
+
+add_executable(echo_server_2
+        echo_server_for_tests_2.cpp)
 
 # Router-server
 target_include_directories(server_router_test PUBLIC ${INC_DIR})
@@ -70,8 +75,9 @@ target_link_libraries(server_router_test ${USED_LIBS} server_router)
 target_link_libraries(test_parser ${USED_LIBS} server_router)
 
 
-# Echo-server
-target_link_libraries(echo_server ${USED_LIBS})
+# Echo-servers
+target_link_libraries(echo_server_1 ${USED_LIBS})
+target_link_libraries(echo_server_2 ${USED_LIBS})
 
 # Тесты
 target_include_directories(TESTS PUBLIC ${INC_DIR})

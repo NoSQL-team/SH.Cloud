@@ -6,6 +6,7 @@
 #include "session.h"
 #include <unistd.h>
 #include <iostream>
+#include <stdexcept>
 
 namespace tcp_network {
 
@@ -24,27 +25,35 @@ namespace tcp_network {
 											boost::asio::placeholders::bytes_transferred));
 	}
 
-	RequestDestination Session::define_location() {
-		std::string requst(data_);
-		return parser_.get_destination(requst);
+	Destination Session::define_location() {
+		try {
+			std::string requst(data_);
+			auto test = parser_.get_destination(requst);
+			print_destination(test);
+			Destination destination = servers_adrs_.at(test);
+			return destination;
+		} catch (std::out_of_range& e) {
+			std::cerr << e.what() << std::endl;
+			return {0, 0};
+		}
 	}
 
 	void Session::handle_read(std::shared_ptr<Session> current_session, const system::error_code& error,
 							  size_t bytes_transferred) {
 		if (!error) {
-			RequestDestination location = define_location();
+			Destination destination = define_location();
 
 			io_service service;
-			ip::tcp::endpoint ep( ip::address::from_string("127.0.0.1"),
-								  9999);
+			ip::tcp::endpoint ep( ip::address::from_string(destination.ip),
+								  destination.port);
 			ip::tcp::socket sock(service);
 			sock.async_connect(ep, [&sock, this](const system::error_code& error) {
 				if (!error) {
 					std::cout << data_ << std::endl;
 					boost::asio::write(sock, boost::asio::buffer(data_,
-																 strlen(data_)));
+																 strlen(data_) + 1));
 
-					std::cout << data_ << std::endl;
+//					std::cout << data_ << std::endl;
 				}
 			});
 			service.run();

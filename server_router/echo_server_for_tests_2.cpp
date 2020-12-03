@@ -1,6 +1,7 @@
 //
-// Created by Andrew Kireev on 02.12.2020.
+// Created by Andrew Kireev on 03.12.2020.
 //
+
 
 #include <cstdlib>
 #include <iostream>
@@ -11,7 +12,7 @@
 
 using boost::asio::ip::tcp;
 
-const int max_length = 1024;
+const int max_length = 2024;
 
 typedef boost::shared_ptr<tcp::socket> socket_ptr;
 
@@ -19,18 +20,11 @@ void session(socket_ptr sock)
 {
 	try
 	{
-		for (;;)
-		{
 			char data[max_length];
 
 			boost::system::error_code error;
 			size_t length = sock->read_some(boost::asio::buffer(data), error);
 			std::cout << data << std::endl;
-			if (error == boost::asio::error::eof)
-				break; // Connection closed cleanly by peer.
-			else if (error)
-				throw boost::system::system_error(error); // Some other error.
-		}
 	}
 	catch (std::exception& e)
 	{
@@ -56,7 +50,7 @@ int main(int argc, char* argv[])
 		boost::asio::io_service io_service;
 
 		using namespace std; // For atoi.
-		server(io_service, 9999);
+		server(io_service, 9998);
 	}
 	catch (std::exception& e)
 	{
