@@ -3,23 +3,33 @@
 //
 
 #include "server_friends.h"
+#include <memory>
 
 
 namespace tcp_network {
 
-    ServerFriends::~ServerFriends() noexcept {}
+	Server::Server(short port) : acceptor_(io_service_,
+										   ip::tcp::endpoint(ip::tcp::v4(), port)) {
+		start_accept();
+		io_service_.run();
+	}
 
-    ServerFriends::ServerFriends(const std::string& ip, uint16_t port) {}
+	void Server::start_accept() {
+		auto new_session = std::make_shared<Session>(io_service_, database_);
+		acceptor_.async_accept(new_session->socket(),
+							   boost::bind(&Server::handle_accept, this, new_session,
+										   boost::asio::placeholders::error));
+	}
 
-    void ServerFriends::add_friend(std::map<std::string, std::string>& request) {}
+	void Server::handle_accept(std::shared_ptr<Session> new_session,
+							   const boost::system::error_code &error) {
+		if (!error) {
+			new_session->start(new_session);
+		} else {
+			new_session.reset();
+		}
 
-    std::string ServerFriends::is_friends(int id_first, int id_second) {
-        return std::string("");
-    }
+		start_accept();
+	}
 
-    std::string ServerFriends::get_all_friends(int id) {
-        return std::string("");
-    }
-
-    void ServerFriends::delete_friends(int person_id, int friend_to_del) {}
 }

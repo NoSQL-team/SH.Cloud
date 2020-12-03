@@ -6,52 +6,42 @@
 #define NOSKOOL_UTILTY_H
 
 #include <map>
-
+#include <iostream>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 namespace tcp_network {
 
-    class Socket {
-    public:
-        explicit Socket(int& fd) noexcept;
+	enum class RequestDestination {
+		FRIEND_SERV,
+		POST_SERV,
+		AUTH_SERV,
+		USER_SERV,
+		HTTP_SERV,
+		UNKNOWN
+	};
 
-        Socket() = default;
+	void print_destination(RequestDestination destination);
 
-        explicit Socket(Socket&& other) noexcept;
+	struct Destination {
+		std::string ip;
+		uint16_t port;
+	};
 
-        ~Socket() noexcept;
+	class ParseJson {
+	public:
 
-        Socket& operator=(const int fd);
+		ParseJson() = default;
 
-        virtual void close() noexcept;
+		RequestDestination get_destination(std::string& request);
 
-        int get() const;
+		std::map<std::string, std::string> parse(std::string& request);
 
-    private:
-        int socket_ = -1;
-    };
-
-    enum RequestDestination {
-        FRIEND_SERV,
-        POST_SERV,
-        AUTH_SERV,
-        USER_SERV
-    };
-
-    class ParseJson {
-    public:
-
-        ParseJson() = default;
-
-        RequestDestination get_destination(std::string& request);
-
-        std::map<std::string, std::string> parse(std::string& request);
-
-        std::map<std::string, std::string> get_request() const;
-
-    private:
-        std::map<std::string, std::string> request_;
-    };
-
+	private:
+		std::map<std::string, RequestDestination> servers_adrs_ =
+				{{"5", RequestDestination::POST_SERV},
+				 {"4", RequestDestination::FRIEND_SERV}};
+	};
 }
 
 #endif //NOSKOOL_UTILTY_H

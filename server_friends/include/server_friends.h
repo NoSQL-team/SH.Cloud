@@ -5,39 +5,34 @@
 #ifndef NOSKOOL_SERVER_FRIENDS_H
 #define NOSKOOL_SERVER_FRIENDS_H
 
-#include "connection.h"
-
-#include "server_interface.h"
 #include "friends_data_base.h"
 #include <unordered_map>
-#include <string>
+#include <boost/bind.hpp>
+#include <boost/asio.hpp>
+#include <memory>
+#include <session.h>
 
 namespace tcp_network {
 
-    class ServerFriends : public IServer{
-    public:
-        ServerFriends(const std::string& ip, uint16_t port);
+	using namespace boost;
+	using namespace boost::system;
+	using namespace boost::asio;
 
-        ServerFriends() = default;
 
-        ~ServerFriends() noexcept;
+	class Server {
+	public:
+		explicit Server(short port);
 
-        // Добавит в БД информацию о двух новых друзьях
-        void add_friend(std::map<std::string, std::string>& request);
+	private:
+		void start_accept();
 
-        // Проверяет есть ли такой друг у пользователя
-        std::string is_friends(int id_first, int id_second);
+		void handle_accept(std::shared_ptr<Session> new_session,
+						   const boost::system::error_code &error);
 
-        // Приходит первых аргементов что-то определяющее пользователя,
-        // вторым пользователя, которого нужно удалить из друзей
-        void delete_friends(int person_id, int friend_to_del);
-
-        // Возвращает список всех друзей пользователя в json
-        std::string get_all_friends(int id);
-
-    private:
-        std::unique_ptr<FriendsDataBase> database_connector_;
-    };
+		boost::asio::io_service io_service_;
+		ip::tcp::acceptor acceptor_;
+		FriendsDataBase database_;
+	};
 
 }
 

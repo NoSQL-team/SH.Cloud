@@ -2,57 +2,58 @@
 // Created by Andrew Kireev on 11.11.2020.
 //
 
-#include <zconf.h>
 #include "utilty.h"
-#include <string>
 #include <map>
 
 namespace tcp_network {
 
-    Socket::Socket(int& fd) noexcept : socket_(fd){}
+	RequestDestination ParseJson::get_destination(std::string& request) {
+		std::string destination = request.substr(0, request.find('\n'));
+//        std::cout << destination << std::endl;
+		if (servers_adrs_.count(destination) == 0) {
+			std::cerr << "Несуществующй адрес" << std::endl;
+			return RequestDestination::UNKNOWN;
+		}
+		return servers_adrs_.at(destination);
+	}
 
-    Socket::Socket(Socket&& other) noexcept :
-            socket_(std::exchange(other.socket_, -1)){}
+	std::map<std::string, std::string> ParseJson::parse(std::string& request) {
+		std::map<std::string, std::string> requsts;
 
-    Socket::~Socket() noexcept{
-        close();
-    }
+		auto iter = request.find('\n');
+		requsts.insert({"destination", request.substr(0, iter)});
+		request.erase(0, iter + 1);
+		iter = request.find('\n');
+		requsts.insert({"priority", request.substr(0, iter)});
+		request.erase(0, iter + 1);
+		iter = request.find('\n');
+		requsts.insert({"type", request.substr(0, iter)});
+		request.erase(0, iter + 2);
 
-    void Socket::close() noexcept {
-        if(socket_ != -1) {
-            try{
-                ::close(socket_);
-            } catch (...) {
-            }
-        }
-        socket_ = -1;
-    }
-
-    Socket& Socket::operator=(const int fd){
-        close();
-        socket_ = fd;
-        return *this;
-    }
-
-    int Socket::get() const {
-        return socket_;
-    }
+		if(!request.empty()) {
+			std::stringstream ss(request);
+			boost::property_tree::ptree pt;
+			boost::property_tree::read_json(ss, pt);
+			using boost::property_tree::ptree;
+			ptree::const_iterator end = pt.end();
 
 
+			for (ptree::const_iterator it = pt.begin(); it != end; ++it) {
+				requsts.insert({std::string(it->first), it->second.get_value<std::string>()});
+			}
+		}
+		return requsts;
+	}
 
+	void print_destination(RequestDestination destination) {
+		if (destination == RequestDestination::POST_SERV)
+			std::cout << "POST_SERV" << std::endl;
+		else if (destination == RequestDestination::AUTH_SERV)
+			std::cout << "AUTH_SERV" << std::endl;
+		else if (destination == RequestDestination::FRIEND_SERV)
+			std::cout << "FRIEND_SERV" << std::endl;
+		else if (destination == RequestDestination::USER_SERV)
+			std::cout << "USER_SERV" << std::endl;
+	}
 
-    RequestDestination ParseJson::get_destination(std::string& request) {
-        return RequestDestination::POST_SERV;
-    }
-
-    std::map<std::string, std::string> ParseJson::parse(std::string& request) {
-        request_.insert({"email", "UUU@gmail.com"});
-        request_.insert({"password", "qwerty"});
-        request_.insert({"username", "Filechka322"});
-        return request_;
-    }
-
-    std::map<std::string, std::string> ParseJson::get_request() const {
-        return request_;
-    }
 }

@@ -13,6 +13,13 @@ find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
 
+find_package(Boost 1.74.0 REQUIRED COMPONENTS system thread regex)
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_directories(${Boost_LIBRARY_DIRS})
+endif(Boost_FOUND)
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -29,14 +36,27 @@ include_directories(tests/)
 
 add_library(server_friends STATIC
         ${SRC_DIR}/utility.cpp
-        ${SRC_DIR}/connection.cpp
+        ${SRC_DIR}/session.cpp
         ${SRC_DIR}/friends_data_base.cpp
         ${SRC_DIR}/server_friends.cpp
-        ${SRC_DIR}/server_interface.cpp)
+        ${SRC_DIR}/request_handler.cpp)
 
+# Unit тесты
 add_executable(TESTS
         tests/tests.cpp
         ${TESTS_DIR}/mock_classes.h)
+
+# Server-friends
+add_executable(server_friends_test
+        server_friends_test.cpp)
+
+# Echo-сервер для отладки
+add_executable(echo_server
+        echo_server_for_tests.cpp)
+
+target_link_libraries(server_friends_test ${USED_LIBS} server_friends)
+
+target_link_libraries(echo_server ${USED_LIBS})
 
 target_include_directories(TESTS PUBLIC ${INC_DIR})
 
