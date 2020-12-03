@@ -23,9 +23,13 @@ class RequestsHandler
     std::string _httpVersion;
     std::string _contentType;
     std::string _responseFirstStr;
+    std::string _responseBody;
+    size_t _responseStatus;
     std::map<std::string, std::string> _requestHeaders;
     std::map<std::string, std::string> _responseHeaders;
     int isOurServer = 0;
+
+    std::mutex _lockRequest;
 
     void parseHeaders(std::istream& stream);
     std::string readResponseFile(const std::string& staticPath);
@@ -35,26 +39,12 @@ class RequestsHandler
     std::string encodeSStream(std::stringstream& stream);
     std::string gzipSStream(std::stringstream& stream);
     void logRequest();
+    void setFirstHeader();
+    void sendRequestToQR();
 
 public:
     RequestsHandler() {};
-    std::string getResponse(std::istream& stream, const std::string& staticPath);
-};
-
-class Session
-{
-    asio::streambuf _buffer;
-    std::string _responseBuffer;
-    RequestsHandler headers;
-    
-public:
-    ip::tcp::socket socket;
-
-    Session(io_service& io_service)
-        :socket(io_service)
-    {}
-    
-    static void handleRequest(std::shared_ptr<Session> pThis, std::string staticPath);
+    std::string getResponse(std::istream& stream, std::map<std::string, std::string> staticPath);
 };
 
 class ResponsesHandler
@@ -74,20 +64,43 @@ public:
     void setResponse(std::string response);
 };
 
+class Session:  public std::enable_shared_from_this<Session>
+{
+public:
+    Session(ip::tcp::socket socket)
+        : _socket(std::move(socket))
+        ,_strand(_socket.get_io_service()) {}
+
+    void start(std::map<std::string, std::string> context);
+private:
+    ip::tcp::socket _socket;
+    asio::streambuf _buffer;
+    std::string _responseBuffer;
+    RequestsHandler headers;
+    boost::asio::io_service::strand _strand;
+};
+
 class HTTPServer
 {
     uint16_t _port;
     std::string _loggerPath;
     std::string _loggerLevel;
-    std::string _staticPath;
-    void acceptAndRun(ip::tcp::acceptor& acceptor, io_service& io_service);
+    ip::tcp::acceptor _acceptor;
+    ip::tcp::socket _socket;
+    std::map<std::string, std::string> _context;
+    void acceptAndRun();
     void initServer();
     void getConfFile();
     void initLogger();
     void setLoggerLevel();
 public:
-    void run();
-    HTTPServer() {};
+    HTTPServer(boost::asio::io_service& io_service):
+        _acceptor(io_service, ip::tcp::endpoint(ip::tcp::v4(), 9999)),
+        _socket(io_service)
+    {
+        initServer();
+        acceptAndRun();
+    };
     ~HTTPServer() {};
 };
 

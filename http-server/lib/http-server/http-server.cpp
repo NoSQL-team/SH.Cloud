@@ -7,13 +7,13 @@
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 
-#include <cstdlib>
 
+#include <cstdlib>
+#include <future>
 
 #include "http-server.hpp"
 
 namespace logging = boost::log;
-namespace keywords = boost::log::keywords;
 
 void HTTPServer::getConfFile() {
     boost::property_tree::ptree pt;
@@ -23,7 +23,9 @@ void HTTPServer::getConfFile() {
         _port = pt.get<uint16_t>("server.port");
         _loggerPath = pt.get<std::string>("logger.path");
         _loggerLevel = pt.get<std::string>("logger.level");
-        _staticPath = pt.get<std::string>("server.static_path");
+        _context.insert({"staticPath", pt.get<std::string>("server.static_path")});
+        _context.insert({"QRAddr", pt.get<std::string>("request-handler.queue-router-addr")});
+        _context.insert({"QRPort", pt.get<std::string>("request-handler.queue-router-port")});
     }
     catch(const std::exception& e)
     {
@@ -59,31 +61,15 @@ void HTTPServer::initServer() {
     initLogger();
 }
 
-void HTTPServer::acceptAndRun(ip::tcp::acceptor& acceptor, io_service& io_service)
+void HTTPServer::acceptAndRun()
 {
-    std::shared_ptr<Session> sesh = std::make_shared<Session>(io_service);
-
-    acceptor.async_accept(
-        sesh->socket,
-        [sesh, &acceptor, &io_service, this](const error_code& accept_error)
-        {
-            acceptAndRun(acceptor, io_service);
+    _acceptor.async_accept(
+        _socket,
+        [this](const error_code& accept_error) {
             if(!accept_error) {
-                Session::handleRequest(sesh, _staticPath);
+                std::make_shared<Session>(std::move(_socket))->start(_context);
             }
+            acceptAndRun();
         }
     );
-}
-
-void HTTPServer::run()
-{
-    initServer();
-    io_service io_service;
-    ip::tcp::endpoint endpoint{ip::tcp::v4(), _port};
-    ip::tcp::acceptor acceptor{io_service, endpoint};
-    
-    acceptor.listen();
-    acceptAndRun(acceptor, io_service);
-    
-    io_service.run();
 }

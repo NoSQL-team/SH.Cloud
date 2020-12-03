@@ -26,10 +26,10 @@ add_definitions(-DBOOST_LOG_DYN_LINK)
 #======================================================================================
 
 add_library(libhttp-server STATIC 
-  lib/http-server/session.cpp
   lib/http-server/requests-handler.cpp
   lib/http-server/responses-handler.cpp
   lib/http-server/http-server.cpp
+  lib/http-server/session.cpp
 )
 
 if(TESTS)

@@ -7,11 +7,16 @@
 #include <boost/iostreams/copy.hpp>
 
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 #include "http-server.hpp"
 
-#define NOT_FOUND "404"
-#define OK "200"
+#define NOT_FOUND "HTTP/1.1 404 Not Found"
+#define OK "HTTP/1.1 200 OK"
+#define INTERNAL_SERVER_ERROR "HTTP/1.1 500 Internal Server Error"
+#define BAD_REQUEST "HTTP/1.1 400 Bad Request"
+#define METHOD_NOT_ALLOWED "HTTP/1.1 405 Method Not Allowed"
 
 std::string RequestsHandler::getExt(const std::string& st) {
     size_t pos = st.rfind('.');
@@ -51,9 +56,10 @@ void RequestsHandler::parseHeaders(std::istream& stream) {
         splitVect[0] == "POST" ||
         splitVect[0] == "PUT"
     ) {
-        isOurServer = 1;
-    } else if (std::all_of(headerBuffer.begin(), headerBuffer.end(), ::isdigit)) {
         isOurServer = 0;
+    } else if (std::all_of(headerBuffer.begin(), headerBuffer.end(), ::isdigit)) {
+        isOurServer = 1;
+        return;
     } else { 
         isOurServer = -1;
         return;
@@ -112,12 +118,24 @@ std::string RequestsHandler::responseFormation(std::string body = "") {
 
 std::string RequestsHandler::readResponseFile(const std::string& staticPath) {
     std::stringstream responseBody;
-    std::string filePath = _url == "/" ? (staticPath + "/index.html") : (staticPath + _url);
+    std::string filePath;
+    if (
+        _url == "/" ||
+        _url == "/moment" ||
+        _url == "/login" ||
+        _url == "/profile"
+    ) {
+        filePath = staticPath + "/index.html";
+    } else {
+        filePath = staticPath + _url;
+    }
     std::ifstream file(filePath);
     if(file.is_open()) {
         responseBody << file.rdbuf();
+        _responseStatus = 200;
     } else {
-        responseBody << NOT_FOUND;
+        responseBody << "";
+        _responseStatus = 404;
     }
     file.close();
     return encodeSStream(responseBody);
@@ -127,27 +145,70 @@ void RequestsHandler::logRequest() {
     BOOST_LOG_TRIVIAL(info) << _method << " " << _url << " " << _responseFirstStr;
 }
 
-std::string RequestsHandler::getResponse(std::istream& stream, const std::string& staticPath)
+void RequestsHandler::setFirstHeader() {
+    switch (_responseStatus)
+    {
+    case 200:
+        _responseFirstStr = OK;
+        break;
+    case 400:
+        _responseFirstStr = BAD_REQUEST;
+        break;
+    case 404:
+        _responseFirstStr = NOT_FOUND;
+        break;
+    case 405: 
+        _responseFirstStr = METHOD_NOT_ALLOWED;
+        break;
+    default:
+        _responseFirstStr = INTERNAL_SERVER_ERROR;
+    }
+}
+
+void RequestsHandler::sendRequestToQR() {
+    io_service service;
+    ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 8080);
+    ip::tcp::socket sock(service);
+    sock.connect(ep);
+    std::stringstream request_stream;
+    request_stream << "GET " << "/" << " HTTP/1.0\r\n";
+    request_stream << "Host: " << "127.0.0.1" << "\r\n";
+    request_stream << "Accept: */*\r\n"; // Любой MIME type
+    request_stream << "Connection: close\r\n\r\n";
+    async_write(
+        sock,
+        boost::asio::buffer(request_stream.str(), request_stream.str().length()),
+        [](const error_code& e, std::size_t s) {
+            if (!e) {
+                
+            }
+        }
+    );
+}
+
+std::string RequestsHandler::getResponse(std::istream& stream, std::map<std::string, std::string> context)
 {
     parseHeaders(stream);
-    std::stringstream ssOut;
     _responseHeaders.insert({"Server", "linuxbox"});
-    if(std::strncmp(_url.c_str(), "/api/", 5)) {
-        std::string body = readResponseFile(staticPath);
-        _responseHeaders.insert({"Content-Length", boost::lexical_cast<std::string>(body.length())});
-        if (body == NOT_FOUND) {
-            _responseFirstStr = "HTTP/1.1 404 NOT FOUND";
-            logRequest();
-            return responseFormation("");
+    if (isOurServer == -1) {
+        _responseStatus = 405;
+        _responseBody = "Method not allowed";
+    } else if (isOurServer == 1) {
+
+    } else if (isOurServer == 0) {
+        std::stringstream ssOut;
+        if(std::strncmp(_url.c_str(), "/api/", 5)) {
+            _responseBody = readResponseFile(context["staticPath"]);
         } else {
-            _responseFirstStr = "HTTP/1.1 200 OK";
-            logRequest();
-            return responseFormation(body);
+            // sendRequestToQR();
+            std::this_thread::sleep_for(std::chrono::seconds(20));
+            ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
         }
-    } else {
-        ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
-        return responseFormation("");
     }
-    _responseFirstStr = "HTTP/1.1 500";
-    return responseFormation("Some error");
+    setFirstHeader();
+    logRequest();
+    _responseHeaders.insert({
+        "Content-Length", boost::lexical_cast<std::string>(_responseBody.length())
+    });
+    return responseFormation(_responseBody);
 }
