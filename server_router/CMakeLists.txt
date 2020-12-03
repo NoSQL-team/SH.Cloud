@@ -67,7 +67,7 @@ target_include_directories(server_router_test PUBLIC ${TESTS_DIR})
 
 target_link_libraries(server_router_test ${USED_LIBS} server_router)
 
-target_link_libraries(test_parser ${USED_LIBS})
+target_link_libraries(test_parser ${USED_LIBS} server_router)
 
 
 # Echo-server

@@ -14,12 +14,14 @@
 
 namespace tcp_network {
 
-    enum RequestDestination {
+    enum class RequestDestination {
         FRIEND_SERV,
         POST_SERV,
         AUTH_SERV,
         USER_SERV
     };
+
+    void print_destination(RequestDestination destination);
 
     struct Destination {
     	std::string ip;
@@ -35,19 +37,9 @@ namespace tcp_network {
 
         std::map<std::string, std::string> parse(std::string& request);
 
-		std::map<std::string, std::string> print(boost::property_tree::ptree const& pt)
-		{
-			std::map<std::string, std::string> requst;
-			using boost::property_tree::ptree;
-			ptree::const_iterator end = pt.end();
-			for (ptree::const_iterator it = pt.begin(); it != end; ++it) {
-//				std::cout << it->first << ": " << it->second.get_value<std::string>() << std::endl;
-				requst.insert({std::string(it->first), it->second.get_value<std::string>()});
-//				print(it->second);
-			}
-			return requst;
-		}
-
+	private:
+		std::map<std::string, RequestDestination> servers_adrs_ =
+				{{"5", RequestDestination::POST_SERV}};
     };
 }
 

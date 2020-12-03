@@ -5,17 +5,23 @@
 #include "utilty.h"
 
 int main(int argc, char *argv[]) {
-	std::string json = "{ \"squadName\": \"Super hero squad\", \"homeTown\": \"Metro City\","
-					"\"formed\": 2016, \"secretBase\": \"Super tower\", \"active\": true }";
+	std::string json = "123423\n"
+					   "0\n"
+					   "create/\n"
+					   "\n"
+					   "{\n"
+					   "   \"username\": \"Filechka322\",\n"
+					   "   \"email\": \"UUU@gmail.com\",\n"
+					   "   \"password\": \"qwerty\"\n"
+					   "}";
 
 	tcp_network::ParseJson parser;
-	std::stringstream ss(json);
-
-	boost::property_tree::ptree pt;
-	boost::property_tree::read_json(ss, pt);
-	auto requests = parser.print(pt);
+	auto requests = parser.parse(json);
 	for (auto it : requests) {
 		std::cout << it.first << ": " << it.second << std::endl;
 	}
+
+	auto new_json = "5\n" + json;
+	tcp_network::print_destination(parser.get_destination(new_json));
 	return 0;
 }
