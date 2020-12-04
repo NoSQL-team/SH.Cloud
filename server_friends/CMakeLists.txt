@@ -58,6 +58,9 @@ add_executable(echo_server
 add_executable(bd_test
         test_bd.cpp)
 
+add_executable(client
+        client_for_tests.cpp)
+
 
 target_link_libraries(server_friends_test ${USED_LIBS} server_friends)
 
@@ -70,6 +73,8 @@ target_include_directories(TESTS PUBLIC ${INC_DIR})
 target_include_directories(TESTS PUBLIC ${TESTS_DIR})
 
 target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
+
+target_link_libraries(client ${USED_LIBS})
 
 enable_testing()
 add_test(NAME TEST_ONE COMMAND tests1)

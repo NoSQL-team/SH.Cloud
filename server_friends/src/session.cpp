@@ -48,7 +48,7 @@ namespace tcp_network {
 												   shared_from_this(), request);
 
 //			io_service_.post([&handler, this]() {
-//				std::cout << "Пошли обрабатывать" << std::endl;
+				std::cout << "Пошли обрабатывать" << std::endl;
 				handler->handle_request();
 //			});
 

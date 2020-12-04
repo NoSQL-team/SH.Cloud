@@ -16,9 +16,9 @@ namespace tcp_network {
 
 	void RequestHandler::handle_request() {
 		if (request_.count("type") && request_["type"] == "add") {
-			io_service_.post([this](){
+//			io_service_.post([this](){
 				handle_add();
-			});
+//			});
 		} else if (request_.count("type") && request_["type"] == "is_friend") {
 			io_service_.post([this](){
 				handle_is_friend();
@@ -32,14 +32,13 @@ namespace tcp_network {
 				handle_get_all_friends();
 			});
 		}
-		io_service_.post([this](){
-			handle_get_all_friends();
-		});
 	}
 
 	void RequestHandler::handle_add() {
-		database_.add_friend(std::atoi(request_["user_1"].c_str()),
+		int result = database_.add_friend(std::atoi(request_["user_1"].c_str()),
 					   std::atoi(request_["user_2"].c_str()));
+		std::string str_res = std::to_string(result);
+		session_->send_response(str_res);
 	}
 
 	void RequestHandler::handle_get_all_friends() {
