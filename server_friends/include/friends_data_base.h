@@ -17,18 +17,14 @@ public:
 
     ~FriendsDataBase();
 
-    // Добавить данные в таблице
-    virtual void insert(std::map<std::string, std::string>& request);
-
-    // Взять данные из таблицы
-    virtual std::string select(std::map<std::string, std::string>& request);
-
+;
     int add_friend(int user_1, int user_2);
 
     std::vector<int> get_all_friends(int user_id);
 
-    // Обновить данные в таблице
-    virtual void update();
+    int delete_friend(int user_1, int user_2);
+
+    bool is_friend(int user_1, int user_2);
 
     bool is_opened();
 
