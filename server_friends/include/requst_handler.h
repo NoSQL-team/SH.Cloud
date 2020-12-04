@@ -17,7 +17,7 @@ namespace tcp_network {
 	public:
 		RequestHandler(boost::asio::io_service& io_service, FriendsDataBase& database,
 				 std::shared_ptr<Session> session,
-				 std::map<std::string, std::string>& request);
+				 std::map<std::string, std::string> request);
 
 		void handle_request();
 

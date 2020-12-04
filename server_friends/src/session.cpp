@@ -47,7 +47,7 @@ namespace tcp_network {
 			auto handler = std::make_shared<RequestHandler>(io_service_, database_,
 												   shared_from_this(), request);
 
-//			io_service_.post([&handler, this]() {
+//			io_service_.post([handler, this]() {
 				std::cout << "Пошли обрабатывать" << std::endl;
 				handler->handle_request();
 //			});

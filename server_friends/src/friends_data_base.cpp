@@ -42,6 +42,14 @@ int FriendsDataBase::add_friend(int user_1, int user_2) {
 	pqxx::work W(database_);
 	W.exec(sql_request);
 	W.commit();
+
+	std::string sql_request_2("insert into friends values (" + std::to_string(user_2) + ", "
+							+ std::to_string(user_1) + ")");
+	std::cout << sql_request_2 << std::endl;
+
+	pqxx::work W2(database_);
+	W2.exec(sql_request_2);
+	W2.commit();
 	return 200;
 }
 
@@ -93,6 +101,7 @@ int FriendsDataBase::delete_friend(int user_1, int user_2) {
 	pqxx::work W2(database_);
 	W2.exec(sql_request_2);
 	W2.commit();
+	return 1;
 }
 
 bool FriendsDataBase::is_opened() {
