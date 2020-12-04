@@ -20,7 +20,6 @@ void HTTPServer::getConfFile() {
     boost::property_tree::ini_parser::read_ini("noskoolHTTP.ini", pt);
     try
     {
-        _port = pt.get<uint16_t>("server.port");
         _loggerPath = pt.get<std::string>("logger.path");
         _loggerLevel = pt.get<std::string>("logger.level");
         _context.insert({"staticPath", pt.get<std::string>("server.static_path")});

@@ -40,7 +40,8 @@ class RequestsHandler
     std::string gzipSStream(std::stringstream& stream);
     void logRequest();
     void setFirstHeader();
-    void sendRequestToQR();
+    void sendRequestToQR(std::string body);
+    std::string formationRequest();
 
 public:
     RequestsHandler() {};
@@ -82,7 +83,6 @@ private:
 
 class HTTPServer
 {
-    uint16_t _port;
     std::string _loggerPath;
     std::string _loggerLevel;
     ip::tcp::acceptor _acceptor;
@@ -94,8 +94,8 @@ class HTTPServer
     void initLogger();
     void setLoggerLevel();
 public:
-    HTTPServer(boost::asio::io_service& io_service):
-        _acceptor(io_service, ip::tcp::endpoint(ip::tcp::v4(), 9999)),
+    HTTPServer(boost::asio::io_service& io_service, uint16_t port):
+        _acceptor(io_service, ip::tcp::endpoint(ip::tcp::v4(), port)),
         _socket(io_service)
     {
         initServer();

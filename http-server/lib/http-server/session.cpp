@@ -10,8 +10,6 @@ void Session::start(std::map<std::string, std::string> context) {
         {
             std::istream stream(&_buffer);
             _responseBuffer = headers.getResponse(stream, context);
-            // ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
-            // responsesHandler->setResponse("");
             async_write(
                 _socket,
                 boost::asio::buffer(_responseBuffer.c_str(), _responseBuffer.length()),

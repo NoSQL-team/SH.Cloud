@@ -18,6 +18,8 @@
 #define BAD_REQUEST "HTTP/1.1 400 Bad Request"
 #define METHOD_NOT_ALLOWED "HTTP/1.1 405 Method Not Allowed"
 
+extern size_t number;
+
 std::string RequestsHandler::getExt(const std::string& st) {
     size_t pos = st.rfind('.');
     if (pos <= 0) return "";
@@ -165,25 +167,39 @@ void RequestsHandler::setFirstHeader() {
     }
 }
 
-void RequestsHandler::sendRequestToQR() {
+void RequestsHandler::sendRequestToQR(std::string body) {
     io_service service;
     ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 8080);
     ip::tcp::socket sock(service);
+    
     sock.connect(ep);
-    std::stringstream request_stream;
-    request_stream << "GET " << "/" << " HTTP/1.0\r\n";
-    request_stream << "Host: " << "127.0.0.1" << "\r\n";
-    request_stream << "Accept: */*\r\n"; // Любой MIME type
-    request_stream << "Connection: close\r\n\r\n";
-    async_write(
-        sock,
-        boost::asio::buffer(request_stream.str(), request_stream.str().length()),
-        [](const error_code& e, std::size_t s) {
-            if (!e) {
-                
+
+    try {
+        service.run();
+        async_write(
+            sock,
+            boost::asio::buffer(body, body.length()),
+            [](const error_code& e, std::size_t s) {
+                if (!e) {
+                    
+                }
             }
-        }
-    );
+        );
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }   
+}
+
+std::string RequestsHandler::formationRequest() {
+    std::stringstream buffer;
+    number++;
+    buffer 
+        << number << "\n"
+        << _url << "\n"
+        << "\n"
+        << _body << "\r";
+    return buffer.str();    
 }
 
 std::string RequestsHandler::getResponse(std::istream& stream, std::map<std::string, std::string> context)
@@ -194,15 +210,14 @@ std::string RequestsHandler::getResponse(std::istream& stream, std::map<std::str
         _responseStatus = 405;
         _responseBody = "Method not allowed";
     } else if (isOurServer == 1) {
-
+        
     } else if (isOurServer == 0) {
         std::stringstream ssOut;
         if(std::strncmp(_url.c_str(), "/api/", 5)) {
+            isOurServer = 2;
             _responseBody = readResponseFile(context["staticPath"]);
         } else {
-            // sendRequestToQR();
-            std::this_thread::sleep_for(std::chrono::seconds(20));
-            ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+            sendRequestToQR(formationRequest());
         }
     }
     setFirstHeader();
@@ -210,5 +225,5 @@ std::string RequestsHandler::getResponse(std::istream& stream, std::map<std::str
     _responseHeaders.insert({
         "Content-Length", boost::lexical_cast<std::string>(_responseBody.length())
     });
-    return responseFormation(_responseBody);
+    return (isOurServer == 2) ? "our\n" : "" + responseFormation(_responseBody);
 }
