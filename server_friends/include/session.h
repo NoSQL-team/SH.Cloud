@@ -48,7 +48,7 @@ namespace tcp_network {
 		FriendsDataBase& database_;
 		boost::asio::io_service& io_service_;
 		enum {
-			max_length = 1024
+			max_length = 2048
 		};
 		char data_[max_length];
 	};

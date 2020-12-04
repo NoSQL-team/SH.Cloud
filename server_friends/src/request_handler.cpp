@@ -38,7 +38,8 @@ namespace tcp_network {
 	}
 
 	void RequestHandler::handle_add() {
-
+		database_.add_friend(std::atoi(request_["user_1"].c_str()),
+					   std::atoi(request_["user_2"].c_str()));
 	}
 
 	void RequestHandler::handle_get_all_friends() {
