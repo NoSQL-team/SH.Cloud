@@ -54,7 +54,14 @@ add_executable(server_friends_test
 add_executable(echo_server
         echo_server_for_tests.cpp)
 
+# Test базы данных
+add_executable(bd_test
+        test_bd.cpp)
+
+
 target_link_libraries(server_friends_test ${USED_LIBS} server_friends)
+
+target_link_libraries(bd_test ${USED_LIBS} server_friends)
 
 target_link_libraries(echo_server ${USED_LIBS})
 

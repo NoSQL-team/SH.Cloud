@@ -38,6 +38,7 @@ namespace tcp_network {
 	}
 
 	void RequestHandler::handle_add() {
+
 	}
 
 	void RequestHandler::handle_get_all_friends() {
