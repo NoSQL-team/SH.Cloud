@@ -5,6 +5,8 @@
 #ifndef NOSKOOL_UTILTY_H
 #define NOSKOOL_UTILTY_H
 
+# define BOOST_ASIO_HAS_MOVE
+
 #include <string>
 #include <map>
 #include <unordered_map>

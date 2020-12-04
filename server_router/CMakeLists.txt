@@ -65,6 +65,9 @@ add_executable(echo_server_1
 add_executable(echo_server_2
         echo_server_for_tests_2.cpp)
 
+add_executable(client_test
+        client_for_tests.cpp)
+
 # Router-server
 target_include_directories(server_router_test PUBLIC ${INC_DIR})
 
@@ -73,6 +76,8 @@ target_include_directories(server_router_test PUBLIC ${TESTS_DIR})
 target_link_libraries(server_router_test ${USED_LIBS} server_router)
 
 target_link_libraries(test_parser ${USED_LIBS} server_router)
+
+target_link_libraries(test_parser ${USED_LIBS})
 
 
 # Echo-servers

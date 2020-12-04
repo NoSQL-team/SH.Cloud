@@ -19,7 +19,7 @@ namespace tcp_network {
 	}
 
 	void Session::start(std::shared_ptr<Session> current_session) {
-		socket_.async_read_some(boost::asio::buffer(data_, max_length),
+		socket_.async_receive(buffer(&data_[0], 5024),
 								boost::bind(&Session::handle_read, this, current_session,
 											boost::asio::placeholders::error,
 											boost::asio::placeholders::bytes_transferred));
@@ -28,6 +28,9 @@ namespace tcp_network {
 	Destination Session::define_location() {
 		try {
 			std::string requst(data_);
+//
+//			std::istream(&data_) >> requst;
+
 			auto test = parser_.get_destination(requst);
 			print_destination(test);
 			Destination destination = servers_adrs_.at(test);
@@ -49,11 +52,12 @@ namespace tcp_network {
 			ip::tcp::socket sock(service);
 			sock.async_connect(ep, [&sock, this](const system::error_code& error) {
 				if (!error) {
-					std::cout << data_ << std::endl;
-					boost::asio::write(sock, boost::asio::buffer(data_,
-																 strlen(data_) + 1));
+					std::string requst(data_);
 
-//					std::cout << data_ << std::endl;
+//					std::istream(&data_) >> requst;
+					boost::asio::write(sock, boost::asio::buffer(requst.c_str(), strlen(data_)));
+
+					std::cout << data_ << std::endl;
 				}
 			});
 			service.run();
@@ -62,16 +66,16 @@ namespace tcp_network {
 		}
 	}
 
-	void Session::handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error) {
-		if (!error) {
-			std::cout << std::string(data_);
-			socket_.async_read_some(boost::asio::buffer(data_, max_length),
-									boost::bind(&Session::handle_read, this, current_session,
-												boost::asio::placeholders::error,
-												boost::asio::placeholders::bytes_transferred));
-		} else {
-			current_session.reset();
-		}
-	}
+//	void Session::handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error) {
+//		if (!error) {
+//			std::cout << std::string(data_);
+//			socket_.async_read_some(boost::asio::buffer(data_, max_length),
+//									boost::bind(&Session::handle_read, this, current_session,
+//												boost::asio::placeholders::error,
+//												boost::asio::placeholders::bytes_transferred));
+//		} else {
+//			current_session.reset();
+//		}
+//	}
 
 }

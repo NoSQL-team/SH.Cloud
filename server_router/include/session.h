@@ -5,6 +5,8 @@
 #ifndef NOSKOOL_CONNECTION_H
 #define NOSKOOL_CONNECTION_H
 
+# define BOOST_ASIO_HAS_MOVE
+
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include "utilty.h"
@@ -39,9 +41,11 @@ namespace tcp_network {
 		ip::tcp::socket socket_;
 		ParseJson parser_;
 		enum {
-			max_length = 1024
+			max_length = 5024
 		};
 		char data_[max_length];
+//		std::string data_;
+//		streambuf data_;
 	};
 
 }
