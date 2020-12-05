@@ -17,7 +17,6 @@ class RequestsHandler
 {
     std::string _method;
     std::string _url;
-    std::string _version;
     std::string _body;
     std::string _httpVersion;
     std::string _contentType;
