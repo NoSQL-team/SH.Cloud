@@ -17,11 +17,8 @@ void Requester::sendRequest(std::string body, std::function<void()> fn, size_t n
     async_write(
         _sock,
         boost::asio::buffer(body, body.length()),
-        [fn, number](const error_code& e, std::size_t s) {
-            if (!e) {
-                ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
-                responsesHandler->setCallback(fn, number);
-            }
-        }
+        [](const error_code& e, std::size_t s) {}
     );
+    ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+    responsesHandler->setCallback(fn, number);
 }

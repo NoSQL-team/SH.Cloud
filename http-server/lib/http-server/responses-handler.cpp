@@ -21,7 +21,6 @@ void ResponsesHandler::setResponse(std::string response, size_t number) {
     std::lock_guard<std::mutex> lock(_mutex);
     _responses.insert({number, response});
     if (_callbacks.count(number) > 0) {
-        std::cout << number << "  " << response << std::endl;
         _callbacks[number]();
         _callbacks.erase(number);
     }

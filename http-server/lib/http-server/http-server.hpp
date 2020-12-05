@@ -2,8 +2,10 @@
 #define HTTP_SERVER_NOSKOOL
 
 #include <boost/asio.hpp>
+
+#include <boost/thread/thread.hpp>
+
 #include <string>
-#include <iostream>
 #include <vector>
 #include <functional>
 
@@ -39,6 +41,7 @@ class RequestsHandler
     void setFirstHeader();
     std::string formationRequest();
     bool isOurServerFn(const std::string& header);
+    void logRequestOur();
 
 public:
     RequestsHandler() {};

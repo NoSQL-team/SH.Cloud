@@ -59,7 +59,6 @@ bool RequestsHandler::isOurServerFn(const std::string& header) {
             isOur = false;
         }
     }
-    std::cout << 'l' << header << 'l' << std::endl;
     _number = isOur ? lexical_cast<size_t>(header) : 0;
     isOurServer = (isOur ? 1 : 10);
     return isOur;
@@ -166,6 +165,10 @@ void RequestsHandler::logRequest() {
     BOOST_LOG_TRIVIAL(info) << _method << " " << _url << " " << _responseFirstStr;
 }
 
+void RequestsHandler::logRequestOur() {
+    BOOST_LOG_TRIVIAL(info) << "Our server: " << _number;
+}
+
 void RequestsHandler::setFirstHeader() {
     switch (_responseStatus)
     {
@@ -214,22 +217,25 @@ std::string RequestsHandler::getResponse(std::istream& stream, std::map<std::str
             _responseBody = readResponseFile(context["staticPath"]);
         } else {
             Requester* requester = Requester::getInstance();
-            requester->sendRequest(formationRequest(), [this](){ isResponseReady = true; }, number);
+            requester->sendRequest(formationRequest(), [this](){ isResponseReady = true; }, number + 1);
             _number = number;
             while (!isResponseReady) {
                 std::this_thread::sleep_for(std::chrono::microseconds(100));
             }
             ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
             _responseBody = responsesHandler->getResponse(_number);
+            _responseHeaders.insert({"Content-Type", "application/json; charset=UTF-8"});
+            _responseStatus = 200;
         }
     }
     setFirstHeader();
-    logRequest();
-    std::cout << isOurServer << std::endl;
     if (!(isOurServer == 1)) {
         _responseHeaders.insert({
             "Content-Length", boost::lexical_cast<std::string>(_responseBody.length())
         });
+        logRequest();
+    }  else {
+        logRequestOur();
     }
     return (isOurServer == 1) ? "our" : responseFormation(_responseBody);
 }
