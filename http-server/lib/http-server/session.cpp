@@ -10,11 +10,13 @@ void Session::start(std::map<std::string, std::string> context) {
         {
             std::istream stream(&_buffer);
             _responseBuffer = headers.getResponse(stream, context);
-            async_write(
-                _socket,
-                boost::asio::buffer(_responseBuffer.c_str(), _responseBuffer.length()),
-                [this, self](const error_code& e, std::size_t s) {}
-            );
+            if (!(_responseBuffer == "our")) {
+                async_write(
+                    _socket,
+                    boost::asio::buffer(_responseBuffer.c_str(), _responseBuffer.length()),
+                    [this, self](const error_code& e, std::size_t s) {}
+                );
+            }
         })
     );  
 }

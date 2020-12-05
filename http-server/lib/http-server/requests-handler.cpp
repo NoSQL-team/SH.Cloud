@@ -1,7 +1,9 @@
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem/operations.hpp>
+
 #include <boost/lexical_cast.hpp>
+
 #include <boost/log/trivial.hpp>
+
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/copy.hpp>
@@ -19,6 +21,8 @@
 #define METHOD_NOT_ALLOWED "HTTP/1.1 405 Method Not Allowed"
 
 extern size_t number;
+extern std::mutex ResponsesHandler::_mutex;
+extern std::mutex Requester::_requesterMutex;
 
 std::string RequestsHandler::getExt(const std::string& st) {
     size_t pos = st.rfind('.');
@@ -48,20 +52,35 @@ void RequestsHandler::setMIMEType(const std::string& st) {
     }
 }
 
+bool RequestsHandler::isOurServerFn(const std::string& header) {
+    bool isOur = true;
+    for (size_t i = 0; i < header.size() - 1; i++) {
+        if(!isdigit(header[i])) {
+            isOur = false;
+        }
+    }
+    std::cout << 'l' << header << 'l' << std::endl;
+    _number = isOur ? lexical_cast<size_t>(header) : 0;
+    isOurServer = (isOur ? 1 : 10);
+    return isOur;
+}
+
 void RequestsHandler::parseHeaders(std::istream& stream) {
     std::vector<std::string> splitVect;
     std::string headerBuffer;
     std::getline(stream, headerBuffer);
     boost::split(splitVect, headerBuffer, boost::is_any_of(" "));
-    if (
+    if (isOurServerFn(headerBuffer)) {
+        while (std::getline(stream, headerBuffer)) {
+            _body += headerBuffer + '\n';
+        }
+        return;
+    } else if (
         splitVect[0] == "GET" ||
         splitVect[0] == "POST" ||
         splitVect[0] == "PUT"
     ) {
         isOurServer = 0;
-    } else if (std::all_of(headerBuffer.begin(), headerBuffer.end(), ::isdigit)) {
-        isOurServer = 1;
-        return;
     } else { 
         isOurServer = -1;
         return;
@@ -167,30 +186,6 @@ void RequestsHandler::setFirstHeader() {
     }
 }
 
-void RequestsHandler::sendRequestToQR(std::string body) {
-    io_service service;
-    ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 8080);
-    ip::tcp::socket sock(service);
-    
-    sock.connect(ep);
-
-    try {
-        service.run();
-        async_write(
-            sock,
-            boost::asio::buffer(body, body.length()),
-            [](const error_code& e, std::size_t s) {
-                if (!e) {
-                    
-                }
-            }
-        );
-    }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
-    }   
-}
-
 std::string RequestsHandler::formationRequest() {
     std::stringstream buffer;
     number++;
@@ -210,20 +205,31 @@ std::string RequestsHandler::getResponse(std::istream& stream, std::map<std::str
         _responseStatus = 405;
         _responseBody = "Method not allowed";
     } else if (isOurServer == 1) {
-        
+        ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+        responsesHandler->setResponse(_body, _number);
     } else if (isOurServer == 0) {
         std::stringstream ssOut;
         if(std::strncmp(_url.c_str(), "/api/", 5)) {
             isOurServer = 2;
             _responseBody = readResponseFile(context["staticPath"]);
         } else {
-            sendRequestToQR(formationRequest());
+            Requester* requester = Requester::getInstance();
+            requester->sendRequest(formationRequest(), [this](){ isResponseReady = true; }, number);
+            _number = number;
+            while (!isResponseReady) {
+                std::this_thread::sleep_for(std::chrono::microseconds(100));
+            }
+            ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+            _responseBody = responsesHandler->getResponse(_number);
         }
     }
     setFirstHeader();
     logRequest();
-    _responseHeaders.insert({
-        "Content-Length", boost::lexical_cast<std::string>(_responseBody.length())
-    });
-    return (isOurServer == 2) ? "our\n" : "" + responseFormation(_responseBody);
+    std::cout << isOurServer << std::endl;
+    if (!(isOurServer == 1)) {
+        _responseHeaders.insert({
+            "Content-Length", boost::lexical_cast<std::string>(_responseBody.length())
+        });
+    }
+    return (isOurServer == 1) ? "our" : responseFormation(_responseBody);
 }

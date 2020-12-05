@@ -1,14 +1,11 @@
 #ifndef HTTTP_SERVER_NOSOOL
 #define HTTP_SERVER_NOSKOOL
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <string>
 #include <boost/asio.hpp>
 #include <string>
-#include <memory>
 #include <iostream>
 #include <vector>
+#include <functional>
 
 using namespace boost;
 using namespace boost::system;
@@ -28,8 +25,8 @@ class RequestsHandler
     std::map<std::string, std::string> _requestHeaders;
     std::map<std::string, std::string> _responseHeaders;
     int isOurServer = 0;
-
-    std::mutex _lockRequest;
+    bool isResponseReady = false;
+    size_t _number;
 
     void parseHeaders(std::istream& stream);
     std::string readResponseFile(const std::string& staticPath);
@@ -40,8 +37,8 @@ class RequestsHandler
     std::string gzipSStream(std::stringstream& stream);
     void logRequest();
     void setFirstHeader();
-    void sendRequestToQR(std::string body);
     std::string formationRequest();
+    bool isOurServerFn(const std::string& header);
 
 public:
     RequestsHandler() {};
@@ -52,17 +49,42 @@ class ResponsesHandler
 {
 protected:
     ResponsesHandler() {}
-
     static ResponsesHandler* _objPtr;
-    std::vector<std::map<size_t, std::string>> _responses;
     static std::mutex _mutex;
+    std::map<size_t, std::string> _responses;
+    std::map<size_t, std::function<void()>> _callbacks;
 
 public:
     ResponsesHandler(ResponsesHandler &other) = delete;
     void operator=(const ResponsesHandler &) = delete;
     static ResponsesHandler* getInstance();
+
     std::string getResponse(size_t number);
-    void setResponse(std::string response);
+    void setResponse(std::string response, size_t number);
+    void setCallback(std::function<void()> fn, size_t number);
+};
+
+class Requester
+{
+protected:
+    Requester():
+    _ep(ip::address::from_string("127.0.0.1"), 8080),
+    _sock(_requesterService) {
+        _sock.connect(_ep);
+        _requesterService.run();
+    }
+    static Requester* _objPtr;
+    static std::mutex _requesterMutex;
+    io_service _requesterService;
+    ip::tcp::endpoint _ep;
+    ip::tcp::socket _sock;
+
+public:
+    Requester(Requester &other) = delete;
+    void operator=(const Requester &) = delete;
+    static Requester* getInstance();
+
+    void sendRequest(std::string body, std::function<void()> fn, size_t number);
 };
 
 class Session:  public std::enable_shared_from_this<Session>

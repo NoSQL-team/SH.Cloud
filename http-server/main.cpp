@@ -3,13 +3,15 @@
 #include <memory>
 #include "lib/http-server/http-server.hpp"
 #include <boost/thread/thread.hpp>
+#include <thread>
+#include <chrono>
 
 using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
 
 ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
-std::mutex ResponsesHandler::_mutex;
+Requester* requester = Requester::getInstance();
 size_t number = 0;
 
 int main(int argc, const char * argv[])
@@ -29,7 +31,7 @@ int main(int argc, const char * argv[])
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
-    }
-    
+    }   
+
     return 0;
 }

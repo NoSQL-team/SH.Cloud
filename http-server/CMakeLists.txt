@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13.4)
 
-project(boost-asio-examples)
+project(http-nosool)
 #======================================================================================
 
 option(TESTS "" OFF)
@@ -28,6 +28,7 @@ add_definitions(-DBOOST_LOG_DYN_LINK)
 add_library(libhttp-server STATIC 
   lib/http-server/requests-handler.cpp
   lib/http-server/responses-handler.cpp
+  lib/http-server/requester.cpp
   lib/http-server/http-server.cpp
   lib/http-server/session.cpp
 )
