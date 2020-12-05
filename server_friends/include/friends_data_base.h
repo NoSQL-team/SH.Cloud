@@ -17,7 +17,6 @@ public:
 
     ~FriendsDataBase();
 
-;
     int add_friend(int user_1, int user_2);
 
     std::vector<int> get_all_friends(int user_id);
@@ -27,8 +26,6 @@ public:
     bool is_friend(int user_1, int user_2);
 
     bool is_opened();
-
-    std::string make_request(std::string& request);
 
 private:
     // Table friends_;

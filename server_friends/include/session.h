@@ -19,13 +19,13 @@ namespace tcp_network {
 
 	class Session : public std::enable_shared_from_this<Session> {
 	public:
-		Session(boost::asio::io_service &io_service, FriendsDataBase& database_);
+		Session(boost::asio::io_service& io_service, FriendsDataBase& database);
 
-		ip::tcp::socket &socket();
+		ip::tcp::socket& socket();
 
 		void start(std::shared_ptr<Session> current_session);
 
-		void send_response(std::string& respones);
+		void send_response(std::string& response);
 
 	private:
 		Destination define_location();
@@ -34,9 +34,6 @@ namespace tcp_network {
 						 size_t bytes_transferred);
 
 		void handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error);
-
-		void  handle_database_req(std::shared_ptr<Session> current_session, const boost::system::error_code &error);
-
 
 		std::map<RequestDestination, Destination> servers_adrs_ =
 				{{RequestDestination::POST_SERV, {"127.0.0.1", 9999}},

@@ -11,21 +11,10 @@ FriendsDataBase::FriendsDataBase() {
 	database_ = pqxx::connection("dbname=Friends host=localhost user=andrewkireev password=");
 }
 
-FriendsDataBase::~FriendsDataBase() {}
-
-std::string FriendsDataBase::make_request(std::string& request) {
-	pqxx::nontransaction N(database_);
-	pqxx::result r(N.exec(request));
-
-	std::stringstream result;
-	for (pqxx::result::const_iterator c = r.begin(); c != r.end(); ++c) {
-//		std::cout << "ID_1 = " << c[0].as<int>() << std::endl;
-		result << "ID_1 = " << c[0].as<int>() << std::endl;
-//		std::cout << "ID_2 = " << c[1].as<int>() << std::endl;
-		result << "ID_2 = " << c[1].as<int>() << std::endl;
-	}
-	return result.str();
+FriendsDataBase::~FriendsDataBase() {
+	database_.close();
 }
+
 
 int FriendsDataBase::add_friend(int user_1, int user_2) {
 	std::vector<int> all_friends_user1 = get_all_friends(user_1);
