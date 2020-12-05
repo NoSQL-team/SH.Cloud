@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 								 "add\n"
 								 "\n"
 								 "{\n"
-								 "  \"user_1\": \"547\",\n"
+								 "  \"user_1\": \"5455\",\n"
 								 "  \"user_2\": \"555\"\n"
 								 "}";
 
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 								  "get_all\n"
 								  "\n"
 								  "{\n"
-								  "  \"user_1\": \"55\"\n"
+								  "  \"user_1\": \"555\"\n"
 								  "}";
 
 			std::string delete_user = "5\n"
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 									  "}";
 
 //					std::istream(&data_) >> requst;
-			boost::asio::write(sock, boost::asio::buffer(requst.c_str(), requst.size()));
+			boost::asio::write(sock, boost::asio::buffer(get_all.c_str(), get_all.size()));
 
 //			std::cout << data_ << std::endl;
 		}
