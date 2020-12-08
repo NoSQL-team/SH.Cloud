@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 	ip::tcp::socket sock(service);
 	sock.async_connect(ep, [&sock](const system::error_code& error) {
 		if (!error) {
-			std::string requst = "5\n"
+			std::string requst = "4\n"
 								 "0\n"
 								 "create/\n"
 								 "\n"
