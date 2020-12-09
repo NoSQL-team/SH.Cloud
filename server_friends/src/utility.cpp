@@ -5,7 +5,13 @@
 #include "utilty.h"
 #include <map>
 
+
+
 namespace tcp_network {
+
+
+	ParseJson::ParseJson() {
+	}
 
 	RequestDestination ParseJson::get_destination(std::string& request) {
 		std::string destination = request.substr(0, request.find('\n'));

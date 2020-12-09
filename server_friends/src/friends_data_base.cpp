@@ -33,7 +33,7 @@ int FriendsDataBase::add_friend(int user_1, int user_2) {
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
 	do_modifying_request(sql_request);
-	std::string sql_request_2 = form_sql_request(user_1, user_2);
+	std::string sql_request_2 = form_sql_request(user_2, user_1);
 	std::cout << sql_request_2 << std::endl;
 	do_modifying_request(sql_request_2);
 
