@@ -9,6 +9,10 @@
 #include "requst_handler.h"
 
 
+using namespace boost;
+using namespace boost::system;
+using namespace boost::asio;
+
 namespace tcp_network {
 
 	Session::Session(boost::asio::io_service& io_service, FriendsDataBase& database)

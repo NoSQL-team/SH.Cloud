@@ -13,15 +13,13 @@
 
 namespace tcp_network {
 
-	using namespace boost;
-	using namespace boost::system;
-	using namespace boost::asio;
+	constexpr uint16_t max_length = 2048;
 
 	class Session : public std::enable_shared_from_this<Session> {
 	public:
 		Session(boost::asio::io_service& io_service, FriendsDataBase& database);
 
-		ip::tcp::socket& socket();
+		boost::asio::ip::tcp::socket& socket();
 
 		void start(std::shared_ptr<Session> current_session);
 
@@ -30,7 +28,7 @@ namespace tcp_network {
 	private:
 		Destination define_location();
 
-		void handle_read(std::shared_ptr<Session> current_session, const system::error_code& error,
+		void handle_read(std::shared_ptr<Session> current_session, const boost::system::error_code& error,
 						 size_t bytes_transferred);
 
 		void handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error);
@@ -40,13 +38,10 @@ namespace tcp_network {
 				 {RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
 				 {RequestDestination::UNKNOWN, {"0.0.0.0", 0}},
 				 {RequestDestination::HTTP_SERV, {"127.0.0.1", 9999}}};
-		ip::tcp::socket socket_;
+		boost::asio::ip::tcp::socket socket_;
 		ParseJson parser_;
 		FriendsDataBase& database_;
 		boost::asio::io_service& io_service_;
-		enum {
-			max_length = 2048
-		};
 		char data_[max_length];
 	};
 

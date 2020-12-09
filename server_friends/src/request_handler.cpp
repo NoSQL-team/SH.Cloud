@@ -11,9 +11,9 @@ namespace tcp_network {
 
 	RequestHandler::RequestHandler(boost::asio::io_service& io_service, FriendsDataBase& database,
 								   std::shared_ptr<Session> session,
-								   std::map<std::string, std::string> request) :
+								   std::map<std::string, std::string>& request) :
 								io_service_(io_service), session_(std::move(session)), database_(database),
-								request_(std::move(request)) {}
+								request_(request) {}
 
 	void RequestHandler::handle_request() {
 		if (request_.count("type") && request_["type"] == "add") {

@@ -13,7 +13,7 @@
 class FriendsDataBase {
 public:
     // Конектится к базе данных, создается объет таблицы
-    FriendsDataBase();
+	explicit FriendsDataBase(std::map<std::string, std::string>& db_settings);
 
     ~FriendsDataBase();
 
@@ -25,11 +25,14 @@ public:
 
     bool is_friend(int user_1, int user_2);
 
-    bool is_opened();
+    bool is_opened() const;
 
 private:
     // Table friends_;
     pqxx::connection database_;
+
+	void do_modifying_request(const std::string& sql_request);
+	pqxx::result do_select_request(const std::string& sql_request);
 };
 
 #endif //NOSKOOL_FRIENDS_DATA_BASE_H

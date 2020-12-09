@@ -11,7 +11,10 @@ using namespace boost::asio;
 
 int main(int argc, char *argv[]) {
 	try {
-		tcp_network::Server s(8081);
+		std::map<std::string, std::string> db_settings = {{"dbname", "Friends"}, {"host", "localhost"},
+														  {"user", "andrewkireev"}, {"password", ""}};
+
+		tcp_network::Server s(8081, db_settings);
 
 	}
 	catch (std::exception &e) {

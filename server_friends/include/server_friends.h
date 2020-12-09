@@ -14,14 +14,9 @@
 
 namespace tcp_network {
 
-	using namespace boost;
-	using namespace boost::system;
-	using namespace boost::asio;
-
-
 	class Server {
 	public:
-		explicit Server(short port);
+		Server(short port, std::map<std::string, std::string>& db_settings);
 
 	private:
 		void start_accept();
@@ -30,7 +25,7 @@ namespace tcp_network {
 						   const boost::system::error_code &error);
 
 		boost::asio::io_service io_service_;
-		ip::tcp::acceptor acceptor_;
+		boost::asio::ip::tcp::acceptor acceptor_;
 		FriendsDataBase database_;
 	};
 

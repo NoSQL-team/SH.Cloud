@@ -6,10 +6,15 @@
 #include <memory>
 
 
+using namespace boost;
+using namespace boost::system;
+using namespace boost::asio;
+
+
 namespace tcp_network {
 
-	Server::Server(short port) : acceptor_(io_service_,
-										   ip::tcp::endpoint(ip::tcp::v4(), port)) {
+	Server::Server(short port, std::map<std::string, std::string>& db_settings) : acceptor_(io_service_,
+										   ip::tcp::endpoint(ip::tcp::v4(), port)), database_(db_settings) {
 		start_accept();
 		io_service_.run();
 	}

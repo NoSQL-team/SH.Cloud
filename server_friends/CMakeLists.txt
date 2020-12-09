@@ -31,8 +31,8 @@ set(SRC_DIR ${DIR}/src)
 set(TESTS_DIR ${DIR}/tests)
 
 include_directories("${GTEST_INCLUDE_DIRS}")
-include_directories(include/)
-include_directories(tests/)
+include_directories(${INC_DIR}/)
+include_directories(${TESTS_DIR}/)
 
 add_library(server_friends STATIC
         ${SRC_DIR}/utility.cpp

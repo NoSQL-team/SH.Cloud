@@ -17,13 +17,13 @@ int main(int argc, char **argv) {
 	ip::tcp::socket sock(service);
 	sock.async_connect(ep, [&sock](const system::error_code& error) {
 		if (!error) {
-			std::string requst = "5\n"
+			std::string add_friend = "5\n"
 								 "0\n"
 								 "add\n"
 								 "\n"
 								 "{\n"
-								 "  \"user_1\": \"5455\",\n"
-								 "  \"user_2\": \"555\"\n"
+								 "  \"user_1\": \"777\",\n"
+								 "  \"user_2\": \"888\"\n"
 								 "}";
 
 			std::string get_all = "5\n"
@@ -43,8 +43,17 @@ int main(int argc, char **argv) {
 									  "  \"user_2\": \"555\"\n"
 									  "}";
 
+			std::string is_friends = "5\n"
+									  "0\n"
+									  "is_friend\n"
+									  "\n"
+									  "{\n"
+									  "  \"user_1\": \"5455\",\n"
+									  "  \"user_2\": \"555\"\n"
+									  "}";
+
 //					std::istream(&data_) >> requst;
-			boost::asio::write(sock, boost::asio::buffer(get_all.c_str(), get_all.size()));
+			boost::asio::write(sock, boost::asio::buffer(add_friend.c_str(), add_friend.size()));
 
 //			std::cout << data_ << std::endl;
 		}
