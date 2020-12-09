@@ -1,24 +1,20 @@
 #include "auth-server.hpp"
 
-void Session::handleRequest(std::shared_ptr<Session> pThis)
-{
+void Session::start() {
+    auto self(shared_from_this());
     asio::async_read_until(
-        pThis->socket, 
-        pThis->buffer, 
+        _socket,
+        _buffer,
         '\r', 
-        [pThis](const error_code& e, std::size_t s)
+        _strand.wrap([this, self](const error_code& e, std::size_t s)
         {
-            std::ostream stream(&pThis->buffer);
-            std::string b = pThis->headers.getResponse(stream);
-            // создаём сокет для передачи ответа и пишем туды
-
-            ConnectionSend reaponseSoket;
-
-            asio::async_write(
-                pThis->socket,
-                boost::asio::buffer(b.c_str(), b.length()),
-                [](const error_code& e, std::size_t s) {} 
+            std::istream stream(&_buffer);
+            _responseBuffer = headers.getResponse(stream);
+            async_write(
+                _socket,
+                boost::asio::buffer(_responseBuffer.c_str(), _responseBuffer.length()),
+                [this, self](const error_code& e, std::size_t s) {}
             );
-        }
-    );
+        })
+    );  
 } 

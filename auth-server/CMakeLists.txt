@@ -13,12 +13,13 @@ set(CMAKE_CXX_FLAGS "-lpthread -lgtest -lpqxx -lpq")
 
 #======================================================================================
 
-find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex)
+find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex log_setup log)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
-set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+set(USED_LIBS ${Boost_LIBRARIES})
+add_definitions(-DBOOST_LOG_DYN_LINK)
 
 #======================================================================================
 
@@ -53,5 +54,5 @@ if(TESTS)
 
 else()
   add_executable(main main.cpp)
-  target_link_libraries(main libauth-server ${USED_LIBS})
+  target_link_libraries(main libauth-server ${USED_LIBS} -lboost_iostreams)
 endif()
