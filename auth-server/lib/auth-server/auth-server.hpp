@@ -53,7 +53,6 @@ protected:
 
     static DateBaseConnection* _objPtr;
     static std::mutex _mutex;
-    pqxx::connection* _db;
 
 public:
     DateBaseConnection(DateBaseConnection &other) = delete;
@@ -65,6 +64,8 @@ public:
         std::string user,
         std::string password
     );
+
+    pqxx::connection* _db;
 };
 
 class AuthServer
