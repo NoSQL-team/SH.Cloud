@@ -17,8 +17,10 @@ addons:
       - cppcheck
       - lcov
       - gcovr
-      - boost
-      - pqxx
+      - libboost-all-dev
+      - libpqxx-dev
+#      - boost
+#      - pqxx
 
 before_script:
   - sudo apt-get install -y libgtest-dev
