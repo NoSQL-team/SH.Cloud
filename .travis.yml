@@ -30,6 +30,7 @@ before_script:
   - cmake .
   - make
 
+
 script:
   - ./TESTS
   - valgrind --track-origins=yes --child-silent-after-fork=yes --leak-check=full ./TESTS
