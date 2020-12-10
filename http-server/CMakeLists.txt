@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13.4)
+cmake_minimum_required(VERSION 3.19.1)
 
 project(http-nosool)
 #======================================================================================
@@ -11,7 +11,7 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREAD ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "-lpthread -lgtest")
+set(CMAKE_CXX_FLAGS "-lpthread")
 
 #======================================================================================
 
