@@ -31,7 +31,7 @@ class RequestsHandler
 
     void parseHeaders(std::istream& stream);
     std::string readResponseFile(const std::string& staticPath);
-    std::string responseFormation(std::string body);
+    std::string responseFormation(const std::string& body);
     std::string getExt(const std::string& st);
     void setMIMEType(const std::string& st);
     std::string encodeSStream(std::stringstream& stream);
@@ -44,7 +44,7 @@ class RequestsHandler
 
 public:
     RequestsHandler() {};
-    std::string getResponse(std::istream& stream, std::map<std::string, std::string> staticPath);
+    std::string getResponse(std::istream& stream, const std::map<std::string, std::string>& staticPath);
 };
 
 class ResponsesHandler
