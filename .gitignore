@@ -31,6 +31,12 @@
 *.out
 *.app
 
-tmp/
-.vscode/
-googletest/
+=======
+#CLion
+.idea
+
+#MacOs
+.DS_Store
+
+#CMake
+cmake-build-debug/
