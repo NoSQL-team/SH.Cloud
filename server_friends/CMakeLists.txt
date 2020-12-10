@@ -13,7 +13,7 @@ find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
 
-find_package(Boost 1.74.0 REQUIRED COMPONENTS system thread regex)
+find_package(Boost REQUIRED COMPONENTS system thread regex)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     link_directories(${Boost_LIBRARY_DIRS})
