@@ -121,7 +121,7 @@ RequestWithBody parse_with_body(const string_group& args) {
 //try {
 //    dispatch("123 /posts/all/ {}");
 //} catch(boost::bad_lexical_cast &) {
-//    std::cout << "hui" << std::endl;
+//    std::cout << "some bad" << std::endl;
 //}
 
 #endif //SERVER_POSTS_UTILITY_PARSER_H
