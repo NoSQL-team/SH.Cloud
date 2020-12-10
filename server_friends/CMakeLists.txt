@@ -43,8 +43,10 @@ add_library(server_friends STATIC
 
 # Unit тесты
 add_executable(TESTS
-        tests/tests.cpp
-        ${TESTS_DIR}/mock_classes.h)
+        tests/tests.cpp)
+
+add_executable(TESTS_BD
+        tests/test_bd.cpp)
 
 # Server-friends
 add_executable(server_friends_test
@@ -68,11 +70,20 @@ target_link_libraries(bd_test ${USED_LIBS} server_friends)
 
 target_link_libraries(echo_server ${USED_LIBS})
 
+
+
 target_include_directories(TESTS PUBLIC ${INC_DIR})
 
 target_include_directories(TESTS PUBLIC ${TESTS_DIR})
 
 target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
+
+
+target_include_directories(TESTS_BD PUBLIC ${INC_DIR})
+
+target_include_directories(TESTS_BD PUBLIC ${TESTS_DIR})
+
+target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
 
 target_link_libraries(client ${USED_LIBS})
 

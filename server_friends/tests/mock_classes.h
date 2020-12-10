@@ -16,12 +16,14 @@
 class TestDataBase : public ::testing::Test {
 protected:
 	void SetUp() {
-		database_ = std::make_unique<FriendsDataBase>();
+		database_ = std::make_unique<FriendsDataBase>(db_settings);
 	}
 
 	void TearDown() {
 		database_.reset();
 	}
 	std::unique_ptr<FriendsDataBase> database_;
+	std::map<std::string, std::string> db_settings = {{"dbname", "Friends"}, {"host", "localhost"},
+													  {"user", "andrewkireev"}, {"password", ""}};
 };
 #endif //TESTS_MOCK_CLASSES_H

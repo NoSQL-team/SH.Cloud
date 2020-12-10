@@ -6,14 +6,12 @@
 #include "friends_data_base.h"
 
 int main(int argc, char **argv) {
+	std::map<std::string, std::string> db_settings = {{"dbname", "Friends"}, {"host", "localhost"},
+													  {"user", "andrewkireev"}, {"password", ""}};
 
-	FriendsDataBase database;
+	FriendsDataBase database(db_settings);
 
 	database.is_opened();
-
-	std::string request = "select * from friends";
-	std::cout << database.make_request(request) << std::endl;
-
 	database.add_friend(12, 13);
 	database.add_friend(12, 13);
 
@@ -27,6 +25,8 @@ int main(int argc, char **argv) {
 	database.delete_friend(12, 13);
 
 	database.is_friend(20, 13);
+
+
 
 	return 0;
 }
