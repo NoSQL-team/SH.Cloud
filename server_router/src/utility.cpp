@@ -9,8 +9,19 @@
 namespace tcp_network {
 
     RequestDestination ParseJson::get_destination(std::string& request) {
-        std::string destination = request.substr(0, request.find('\n'));
+		auto iter = request.find('\n');
+		request.erase(0, iter + 1);
+//		iter = request.find('\n');
+//		requsts.insert({"priority", request.substr(0, iter)});
+//		request.erase(0, iter + 1);
+
+		iter = request.find('\n');
+		std::string destination = request.substr(0, iter);
+		destination.erase(0, std::find(destination.begin() + destination.find('/')
+									  + 1, destination.end(), '/') - destination.begin() + 1);
+		destination.erase(destination.find('/'));
 //        std::cout << destination << std::endl;
+
         if (servers_adrs_.count(destination) == 0) {
         	std::cerr << "Несуществующй адрес" << std::endl;
 			return RequestDestination::UNKNOWN;
@@ -22,14 +33,18 @@ namespace tcp_network {
 		std::map<std::string, std::string> requsts;
 
 		auto iter = request.find('\n');
-		requsts.insert({"destination", request.substr(0, iter)});
-		request.erase(0, iter + 1);
-		iter = request.find('\n');
-		requsts.insert({"priority", request.substr(0, iter)});
-		request.erase(0, iter + 1);
-		iter = request.find('\n');
 		requsts.insert({"type", request.substr(0, iter)});
-		request.erase(0, iter + 2);
+		request.erase(0, iter + 1);
+//		iter = request.find('\n');
+//		requsts.insert({"priority", request.substr(0, iter)});
+//		request.erase(0, iter + 1);
+
+		iter = request.find('\n');
+		std::string desination = request.substr(0, iter);
+		desination.erase(0, std::find(desination.begin() + desination.find('/')
+		+ 1, desination.end(), '/') - desination.begin() + 1);
+		requsts.insert({"destination", desination.erase(desination.find('/'))});
+		request.erase(0, iter + 1);
 
 		std::stringstream ss(request);
 		boost::property_tree::ptree pt;

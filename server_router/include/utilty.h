@@ -42,8 +42,11 @@ namespace tcp_network {
 
 	private:
 		std::map<std::string, RequestDestination> servers_adrs_ =
-				{{"5", RequestDestination::POST_SERV},
-				 {"4", RequestDestination::FRIEND_SERV}};
+				{{"auth", RequestDestination::AUTH_SERV},
+				 {"post", RequestDestination::POST_SERV},
+				 {"users", RequestDestination::USER_SERV},
+				 {"friends", RequestDestination::FRIEND_SERV}
+				};
     };
 }
 

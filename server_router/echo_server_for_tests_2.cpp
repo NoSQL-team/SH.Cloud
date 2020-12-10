@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 		boost::asio::io_service io_service;
 
 		using namespace std; // For atoi.
-		server(io_service, 9998);
+		server(io_service, 9999);
 	}
 	catch (std::exception& e)
 	{

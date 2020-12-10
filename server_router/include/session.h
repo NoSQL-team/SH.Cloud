@@ -37,15 +37,15 @@ namespace tcp_network {
 		std::map<RequestDestination, Destination> servers_adrs_ =
 				{{RequestDestination::POST_SERV, {"127.0.0.1", 9999}},
 	 			{RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
-				 {RequestDestination::UNKNOWN, {"0.0.0.0", 0}}};
+				 {RequestDestination::USER_SERV, {"127.0.0.1", 8883}},
+				 {RequestDestination::AUTH_SERV, {"127.0.0.1", 8884}}
+				};
 		ip::tcp::socket socket_;
 		ParseJson parser_;
 		enum {
 			max_length = 5024
 		};
 		char data_[max_length];
-//		std::string data_;
-//		streambuf data_;
 	};
 
 }
