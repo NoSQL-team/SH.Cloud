@@ -39,7 +39,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -67,7 +67,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -95,7 +95,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -123,7 +123,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -151,7 +151,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -179,7 +179,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -217,7 +217,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -245,7 +245,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -273,7 +273,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -301,7 +301,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -329,7 +329,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>
@@ -357,7 +357,7 @@
 					<Add option="-DBOOST_THREAD_DYN_LINK"/>
 					<Add option="-DBOOST_ATOMIC_DYN_LINK"/>
 					<Add option="-DBOOST_REGEX_DYN_LINK"/>
-					<Add directory="/project/includes"/>
+					<Add directory="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes"/>
 					<Add directory="/usr/include/c++/9"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
 					<Add directory="/usr/include/c++/9/backward"/>

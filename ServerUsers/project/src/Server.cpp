@@ -2,39 +2,41 @@
 // Created by lerakry on 04.12.2020.
 //
 
-#include "../includes/Server.h"
-#include "../includes/Session.h"
+#include "Server.h"
+#include <memory>
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
 
 
-    Server::Server(boost::asio::io_service& io_service, short port)
-            : io_service_(io_service),
-              acceptor_(io_service,
+//    Server::Server(boost::asio::io_service& io_service, short port)
+//            : io_service_(io_service),
+//              acceptor_(io_service,
+//                        boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
+//    {
+//        std::cout << "constr" << std::endl;
+//        start_accept();
+//    }
+
+    Server::Server(short port) : acceptor_(io_service_,
                         boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
     {
         std::cout << "constr" << std::endl;
         start_accept();
+        io_service_.run();
     }
-
     void Server::start_accept()
     {
-//        Session* new_session = new Session(io_service_, data_base_);
-        Session* new_session = new Session(io_service_, data_base_);
+        std::shared_ptr<Session> new_session = std::make_shared<Session>(io_service_, data_base_);
 
         std::cout << "Обрабатываем1" << std::endl;
 
-//        acceptor_.accept();
-//
         acceptor_.async_accept(new_session->socket(),
                                boost::bind(&Server::handle_accept, this, new_session,
                                            boost::asio::placeholders::error));
-//        handle_accept(new_session, boost::system::error_code());
-
     }
 
-    void Server::handle_accept(Session* new_session,
+    void Server::handle_accept(std::shared_ptr<Session> new_session,
                        const boost::system::error_code& error)
     {
         if (!error)
@@ -44,7 +46,8 @@ using boost::asio::ip::tcp;
         }
         else
         {
-            delete new_session;
+            new_session.reset();
+
         }
 
         start_accept();

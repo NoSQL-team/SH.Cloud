@@ -18,11 +18,15 @@ set(SRC_DIR ${DIR}/project/src)
 
 set(TESTS_DIR ${DIR}/tests)
 
-include_directories(${INC_DIR}/)
+include_directories(project/includes/)
 
 add_library(ServerUsers STATIC project/src/Session.cpp project/src/HandlerUser.cpp
-        project/includes/Session.h project/src/Server.cpp project/includes/HandlerUser.h project/includes/UsersDatabase.h
+        project/includes/Session.h project/src/Server.cpp project/includes/HandlerUser.h
+        project/includes/UsersDatabase.h
         project/includes/Server.h project/src/UsersDatabase.cpp)
+
+
+target_link_directories(ServerUsers PUBLIC project/includes/)
 
 add_executable(test_parser main.cpp)
 
@@ -31,13 +35,14 @@ add_executable(echo_server echo_server.cpp)
 add_executable(test_server test_server.cpp)
 
 add_executable(client client.cpp)
-#target_include_directories(test_parser PUBLIC project/includes/UsersDatabase.h)
+target_include_directories(test_parser PUBLIC project/includes/)
 
 add_executable(test_db test_db.cpp)
 
 target_link_libraries(test_parser ${USED_LIBS} ServerUsers)
 
 target_link_libraries(test_server ${USED_LIBS} ServerUsers)
+
 
 target_link_libraries(ServerUsers ${USED_LIBS})
 

@@ -1,4 +1,4 @@
-#include <cstdlib>
+#include <string>
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/smart_ptr.hpp>
@@ -15,10 +15,11 @@ void session(socket_ptr sock)
 {
 	try
 	{
-		char data[max_length];
+	    std::string data;
+//		char data[max_length];
 
 		boost::system::error_code error;
-		size_t length = sock->read_some(boost::asio::buffer(data), error);
+//		size_t length = sock->read_some(boost::asio::buffer(data), error);
 		std::cout << data << std::endl;
 	}
 	catch (std::exception& e)

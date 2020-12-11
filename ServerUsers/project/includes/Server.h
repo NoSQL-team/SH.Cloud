@@ -5,27 +5,26 @@
 #ifndef SERVERUSERS_SERVER_H
 #define SERVERUSERS_SERVER_H
 
-#include <iostream>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
-#include "../includes/Session.h"
-#include "../includes/UsersDatabase.h"
+#include "Session.h"
+#include "UsersDatabase.h"
 
-using boost::asio::ip::tcp;
 
 class Server
 {
 public:
-    Server(boost::asio::io_service& io_service, short port);
+//    Server(boost::asio::io_service& io_service, short port);
+    explicit Server(short port);
 
 private:
     void start_accept();
 
-    void handle_accept(Session* new_session,
+    void handle_accept(std::shared_ptr<Session> new_session,
                        const boost::system::error_code& error);
 
-    boost::asio::io_service& io_service_;
-    tcp::acceptor acceptor_;
+    boost::asio::io_service io_service_;
+    boost::asio::ip::tcp::acceptor acceptor_;
     UsersDatabase data_base_;
 };
 

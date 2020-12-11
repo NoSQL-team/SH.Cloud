@@ -6,5 +6,5 @@ CXX_FLAGS = -lpqxx -lpq -g   -std=gnu++17
 
 CXX_DEFINES = -DBOOST_ALL_NO_LIB -DBOOST_ATOMIC_DYN_LINK -DBOOST_REGEX_DYN_LINK -DBOOST_SYSTEM_DYN_LINK -DBOOST_THREAD_DYN_LINK
 
-CXX_INCLUDES = -I/project/includes 
+CXX_INCLUDES = -I"/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/project/includes" 
 
