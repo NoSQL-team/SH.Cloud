@@ -13,15 +13,12 @@
 
 class UsersDatabase : public Database {
 public:
-//    UsersDatabase();
     ~UsersDatabase() override;
     int insert_(const std::map<std::string, std::string>& users_data) override;
     const std::string data_user(int id);
     const std::string all_users();
     int delete_(int id) override;
     int update_(const std::map<std::string, std::string>& data) override;
-//private:
-//    pqxx::connection data_base_;
 };
 
 #endif //SERVERUSERS_USERSDATABASE_H

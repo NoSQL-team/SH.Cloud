@@ -12,7 +12,7 @@
 class Database {
 public:
     Database() : database_("dbname=users host=localhost user=andrewkireev password=") {}
-    virtual ~Database() = 0;
+    virtual ~Database() {}
     virtual int insert_(const std::map<std::string, std::string>& users_data) = 0;
     virtual int delete_(int id) = 0;
     virtual int update_(const std::map<std::string, std::string>& data) = 0;

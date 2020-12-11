@@ -15,11 +15,10 @@ void session(socket_ptr sock)
 {
 	try
 	{
-	    std::string data;
-//		char data[max_length];
+		char data[max_length];
 
 		boost::system::error_code error;
-//		size_t length = sock->read_some(boost::asio::buffer(data), error);
+		size_t length = sock->read_some(boost::asio::buffer(data), error);
 		std::cout << data << std::endl;
 	}
 	catch (std::exception& e)

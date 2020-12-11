@@ -9,11 +9,7 @@
 
 using std::string;
 
-//    UsersDatabase::UsersDatabase() :
-//    data_base_("dbname=users host=localhost user=andrewkireev password=")  {}
-    UsersDatabase::~UsersDatabase() {
-//        data_base_.disconnect();
-    }
+    UsersDatabase::~UsersDatabase() {}
 
     int UsersDatabase::insert_(const std::map<string, string>& users_data) {
         string sql_request("INSERT INTO users VALUES(");
