@@ -59,9 +59,10 @@ void HandlerUser::handle_request(string& request) {
     }
 }
 
-void HandlerUser::create_user(std::map<string, string>& data_user, int number_request) {
+void HandlerUser::create_user(const std::map<string, string>& data_user, int number_request) {
     try {
-        int result = data_base_.insert_user(data_user);
+    	std::cout << "create_request" << std::endl;
+        int result = data_base_.insert_(data_user);
         string str_result = std::to_string(number_request) + "\n";
         if (result == 200) {
             str_result += "{\n \"response\": \"success create user\"\n}";
@@ -111,7 +112,7 @@ void HandlerUser::all_users(int number_request) {
 
 void HandlerUser::delete_user(int id, int number_request) {
     try {
-        int result = data_base_.delete_user(id);
+        int result = data_base_.delete_(id);
         string str_result = std::to_string(number_request) + "\n";
         if (result == 200) {
             str_result += "{\n \"response\": \"success delete user\"\n}";
@@ -126,9 +127,9 @@ void HandlerUser::delete_user(int id, int number_request) {
 }
 
 
-void HandlerUser::change_user_data(std::map<string, string>& user_data, int number_request) {
+void HandlerUser::change_user_data(const std::map<string, string>& user_data, int number_request) {
     try {
-        int result = data_base_.update_data(user_data);
+        int result = data_base_.update_(user_data);
         string str_result = std::to_string(number_request) + "\n";
         if (result == 200) {
             str_result += "{\n \"response\": \"success update user\"\n}";

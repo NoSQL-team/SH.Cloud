@@ -21,11 +21,11 @@ public:
     ~HandlerUser() {}
     static std::map<std::string, std::string> parser_json(std::stringstream& request);
     void handle_request(std::string& request);
-    void create_user(std::map<std::string, std::string>& data_user, int number_request);
+    void create_user(const std::map<std::string, std::string>& data_user, int number_request);
     void data_user(int id, int number_request);
     void all_users(int number_request);
     void delete_user(int id, int number_request);
-    void change_user_data(std::map<std::string, std::string>& user_data, int number_request);
+    void change_user_data(const std::map<std::string, std::string>& user_data, int number_request);
 
 private:
     Session& session_;

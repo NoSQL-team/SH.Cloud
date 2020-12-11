@@ -10,7 +10,7 @@
 #include <boost/asio.hpp>
 #include "UsersDatabase.h"
 
-class Session
+class Session : public std::enable_shared_from_this<Session>
 {
 public:
     Session(boost::asio::io_service& io_service, UsersDatabase& data_base)
@@ -24,14 +24,15 @@ public:
     void start();
 
 private:
-    void handle_read(const boost::system::error_code& error);
+	void handle_read(std::shared_ptr<Session> session,
+						   const boost::system::error_code& error);
 
 
     boost::asio::io_service& io_service_;
     boost::asio::ip::tcp::socket socket_;
-//    enum { max_length = 1024 };
-//    char data_[max_length];
-    std::string data_;
+    int max_length = 1024;
+    char data_[1024];
+//    std::string data_;
     UsersDatabase& data_base_;
 };
 

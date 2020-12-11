@@ -102,11 +102,16 @@ test_server: CMakeFiles/test_server.dir/build.make
 test_server: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
 test_server: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
 test_server: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+test_server: /usr/lib/x86_64-linux-gnu/libboost_log.so.1.71.0
 test_server: libServerUsers.a
 test_server: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+test_server: /usr/lib/x86_64-linux-gnu/libboost_log.so.1.71.0
 test_server: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
-test_server: /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.71.0
 test_server: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+test_server: /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.71.0
+test_server: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
+test_server: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+test_server: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
 test_server: CMakeFiles/test_server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/lerakrya/Загрузки/Telegram Desktop/ServerUsers/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test_server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_server.dir/link.txt --verbose=$(VERBOSE)

@@ -4,12 +4,12 @@ project(ServerUsers)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-lpqxx -lpq")
 
-find_package(Boost 1.65.1 REQUIRED COMPONENTS system thread regex)
+find_package(Boost REQUIRED COMPONENTS system thread regex log)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
-set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 
 
 set(INC_DIR ${DIR}/project/includes)

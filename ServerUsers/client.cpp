@@ -11,8 +11,8 @@ int main() {
     tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 8082);
     tcp::socket socket(service);
     socket.async_connect(end, [&socket] (const boost::system::error_code& err) {
-        std::string requst = "5\n0\ndelete\n{\n"
-							 "  \"id\": 15,\n"
+        std::string requst = "5\ncreate\n{\n"
+							 "  \"id\": 235,\n"
 							 "  \"firstname\": \"antoha\",\n"
 							 "  \"lastname\": \"guseerva\",\n"
 							 "  \"nickname\": \"lerafdskrya\",\n"
