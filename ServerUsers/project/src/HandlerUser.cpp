@@ -27,7 +27,7 @@ std::map<string, string> HandlerUser::parser_json(std::stringstream& request) {
         return {};
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.13 " << e.what();
     }
 }
 void HandlerUser::handle_request(string& request) {
@@ -72,7 +72,7 @@ void HandlerUser::create_user(const std::map<string, string>& data_user, int num
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.62 " << e.what();
     }
 }
 
@@ -89,7 +89,7 @@ void HandlerUser::data_user(int id, int number_request) {
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp data_user c.79 " << e.what();
     }
 }
 
@@ -106,7 +106,7 @@ void HandlerUser::all_users(int number_request) {
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp all_users c.96 " << e.what();
     }
 }
 
@@ -122,7 +122,7 @@ void HandlerUser::delete_user(int id, int number_request) {
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp delete_user c.113 " << e.what();
     }
 }
 
@@ -139,7 +139,7 @@ void HandlerUser::change_user_data(const std::map<string, string>& user_data, in
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp change_user_data c.130 " << e.what();
     }
 }
 
