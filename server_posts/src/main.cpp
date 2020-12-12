@@ -17,11 +17,15 @@
 int main() {
 
     io::io_context io_context;
-    TCPServer server(io_context, 2347);  // boost::lexical_cast<std::uint16_t>(argv[1])
+    TCPServer server(io_context, 2348);  // boost::lexical_cast<std::uint16_t>(argv[1])
     server.add_endpoint();
     io_context.run();
 
     return 0;
 }
+
+// "123 /posts/upd/?user_id=3&post_id=7"
+// "123 /posts/all/"
+// "123 /posts/upd/?user_id=3&post_id=7 {\"post_id\":0,\"user_id\":0,\"creation_date\":\"2016-08-29T09:12:33.001Z\",\"title\":\"string\",\"text\":\"string\",\"attach\":\"string\"}"
 
 

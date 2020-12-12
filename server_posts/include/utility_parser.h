@@ -17,7 +17,7 @@ public:
             std::string id_request,
             std::string command,
             std::map<std::string, size_t> args,
-            Post body) :
+            std::string body) :
             id_request(std::move(id_request)),
             command(std::move(command)),
             args(std::move(args)),
@@ -26,7 +26,7 @@ public:
     std::string id_request;
     std::string command;
     std::map<std::string, size_t> args;
-    Post body;
+    std::string body;
 };
 
 class RequestWithoutBody {
@@ -111,17 +111,35 @@ RequestWithBody parse_with_body(const string_group& args) {
         std::string query_string = url_param[1];
         parameters = get_url_parameters(split(query_string, "=&"));
     }
-    return RequestWithBody(id_request, command, parameters, parse_body(body_request));
+    return RequestWithBody(id_request, command, parameters, body_request);
 }
 
-// "123 /posts/upd/?user_id=3&post_id=7"
-// "123 /posts/all/"
-// "123 /posts/upd/?user_id=3&post_id=7 {\"post_id\":0,\"user_id\":0,\"creation_date\":\"2016-08-29T09:12:33.001Z\",\"title\":\"string\",\"text\":\"string\",\"attach\":\"string\"}"
-
+std::string vec_posts_to_str(std::vector<Post>& vec_posts) {
+    std::string res = "";
+    for (const auto& i : vec_posts) {
+        boost::format parsed_body =
+                (boost::format(
+                        "post_id: %1%,\n"
+                        " creator_id: %2%,\n"
+                        " creation_date: %3%,\n"
+                        " title: %4%,\n"
+                        " text: %5%,\n"
+                        " attach: %6%\n\n")
+                 %i.post_id
+                 %i.creator_id
+                 %i.creation_date
+                 %i.title
+                 %i.text
+                 %i.attach);
+        std::string body_str = boost::str(parsed_body);
+        res += body_str;
+    }
+    return res;
+}
 //try {
 //    dispatch("123 /posts/all/ {}");
 //} catch(boost::bad_lexical_cast &) {
-//    std::cout << "some bad" << std::endl;
+//    std::cout << "hui" << std::endl;
 //}
 
 #endif //SERVER_POSTS_UTILITY_PARSER_H

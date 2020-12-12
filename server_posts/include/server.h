@@ -31,13 +31,20 @@ public:
 
 
     void add_endpoint() {
-        dispatcher.emplace("/posts/fuser/", dispatcher_entry{1, false, for_user});
-        dispatcher.emplace("/posts/all/", dispatcher_entry{0, false, all_posts});
-        dispatcher.emplace("/posts/user/", dispatcher_entry{1, false, user_posts});
-        dispatcher.emplace("/posts/post/", dispatcher_entry{1, false, one_post});
-        dispatcher.emplace("/posts/dlt/", dispatcher_entry{2, false, delete_post});
-        dispatcher.emplace("/posts/create/", dispatcher_entry{1, true, create_post});
-        dispatcher.emplace("/posts/update/", dispatcher_entry{2, true, update_post});
+        dispatcher.emplace("/posts/fuser/", dispatcher_entry{1, for_user});
+        dispatcher.emplace("/posts/all/", dispatcher_entry{0, all_posts});
+        dispatcher.emplace("/posts/user/", dispatcher_entry{1, user_posts});
+        dispatcher.emplace("/posts/post/", dispatcher_entry{1, one_post});
+        dispatcher.emplace("/posts/dlt/", dispatcher_entry{2, delete_post});
+        // ендпоинты требующие боди
+        dispatcher_with_body.emplace(
+                                    "/posts/create/",
+                                     dispatcher_entry_with_body{1, create_post}
+                                     );
+        dispatcher_with_body.emplace(
+                                    "/posts/upd/",
+                                    dispatcher_entry_with_body{2, update_post}
+                                     );
     }
 
 private:
@@ -46,7 +53,7 @@ private:
         socket.emplace(io_context);
 
         acceptor.async_accept(*socket, [&] (error_code error) {
-            std::make_shared<Session>(std::move(*socket), dispatcher)->Session::start();
+            std::make_shared<Session>(std::move(*socket), dispatcher, dispatcher_with_body)->Session::start();
             accept();
         });
     }
@@ -54,6 +61,7 @@ private:
     tcp::acceptor acceptor;
     std::optional<tcp::socket> socket;
     dispatcher_type dispatcher;  // map обработчиков команд описан в types.hpp
+    dispatcher_type_with_body dispatcher_with_body;
 };
 
 

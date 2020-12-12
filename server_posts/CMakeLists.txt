@@ -5,8 +5,12 @@ set(CMAKE_CXX_STANDARD 20)
 # set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib")
 set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib -lpqxx -lpq")
 
+
+#find_package(PQXX)
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
+
+
 
 
 find_package(Boost)

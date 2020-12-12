@@ -9,6 +9,7 @@
 #include <pqxx/pqxx>
 #include <map>
 #include <iostream>
+#include <boost/format.hpp>
 
 
 #include "../include/post.h"
@@ -41,6 +42,8 @@ public:
 private:
     // Table Posts_;
     pqxx::connection database_;
+    void do_modifying_request(const std::string& sql_request);
+    pqxx::result do_select_request(const std::string& sql_request);
 };
 
 #endif //POSTS_DATABASE_H

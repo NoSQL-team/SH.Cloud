@@ -6,12 +6,15 @@
 class Session : public std::enable_shared_from_this<Session> {
 public:
 
-    Session(tcp::socket&& socket, dispatcher_type const& dispatcher)
+    Session(tcp::socket&& socket,
+            dispatcher_type const& dispatcher,
+            dispatcher_type_with_body const& dispatcher_with_body)
     : socket    (std::move(socket))
-    , dispatcher(dispatcher){}
+    , dispatcher(dispatcher)
+    , dispatcher_with_body(dispatcher_with_body) {}
 
     void start() {
-        //write("POSTS server is ready to serve");
+        write("POSTS server is ready to serve");
         write();
         read();
     }
@@ -59,7 +62,6 @@ private:
     void on_write(error_code error, std::size_t bytes_transferred) {
         if(!error) {
             outgoing.pop();
-
             if(!outgoing.empty()) {
                 write();
             }
@@ -78,7 +80,7 @@ private:
                 RequestWithoutBody result = parse_without_body(parameters_request);
                 if(auto it = dispatcher.find(result.command); it != dispatcher.cend()) {  // поиск хендлера
                     auto const& entry = it->second;
-                    if(entry.args == result.args.size() && entry.body_required == false) {
+                    if(entry.args == result.args.size()) {
                         try {
                             response << entry.handler(result.id_request, result.args);  // вызов хендлера
                         } catch(std::exception const& e) {
@@ -97,11 +99,11 @@ private:
         } else if (parameters_request.size() == 3) {  // боди есть
             try {
                 RequestWithBody result = parse_with_body(parameters_request);
-                if(auto it = dispatcher.find(result.command); it != dispatcher.cend()) {  // поиск хендлера
+                if(auto it = dispatcher_with_body.find(result.command); it != dispatcher_with_body.cend()) {  // поиск хендлера
                     auto const& entry = it->second;
-                    if(entry.args == result.args.size() && entry.body_required == true) {
+                    if(entry.args == result.args.size()) {
                         try {
-                            response << entry.handler(result.id_request, result.args);  // вызов хендлера
+                            response << entry.handler(result.id_request, result.args, result.body);  // вызов хендлера
                         } catch(std::exception const& e) {
                             response << "404";
                         }
@@ -134,8 +136,11 @@ private:
     tcp::socket socket;
     // сохраняем диспетчер внутри объекта сервера и передаем ссылку на него в сеанс
     dispatcher_type const& dispatcher;
+    dispatcher_type_with_body const& dispatcher_with_body;
     io::streambuf incoming;
     std::queue<std::string> outgoing;
 };
+
+
 
 
