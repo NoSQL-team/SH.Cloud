@@ -2,9 +2,13 @@
 #define AUTH_SERVER_NOSOOL
 
 #include <boost/asio.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 #include <string>
 #include <iostream>
 #include <vector>
+#include <tuple>
+
 #include <pqxx/pqxx>
 
 using namespace boost;
@@ -13,6 +17,23 @@ using namespace boost::asio;
 
 class RequestsHandler
 {
+    std::string _type;
+    boost::property_tree::ptree _ptRequest;
+    boost::property_tree::ptree _ptResponse;
+
+    //Так как таблица одна незачем делаеть ещё один класс, как модель пользователя или т. п.
+    std::string _userId;
+    std::string _userPassword;
+    std::string _userName;
+    std::string _refreshToken;
+    std::string _accessToken;
+
+    std::string isAuth();
+    std::string auth();
+
+    void logError(const std::string& log);
+    void log(const std::string& log);
+    std::string errorAnswer(const std::string& error);
 public:
     RequestsHandler() {};
     std::string getResponse(std::istream& stream);
@@ -63,6 +84,16 @@ public:
         std::string host,
         std::string user,
         std::string password
+    );
+    pqxx::result select(
+        const std::string& table,
+        const std::vector<std::string>& columns,
+        const std::vector<std::tuple<std::string, std::string, std::string>>& where={}
+    );
+    pqxx::result update(
+        const std::string& table,
+        const std::vector<std::tuple<std::string, std::string, std::string>>& columnValue,
+        const std::vector<std::tuple<std::string, std::string, std::string>>& where
     );
 
     pqxx::connection* _db;

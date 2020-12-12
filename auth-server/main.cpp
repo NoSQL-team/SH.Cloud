@@ -12,7 +12,7 @@ using namespace boost::asio;
 void runServer() 
 {
     boost::asio::io_service io_service_;
-    AuthServer server(io_service_, 9994);
+    AuthServer server(io_service_, 9992);
 
     boost::thread_group tgroup;
     unsigned corenumber = boost::thread::hardware_concurrency();

@@ -30,6 +30,12 @@ add_library(libauth-server STATIC
   lib/auth-server/data-base-connection.cpp
 )
 
+#======================================================================================
+
+find_package(cpp-jwt REQUIRED)
+
+#======================================================================================
+
 if(TESTS)
   find_package(GTest REQUIRED)
   find_package(Threads REQUIRED)
