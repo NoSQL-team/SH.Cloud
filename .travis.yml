@@ -27,7 +27,7 @@ before_script:
   - cd /usr/src/gtest
   - sudo cmake CMakeLists.txt && sudo make
   - sudo cp *.a /usr/lib
-  - apt-get install postgresql-12
+  - sudo apt-get install postgresql-12
   - wget https://github.com/jtv/libpqxx/archive/7.2.1.tar.gz
   - tar -zxvf 7.2.1.tar.gz
   - ls
