@@ -31,6 +31,8 @@ before_script:
   - cd ..
   - cmake .
   - make
+  - apt-get install postgresql-12
+  - apt-get install -y libpqxx-dev
 
 
 script:
