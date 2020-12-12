@@ -30,6 +30,8 @@ class RequestsHandler
 
     std::string isAuth();
     std::string auth();
+    std::string logout();
+    std::string add();
 
     void logError(const std::string& log);
     void log(const std::string& log);

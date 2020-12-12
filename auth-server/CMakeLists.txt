@@ -32,7 +32,8 @@ add_library(libauth-server STATIC
 
 #======================================================================================
 
-find_package(cpp-jwt REQUIRED)
+add_subdirectory(ex_lib/jwt-cpp)
+include_directories(ex_lib/jwt-cpp/include)
 
 #======================================================================================
 
@@ -60,5 +61,5 @@ if(TESTS)
 
 else()
   add_executable(main main.cpp)
-  target_link_libraries(main libauth-server ${USED_LIBS} -lboost_iostreams)
+  target_link_libraries(main jwt-cpp::jwt-cpp libauth-server ${USED_LIBS} -lboost_iostreams)
 endif()

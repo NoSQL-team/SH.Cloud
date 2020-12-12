@@ -100,8 +100,6 @@ pqxx::result DateBaseConnection::update(
         request << '\0';
     }
 
-    std::cout << request.str() << std::endl;
-
     pqxx::result r = w.exec(request.str());
     w.commit();
     return r;
