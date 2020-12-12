@@ -21,4 +21,4 @@ RUN cd /app/src/ && mkdir tmp && cd tmp && cmake .. && make
 
 ADD ./lib/http-server/noskoolHTTP.ini /
 
-ENTRYPOINT /app/src/tmp/main
+CMD ["/bin/sh", "-c", "/app/src/tmp/main >&1"]

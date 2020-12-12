@@ -11,6 +11,7 @@
 #include <chrono>
 #include <fstream>
 #include <thread>
+#include <iostream>
 
 #include "http-server.hpp"
 
@@ -168,11 +169,13 @@ std::string RequestsHandler::readResponseFile(const std::string& staticPath)
 void RequestsHandler::logRequest()
 {
     BOOST_LOG_TRIVIAL(info) << _method << " " << _url << " " << _responseFirstStr;
+    std::cout << " " << std::endl;
 }
 
 void RequestsHandler::logRequestOur()
 {
     BOOST_LOG_TRIVIAL(info) << "Our server: " << _number;
+    std::cout << " " << std::endl;
 }
 
 void RequestsHandler::setFirstHeader()

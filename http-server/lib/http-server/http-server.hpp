@@ -72,8 +72,8 @@ protected:
     Requester():
     _ep(ip::address::from_string("127.0.0.1"), 8080),
     _sock(_requesterService) {
-        // _sock.connect(_ep);
-        // _requesterService.run();
+        _sock.connect(_ep);
+        _requesterService.run();
     }
     static Requester* _objPtr;
     static std::mutex _requesterMutex;
