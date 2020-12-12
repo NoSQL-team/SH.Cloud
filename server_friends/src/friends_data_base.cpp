@@ -5,15 +5,15 @@
 #include <algorithm>
 #include "friends_data_base.h"
 
-
-
-FriendsDataBase::FriendsDataBase(std::map<std::string, std::string>& db_settings) {
+DataBase::DataBase(std::map<std::string, std::string> &db_settings) {
 	database_ = pqxx::connection("dbname=" + db_settings["dbname"] +
-			" host=" + db_settings["host"] +" user=" + db_settings["user"] +
-			" password=" + db_settings["password"]);
+								 " host=" + db_settings["host"] +" user=" + db_settings["user"] +
+								 " password=" + db_settings["password"]);
 }
 
-FriendsDataBase::~FriendsDataBase() {
+FriendsDataBase::FriendsDataBase(std::map<std::string, std::string>& db_settings) : DataBase(db_settings){ }
+
+DataBase::~DataBase() {
 	database_.close();
 }
 
@@ -90,7 +90,7 @@ int FriendsDataBase::delete_friend(int user_1, int user_2) {
 	return 1;
 }
 
-bool FriendsDataBase::is_opened() const {
+bool DataBase::is_opened() const {
 	if (database_.is_open()) {
 		std::cout << "Соединение с бд открыто" << std::endl;
 		return true;

@@ -10,12 +10,21 @@
 #include <map>
 #include <iostream>
 
-class FriendsDataBase {
+class DataBase {
 public:
-    // Конектится к базе данных, создается объет таблицы
-	explicit FriendsDataBase(std::map<std::string, std::string>& db_settings);
+	explicit DataBase(std::map<std::string, std::string>& db_settings);
 
-    ~FriendsDataBase();
+	virtual ~DataBase();
+
+	[[nodiscard]] virtual bool is_opened() const;
+
+protected:
+	pqxx::connection database_;
+};
+
+class FriendsDataBase final : public DataBase{
+public:
+	explicit FriendsDataBase(std::map<std::string, std::string>& db_settings);
 
     int add_friend(int user_1, int user_2);
 
@@ -25,12 +34,7 @@ public:
 
     bool is_friend(int user_1, int user_2);
 
-    bool is_opened() const;
-
 private:
-    // Table friends_;
-    pqxx::connection database_;
-
 	void do_modifying_request(const std::string& sql_request);
 	pqxx::result do_select_request(const std::string& sql_request);
 };
