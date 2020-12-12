@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <memory>
+#include <boost/log/trivial.hpp>
 #include "requst_handler.h"
 
 
@@ -38,7 +39,7 @@ namespace tcp_network {
 			Destination destination = servers_adrs_.at(test);
 			return destination;
 		} catch (std::out_of_range& e) {
-			std::cerr << e.what() << std::endl;
+			BOOST_LOG_TRIVIAL(error) << "error parsing destination " << e.what();
 			return {0, 0};
 		}
 	}
@@ -57,6 +58,7 @@ namespace tcp_network {
 //			});
 
 		} else {
+			BOOST_LOG_TRIVIAL(error) << error.message();
 			current_session.reset();
 		}
 	}
@@ -70,22 +72,10 @@ namespace tcp_network {
 		sock.async_connect(ep, [&sock, this, &respones](const system::error_code& error) {
 			if (!error) {
 				boost::asio::write(sock, boost::asio::buffer(respones));
-//					std::cout << data_ << std::endl;
+			} else {
+				BOOST_LOG_TRIVIAL(error) << error.message();
 			}
 		});
 		service.run();
 	}
-
-	void Session::handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error) {
-		if (!error) {
-			std::cout << std::string(data_);
-			socket_.async_read_some(boost::asio::buffer(data_, max_length),
-									boost::bind(&Session::handle_read, this, current_session,
-												boost::asio::placeholders::error,
-												boost::asio::placeholders::bytes_transferred));
-		} else {
-			current_session.reset();
-		}
-	}
-
 }

@@ -27,7 +27,6 @@ namespace tcp_network {
 		boost::asio::io_service io_service_;
 		boost::asio::ip::tcp::acceptor acceptor_;
 		FriendsDataBase database_;
-//		src::logger lg;
 	};
 
 }

@@ -31,9 +31,7 @@ namespace tcp_network {
 		void handle_read(std::shared_ptr<Session> current_session, const boost::system::error_code& error,
 						 size_t bytes_transferred);
 
-		void handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error);
-
-		std::map<RequestDestination, Destination> servers_adrs_ =
+		constexpr std::map<RequestDestination, Destination> servers_adrs_ =
 				{{RequestDestination::POST_SERV, {"127.0.0.1", 9999}},
 				 {RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
 				 {RequestDestination::UNKNOWN, {"0.0.0.0", 0}},
