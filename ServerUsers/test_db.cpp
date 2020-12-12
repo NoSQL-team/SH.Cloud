@@ -1,9 +1,13 @@
 //
-// Created by Andrew Kireev on 10.12.2020.
+// Created by lerakry on 10.12.2020.
 //
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include "UsersDatabase.h"
+#include "HandlerUser.h"
 
-#include "project/includes/UsersDatabase.h"
-#include "project/includes/HandlerUser.h"
+using boost::property_tree::ptree;
+using std::string;
 
 
 std::map<string, string> parser_json(std::stringstream& request) {
@@ -39,7 +43,7 @@ int main() {
 
 	auto m = parser_json(stream);
 
-	std::cout << db.delete_user(5) << std::endl;
+	std::cout << db.delete_(5) << std::endl;
 
 	return 0;
 }

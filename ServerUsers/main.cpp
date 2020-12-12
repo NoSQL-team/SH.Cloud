@@ -1,11 +1,9 @@
 
 #include <iostream>
-#include <boost/asio.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-//#include "UsersDatabase.h"
-#include "/home/lerakrya/Документы/GitHub/noskool-server_users/ServerUsers/project/includes/UsersDatabase.h"
-//#include <pqxx/pqxx>
+#include <boost/asio.hpp>
+#include "UsersDatabase.h"
 
 using boost::asio::ip::tcp;
 using std::string;
