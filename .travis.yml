@@ -27,15 +27,15 @@ before_script:
   - cd /usr/src/gtest
   - sudo cmake CMakeLists.txt && sudo make
   - sudo cp *.a /usr/lib
-  - cd "${TRAVIS_BUILD_DIR}"/server_friends/tests
-  - cd ..
-  - cmake .
-  - make
   - apt-get install postgresql-12
   - wget https://github.com/jtv/libpqxx/archive/7.2.1.tar.gz
   - tar -zxvf 7.2.1.tar.gz
   - ls
   - cd libpqxx && cmake . && make && make install
+  - cd "${TRAVIS_BUILD_DIR}"/server_friends/tests
+  - cd ..
+  - cmake .
+  - make
 #  - apt-get install -y libpqxx-dev
 
 
