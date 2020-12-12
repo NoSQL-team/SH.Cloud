@@ -22,16 +22,16 @@ class RequestsHandler
     boost::property_tree::ptree _ptResponse;
 
     //Так как таблица одна незачем делаеть ещё один класс, как модель пользователя или т. п.
-    std::string _userId;
     std::string _userPassword;
     std::string _userName;
     std::string _refreshToken;
     std::string _accessToken;
 
-    std::string isAuth();
+    std::string authRequest();
     std::string auth();
     std::string logout();
     std::string add();
+    std::string refresh();
 
     void logError(const std::string& log);
     void log(const std::string& log);
@@ -96,6 +96,10 @@ public:
         const std::string& table,
         const std::vector<std::tuple<std::string, std::string, std::string>>& columnValue,
         const std::vector<std::tuple<std::string, std::string, std::string>>& where
+    );
+    pqxx::result insert(
+        const std::string& table,
+        const std::vector<std::tuple<std::string, std::string, std::string>>& columnsValue
     );
 
     pqxx::connection* _db;

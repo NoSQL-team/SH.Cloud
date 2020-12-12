@@ -104,3 +104,34 @@ pqxx::result DateBaseConnection::update(
     w.commit();
     return r;
 }
+
+pqxx::result DateBaseConnection::insert(
+    const std::string& table,
+    const std::vector<std::tuple<std::string, std::string, std::string>>& columnsValue
+) {
+    std::lock_guard<std::mutex> lock(_mutex);
+    pqxx::work w(*_db);
+    std::stringstream request;
+
+    request << "INSERT INTO " << table << " (";
+    for (const auto& columnValue : columnsValue) {
+        request << get<0>(columnValue) << ", ";
+    }
+    request.seekp(-2, std::ios_base::end);
+    request << '\0' << ") VALUES (";
+    for (const auto& columnValue : columnsValue) {
+        request <<
+            (get<2>(columnValue) == "number" ? "" : "\'") <<
+            get<1>(columnValue) <<
+            (get<2>(columnValue) == "number" ? "" : "\'") <<
+            ", ";
+    }
+    request.seekp(-2, std::ios_base::end);
+    request << '\0' << ")";
+
+    std::cout << request.str() << std::endl;
+
+    pqxx::result r = w.exec(request.str());
+    w.commit();
+    return r;
+}
