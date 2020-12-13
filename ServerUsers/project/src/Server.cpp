@@ -25,6 +25,7 @@ using boost::asio::ip::tcp;
         start_accept();
         io_service_.run();
     }
+
     void Server::start_accept()
     {
         std::shared_ptr<Session> new_session = std::make_shared<Session>(io_service_, data_base_);

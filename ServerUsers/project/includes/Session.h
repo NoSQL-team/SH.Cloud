@@ -19,7 +19,7 @@ public:
 
     boost::asio::ip::tcp::socket& socket();
 
-    void send_answer(std::string answer);
+    void send_answer(std::string& answer);
 
     void start();
 
