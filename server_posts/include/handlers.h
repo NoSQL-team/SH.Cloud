@@ -9,7 +9,10 @@
 #include "database.h"
 #include "../include/utility_parser.h"
 
+class Handlers {
 
+public:S
+Handlers() : _db() {};
 
 std::string for_user(const std::string& id_request, const std::map<std::string, size_t>& args) {
     // TODO: реализовать работу с БД
@@ -22,7 +25,7 @@ std::string all_posts(const std::string& id_request, const std::map<std::string,
     // TODO: реализовать работу с БД
     std::string result = "id_request: " + id_request + " all posts\n";
 
-    std::vector<Post> vec_posts = db.get_all_posts();
+    std::vector<Post> vec_posts = _db.get_all_posts();
     std::string posts = vec_posts_to_str(vec_posts);
     return result + posts;
 }
@@ -105,5 +108,10 @@ std::string update_post(std::string const& id_request,
                         + "\n" + body_str;;
     return result;
 }
+
+private:
+    PostsDataBase _db;
+
+};
 
 #endif //POSTS_HANDLERS_H

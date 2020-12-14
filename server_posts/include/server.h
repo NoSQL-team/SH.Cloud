@@ -18,33 +18,64 @@
 
 #include "../include/session.h"
 #include "../include/handlers.h"
+#include "database.h"
 
 class TCPServer {
+
 public:
 
     TCPServer(io::io_context& io_context, std::uint16_t port)
             : io_context(io_context)
-            , acceptor  (io_context, tcp::endpoint(tcp::v4(), port)) {
+            , acceptor  (io_context, tcp::endpoint(tcp::v4(), port)),
+              hand() {
 
         accept();
     }
 
 
     void add_endpoint() {
-        dispatcher.emplace("/posts/fuser/", dispatcher_entry{1, for_user});
-        dispatcher.emplace("/posts/all/", dispatcher_entry{0, all_posts});
-        dispatcher.emplace("/posts/user/", dispatcher_entry{1, user_posts});
-        dispatcher.emplace("/posts/post/", dispatcher_entry{1, one_post});
-        dispatcher.emplace("/posts/dlt/", dispatcher_entry{2, delete_post});
+        dispatcher.emplace("/posts/fuser/", dispatcher_entry{1, std::bind(&Handlers::for_user,
+                                                                          hand,
+                                                                          std::placeholders::_1,
+                                                                          std::placeholders::_2
+        )});
+        dispatcher.emplace("/posts/all/", dispatcher_entry{0,  std::bind(&Handlers::all_posts,
+                                                                         hand,
+                                                                         std::placeholders::_1,
+                                                                         std::placeholders::_2
+        )});
+        dispatcher.emplace("/posts/user/", dispatcher_entry{1, std::bind(&Handlers::user_posts,
+                                                                         hand,
+                                                                         std::placeholders::_1,
+                                                                         std::placeholders::_2
+        )});
+        dispatcher.emplace("/posts/post/", dispatcher_entry{1, std::bind(&Handlers::one_post,
+                                                                         hand,
+                                                                         std::placeholders::_1,
+                                                                         std::placeholders::_2
+        )});
+        dispatcher.emplace("/posts/dlt/", dispatcher_entry{2, std::bind(&Handlers::delete_post,
+                                                                        hand,
+                                                                        std::placeholders::_1,
+                                                                        std::placeholders::_2
+        )});
         // ендпоинты требующие боди
         dispatcher_with_body.emplace(
                                     "/posts/create/",
-                                     dispatcher_entry_with_body{1, create_post}
-                                     );
+                                     dispatcher_entry_with_body{1, std::bind(&Handlers::create_post,
+                                                                             hand,
+                                                                             std::placeholders::_1,
+                                                                             std::placeholders::_2,
+                                                                             std::placeholders::_3
+                                     )});
         dispatcher_with_body.emplace(
                                     "/posts/upd/",
-                                    dispatcher_entry_with_body{2, update_post}
-                                     );
+                                    dispatcher_entry_with_body{2, std::bind(&Handlers::update_post,
+                                                                            hand,
+                                                                            std::placeholders::_1,
+                                                                            std::placeholders::_2,
+                                                                            std::placeholders::_3
+                                    )});
     }
 
 private:
@@ -57,11 +88,14 @@ private:
             accept();
         });
     }
+
     io::io_context& io_context;
     tcp::acceptor acceptor;
     std::optional<tcp::socket> socket;
     dispatcher_type dispatcher;  // map обработчиков команд описан в types.hpp
     dispatcher_type_with_body dispatcher_with_body;
+    const Handlers hand;
+
 };
 
 

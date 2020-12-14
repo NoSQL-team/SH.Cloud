@@ -29,13 +29,11 @@ using string_group = std::vector<std::string>;
 
 struct dispatcher_entry {
     std::size_t const args; // количество аргументов
-    // bool body_required;
     std::function<std::string (const std::string& , const std::map<std::string, size_t>& )> const handler;
 };
 
 struct dispatcher_entry_with_body {
     std::size_t const args; // количество аргументов
-    // bool body_required;
     std::function<std::string (const std::string& , const std::map<std::string, size_t>&, const std::string& )> const handler;
 };
 
