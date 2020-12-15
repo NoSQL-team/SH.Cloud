@@ -26,11 +26,11 @@ class FriendsDataBase final : public DataBase{
 public:
 	explicit FriendsDataBase(std::map<std::string, std::string>& db_settings);
 
-    int add_friend(int user_1, int user_2);
+	bool add_friend(int user_1, int user_2);
 
     std::vector<int> get_all_friends(int user_id);
 
-    int delete_friend(int user_1, int user_2);
+	bool delete_friend(int user_1, int user_2);
 
     bool is_friend(int user_1, int user_2);
 

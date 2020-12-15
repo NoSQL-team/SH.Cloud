@@ -18,11 +18,11 @@ DataBase::~DataBase() {
 }
 
 
-int FriendsDataBase::add_friend(int user_1, int user_2) {
+bool FriendsDataBase::add_friend(int user_1, int user_2) {
 	if (is_friend(user_1, user_2)) {
 		std::cout << std::to_string(user_1) + " и "
 		+ std::to_string(user_2) + " уже друзья" << std::endl;
-		return 0;
+		return false;
 	}
 
 	auto form_sql_request = [](int user_id_1, int user_id_2){
@@ -37,7 +37,7 @@ int FriendsDataBase::add_friend(int user_1, int user_2) {
 	std::cout << sql_request_2 << std::endl;
 	do_modifying_request(sql_request_2);
 
-	return 200;
+	return true;
 }
 
 std::vector<int> FriendsDataBase::get_all_friends(int user_id) {
@@ -71,7 +71,7 @@ bool FriendsDataBase::is_friend(int user_1, int user_2) {
 	return false;
 }
 
-int FriendsDataBase::delete_friend(int user_1, int user_2) {
+bool FriendsDataBase::delete_friend(int user_1, int user_2) {
 
 	auto form_sql_request = [](int user_id_1, int user_id_2) {
 		return "delete from friends where first_id = " +
@@ -87,7 +87,7 @@ int FriendsDataBase::delete_friend(int user_1, int user_2) {
 	std::cout << sql_request_2 << std::endl;
 	do_modifying_request(sql_request_2);
 
-	return 1;
+	return true;
 }
 
 bool DataBase::is_opened() const {

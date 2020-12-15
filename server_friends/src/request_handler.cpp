@@ -36,37 +36,74 @@ namespace tcp_network {
 	}
 
 	void RequestHandler::handle_add() {
-		int result = database_.add_friend(std::atoi(request_["user_1"].c_str()),
+		bool result = database_.add_friend(std::atoi(request_["user_1"].c_str()),
 					   std::atoi(request_["user_2"].c_str()));
-		std::string str_res = std::to_string(result);
-		session_->send_response(str_res);
+
+		std::string response = form_post_response(result);
+		session_->send_response(response);
 	}
 
 	void RequestHandler::handle_get_all_friends() {
 		std::vector<int> all_friends = database_.get_all_friends(
 				std::atoi(request_["user_1"].c_str()));
-		std::stringstream response;
-		for (auto it : all_friends) {
-			response << it << ' ';
-		}
-		std::cout << response.str() << std::endl;
-		std::string string_respone(response.str());
-		session_->send_response(string_respone);
+//		std::stringstream response;
+//		for (auto it : all_friends) {
+//			response << it << ' ';
+//		}
+//		std::cout << response.str() << std::endl;
+//		std::string string_respones(response.str());
+		std::string string_respones = form_get_fr_response(all_friends);
+		session_->send_response(string_respones);
 	}
 
 	void RequestHandler::handle_delete() {
-		int result = database_.delete_friend(std::atoi(request_["user_1"].c_str()),
+		bool result = database_.delete_friend(std::atoi(request_["user_1"].c_str()),
 											 std::atoi(request_["user_2"].c_str()));
 
-		std::string str_res = "Result: " + std::to_string(result);
-		session_->send_response(str_res);
+		std::string response = form_post_response(result);
+		session_->send_response(response);
 	}
 
 	void RequestHandler::handle_is_friend() {
-		int result = database_.is_friend(std::atoi(request_["user_1"].c_str()),
+		bool result = database_.is_friend(std::atoi(request_["user_1"].c_str()),
 										  std::atoi(request_["user_2"].c_str()));
-		std::string str_res = "Result: " + std::to_string(result);
-		session_->send_response(str_res);
+
+		std::string response = form_post_response(result);
+		session_->send_response(response);
 	}
 
+	std::string RequestHandler::form_post_response(bool result) {
+		std::string response = "{ \"response\": ";
+		if (result)
+			response += "true";
+		else
+			response += "false";
+		response += " }";
+		return response;
+	}
+
+	std::string RequestHandler::form_get_fr_response(const std::vector<int>& friends) {
+		int j = 0;
+		for (auto it : friends) {
+			if (j != 0)
+				std::cout << it << ", ";
+			std::cout << it;
+			j = 1;
+		}
+
+		std::stringstream response;
+		response << "{\n \"response\": ";
+		response << "\"true\"";
+		response << ",\n \"data\": [";
+
+		int i = 0;
+		for (auto it : friends) {
+			if (i != 0)
+				response << ", ";
+			response << it;
+			i = 1;
+		}
+		response << "]\n}";
+		return response.str();
+	}
 }

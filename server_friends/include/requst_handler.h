@@ -30,6 +30,10 @@ namespace tcp_network {
 
 		void handle_get_all_friends();
 
+		std::string form_post_response(bool result);
+
+		std::string form_get_fr_response(const std::vector<int>& friends);
+
 		boost::asio::io_service& io_service_;
 		std::shared_ptr<Session> session_;
 		FriendsDataBase& database_;

@@ -53,7 +53,6 @@ namespace tcp_network {
 												   shared_from_this(), request);
 
 //			io_service_.post([handler, this]() {
-				std::cout << "Пошли обрабатывать" << std::endl;
 				handler->handle_request();
 //			});
 
@@ -71,7 +70,7 @@ namespace tcp_network {
 		ip::tcp::socket sock(service);
 		sock.async_connect(ep, [&sock, this, &respones](const system::error_code& error) {
 			if (!error) {
-				boost::asio::write(sock, boost::asio::buffer(respones));
+				boost::asio::write(sock, boost::asio::buffer(respones, respones.size()));
 			} else {
 				BOOST_LOG_TRIVIAL(error) << error.message();
 			}
