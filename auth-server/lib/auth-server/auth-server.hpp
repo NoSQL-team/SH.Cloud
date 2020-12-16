@@ -67,7 +67,7 @@ protected:
         std::string password
     ) {
         std::stringstream ss;
-        ss << "dbname=" << dbname << " host=" << host << " user=" << user << " password=" << password;
+        ss << "dbname=" << dbname << " host=" << host << " user=" << user << " password=" << password << " port=27001";
         _db = new pqxx::connection(ss.str());
     }
     ~DateBaseConnection() {

@@ -3,13 +3,9 @@ cmake_minimum_required(VERSION 3.13.4)
 project(auth-server-noskool)
 #======================================================================================
 
-option(TESTS "" OFF)
-
-#======================================================================================
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "-lpthread -lgtest -lpqxx -lpq")
+set(CMAKE_CXX_FLAGS "-lpthread -lpqxx -lpq")
 
 #======================================================================================
 

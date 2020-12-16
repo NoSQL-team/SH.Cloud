@@ -1,0 +1,24 @@
+version: '3.1'
+
+volumes:
+  pg_project:
+
+services:
+  pg_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=cuzkov
+      - POSTGRES_DB=auth
+    volumes:
+      - pg_project:/var/lib/postgresql/data
+    ports:
+      - "27001:5432"
+  # auth-server:
+  #   image: noskool-http
+  #   ports:
+  #     - "9992:9992"
+  #   depends_on:
+  #     - pg_db
+  #   entrypoint: "./wait-for-it.sh pg_db:5432"
