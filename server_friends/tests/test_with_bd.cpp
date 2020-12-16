@@ -8,7 +8,6 @@
 #include <boost/asio.hpp>
 #include <string>
 #include <chrono>
-//#include <boost/thread.hpp>
 #include <thread>
 
 
@@ -38,7 +37,8 @@ void  echo(char** req) {
 	size_t length = sock->read_some(boost::asio::buffer(*req, 1024), error);
 	(*req)[length] = '\0';
 //	std::cout << length << std::endl;
-//	std::cout << req << std::endl;
+	std::cout << *req << std::endl;
+	io_service.stop();
 };
 
 void server_friends() {
@@ -82,7 +82,8 @@ TEST(server_bd_interaction, add_friends_1) {
 							  "delete\n"
 							  "\n"
 							  "{\n"
-							  "  \"user_1\": \"" + std::to_string(432) + "\",\n\"user_2\": \"" + std::to_string(543) + "\"\n}";
+							  "  \"user_1\": \"" + std::to_string(432)
+							  + "\",\n\"user_2\": \"" + std::to_string(543) + "\"\n}";
 	client(delete_user);
 
 	char* data = new char[1024];
@@ -106,6 +107,169 @@ TEST(server_bd_interaction, add_friends_1) {
 	ASSERT_EQ("{ \"response\": true }", data_str);
 
 }
+
+TEST(server_bd_interaction, add_friends_already_exist) {
+
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string request = "5\n"
+						  "0\n"
+						  "add\n"
+						  "\n"
+						  "{\n"
+						  "  \"user_1\": \"" + std::to_string(432)
+						  + "\",\n\"user_2\": \"" + std::to_string(543) + "\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::thread tr3(boost::bind(client, request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{ \"response\": false }", data_str);
+}
+
+TEST(server_bd_interaction, check_is_friends_true_1) {
+
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string request = "5\n"
+						  "0\n"
+						  "is_friend\n"
+						  "\n"
+						  "{\n"
+						  "  \"user_1\": \"" + std::to_string(432)
+						  + "\",\n\"user_2\": \"" + std::to_string(543) + "\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::thread tr3(boost::bind(client, request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{ \"response\": true }", data_str);
+}
+
+TEST(server_bd_interaction, check_is_friends_true_2) {
+
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string request = "5\n"
+						  "0\n"
+						  "is_friend\n"
+						  "\n"
+						  "{\n"
+						  "  \"user_1\": \"" + std::to_string(543)
+						  + "\",\n\"user_2\": \"" + std::to_string(432) + "\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::thread tr3(boost::bind(client, request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{ \"response\": true }", data_str);
+}
+
+TEST(server_bd_interaction, check_is_friends_false_1) {
+
+
+	std::string delete_user = "5\n"
+							  "0\n"
+							  "delete\n"
+							  "\n"
+							  "{\n"
+							  "  \"user_1\": \"" + std::to_string(12)
+							  + "\",\n\"user_2\": \"" + std::to_string(13) + "\"\n}";
+	client(delete_user);
+
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string request = "5\n"
+						  "0\n"
+						  "is_friend\n"
+						  "\n"
+						  "{\n"
+						  "  \"user_1\": \"" + std::to_string(12)
+						  + "\",\n\"user_2\": \"" + std::to_string(13) + "\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::thread tr3(boost::bind(client, request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{ \"response\": true }", data_str);
+}
+
+TEST(server_bd_interaction, check_is_friends_false_2) {
+
+
+	std::string delete_user = "5\n"
+							  "0\n"
+							  "delete\n"
+							  "\n"
+							  "{\n"
+							  "  \"user_1\": \"" + std::to_string(12)
+							  + "\",\n\"user_2\": \"" + std::to_string(13) + "\"\n}";
+	client(delete_user);
+
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string request = "5\n"
+						  "0\n"
+						  "is_friend\n"
+						  "\n"
+						  "{\n"
+						  "  \"user_1\": \"" + std::to_string(13)
+						  + "\",\n\"user_2\": \"" + std::to_string(12) + "\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::thread tr3(boost::bind(client, request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{ \"response\": true }", data_str);
+}
+
+
+TEST(server_bd_interaction, get_all_friends) {
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string get_all_request = "5\n"
+								  "0\n"
+								  "get_all\n"
+								  "\n"
+								  "{\n"
+								  "  \"user_1\": \"" + std::to_string(575) +"\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::thread tr3(boost::bind(client, get_all_request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::string data_str = std::string(data);
+	std::cout << data_str << std::endl;
+	delete []data;
+	ASSERT_EQ("{\n"
+			  " \"response\": \"true\",\n"
+			  " \"data\": [757, 13, 1654]\n"
+			  "}", data_str);
+}
+
+
 
 
 int main(int argc, char **argv) {

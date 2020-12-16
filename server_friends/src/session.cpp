@@ -65,6 +65,7 @@ namespace tcp_network {
 	void Session::send_response(std::string& respones) {
 		Destination destination = servers_adrs_.at(RequestDestination::HTTP_SERV);
 		io_service service;
+		std::cout << respones << std::endl;
 		ip::tcp::endpoint ep( ip::address::from_string(destination.ip),
 							  destination.port);
 		ip::tcp::socket sock(service);
