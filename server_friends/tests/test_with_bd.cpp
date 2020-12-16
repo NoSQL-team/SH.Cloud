@@ -37,7 +37,6 @@ void  echo(char** req) {
 	size_t length = sock->read_some(boost::asio::buffer(*req, 1024), error);
 	(*req)[length] = '\0';
 //	std::cout << length << std::endl;
-	std::cout << *req << std::endl;
 	io_service.stop();
 };
 
@@ -244,7 +243,7 @@ TEST(server_bd_interaction, check_is_friends_false_2) {
 }
 
 
-TEST(server_bd_interaction, get_all_friends) {
+TEST(server_bd_interaction, get_all_friends_1) {
 	char* data = new char[1024];
 	std::thread tr2(boost::bind(echo, &data));
 	tr2.detach();
@@ -261,11 +260,58 @@ TEST(server_bd_interaction, get_all_friends) {
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	std::string data_str = std::string(data);
-	std::cout << data_str << std::endl;
 	delete []data;
 	ASSERT_EQ("{\n"
 			  " \"response\": \"true\",\n"
 			  " \"data\": [757, 13, 1654]\n"
+			  "}", data_str);
+}
+
+TEST(server_bd_interaction, get_all_friends_2) {
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string get_all_request = "5\n"
+								  "0\n"
+								  "get_all\n"
+								  "\n"
+								  "{\n"
+								  "  \"user_1\": \"" + std::to_string(555) +"\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::thread tr3(boost::bind(client, get_all_request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{\n"
+			  " \"response\": \"true\",\n"
+			  " \"data\": [5355, 5335, 1335, 54, 333, 547, 1336]\n"
+			  "}", data_str);
+}
+
+TEST(server_bd_interaction, get_all_friends_zero_friends) {
+	char* data = new char[1024];
+	std::thread tr2(boost::bind(echo, &data));
+	tr2.detach();
+	std::string get_all_request = "5\n"
+								  "0\n"
+								  "get_all\n"
+								  "\n"
+								  "{\n"
+								  "  \"user_1\": \"" + std::to_string(43423423) +"\"\n}";
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::thread tr3(boost::bind(client, get_all_request));
+	tr3.detach();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::string data_str = std::string(data);
+	delete []data;
+	ASSERT_EQ("{\n"
+			  " \"response\": \"true\",\n"
+			  " \"data\": []\n"
 			  "}", data_str);
 }
 
