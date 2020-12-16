@@ -6,6 +6,14 @@
 #include <map>
 
 
+static const std::map<std::string, tcp_network::RequestDestination> servers_adrs_ =
+		{{"5", tcp_network::RequestDestination::POST_SERV},
+		 {"4", tcp_network::RequestDestination::FRIEND_SERV},
+		 {"3", tcp_network::RequestDestination::HTTP_SERV},
+		 {"2", tcp_network::RequestDestination::USER_SERV},
+		 {"1", tcp_network::RequestDestination::AUTH_SERV}
+		};
+
 
 namespace tcp_network {
 

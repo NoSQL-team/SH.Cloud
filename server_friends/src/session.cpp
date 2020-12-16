@@ -14,6 +14,13 @@ using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
 
+
+static const std::map<tcp_network::RequestDestination, tcp_network::Destination> servers_adrs_ =
+		{{tcp_network::RequestDestination::POST_SERV, {"127.0.0.1", 9997}},
+		 {tcp_network::RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
+		 {tcp_network::RequestDestination::UNKNOWN, {"0.0.0.0", 0}},
+		 {tcp_network::RequestDestination::HTTP_SERV, {"127.0.0.1", 9999}}};
+
 namespace tcp_network {
 
 	Session::Session(boost::asio::io_service& io_service, FriendsDataBase& database)

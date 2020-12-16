@@ -6,14 +6,13 @@ project(tests CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#set(CMAKE_CXX_FLAGS "-g -Wall -O3 -fprofile-arcs -ftest-coverage")
 set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib -lpqxx -lpq -DBOOST_LOG_DYN_LINK")
 
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
 
-find_package(Boost REQUIRED COMPONENTS system thread regex log)
+find_package(Boost REQUIRED COMPONENTS system thread regex log_setup log)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     link_directories(${Boost_LIBRARY_DIRS})

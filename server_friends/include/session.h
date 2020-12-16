@@ -31,11 +31,6 @@ namespace tcp_network {
 		void handle_read(std::shared_ptr<Session> current_session, const boost::system::error_code& error,
 						 size_t bytes_transferred);
 
-		std::map<RequestDestination, Destination> servers_adrs_ =
-				{{RequestDestination::POST_SERV, {"127.0.0.1", 9997}},
-				 {RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
-				 {RequestDestination::UNKNOWN, {"0.0.0.0", 0}},
-				 {RequestDestination::HTTP_SERV, {"127.0.0.1", 9999}}};
 		boost::asio::ip::tcp::socket socket_;
 		ParseJson parser_;
 		FriendsDataBase& database_;

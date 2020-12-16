@@ -34,32 +34,10 @@ namespace tcp_network {
 	public:
 		ParseJson();
 
-		RequestDestination get_destination(std::string& request);
+		static RequestDestination get_destination(std::string& request);
 
-		std::map<std::string, std::string> parse(std::string& request);
-
-	private:
-		const std::map<std::string, RequestDestination> servers_adrs_ =
-				{{"5", RequestDestination::POST_SERV},
-				 {"4", RequestDestination::FRIEND_SERV},
-				 {"3", RequestDestination::HTTP_SERV},
-				 {"2", RequestDestination::USER_SERV},
-				 {"1", RequestDestination::AUTH_SERV}
-				};
+		static std::map<std::string, std::string> parse(std::string& request);
 	};
-
-
-//	class Logger {
-//		void init()
-//		{
-//			logging::add_file_log("sample.log");
-//
-//			logging::core::get()->set_filter
-//					(
-//							logging::trivial::severity >= logging::trivial::info
-//					);
-//		}
-//	};
 }
 
 #endif //NOSKOOL_UTILTY_H
