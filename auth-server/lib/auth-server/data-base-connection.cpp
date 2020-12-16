@@ -118,7 +118,7 @@ pqxx::result DateBaseConnection::insert(
         request << get<0>(columnValue) << ", ";
     }
     request.seekp(-2, std::ios_base::end);
-    request << '\0' << ") VALUES (";
+    request << ") VALUES (";
     for (const auto& columnValue : columnsValue) {
         request <<
             (get<2>(columnValue) == "number" ? "" : "\'") <<
@@ -127,9 +127,7 @@ pqxx::result DateBaseConnection::insert(
             ", ";
     }
     request.seekp(-2, std::ios_base::end);
-    request << '\0' << ")";
-
-    std::cout << request.str() << std::endl;
+    request << ")";
 
     pqxx::result r = w.exec(request.str());
     w.commit();
