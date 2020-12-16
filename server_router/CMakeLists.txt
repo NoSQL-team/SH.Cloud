@@ -1,26 +1,22 @@
 cmake_minimum_required(VERSION 3.9.2)
 project(tests CXX)
 
-
-set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(Boost_USE_MULTITHREAD ON)
 
-set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib")
+set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread -lgtest -L/usr/local/lib")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
-find_package(Boost 1.74.0 REQUIRED COMPONENTS system thread regex)
+find_package(Boost REQUIRED COMPONENTS system thread regex)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
-
-set(nlohmann_json_DIR "/Users/andrewkireev/json")
-
-find_package(nlohmann_json REQUIRED)
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -33,7 +29,6 @@ set(TESTS_DIR ${DIR}/tests)
 
 include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(include/)
-include_directories(${nlohmann_json_DIR}/include/)
 include_directories(tests/)
 
 # Server-router library
@@ -42,12 +37,9 @@ add_library(server_router STATIC
         ${SRC_DIR}/session.cpp
         ${SRC_DIR}/server_router.cpp)
 
-target_link_libraries(server_router
-        PRIVATE nlohmann_json::nlohmann_json -I/usr/local/homebrew/Cellar/nlohmann_json/3.9.1/include)
 
 add_executable(TESTS
-        ${TESTS_DIR}/tests.cpp
-        ${TESTS_DIR}/mock_classes.h)
+        ${TESTS_DIR}/tests.cpp)
 
 # Исполняймый файл для теста Router-servera
 add_executable(server_router_test
@@ -89,7 +81,7 @@ target_include_directories(TESTS PUBLIC ${INC_DIR})
 
 target_include_directories(TESTS PUBLIC ${TESTS_DIR})
 
-target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_router -lgmock)
+target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_router)
 
 enable_testing()
 add_test(NAME TEST_ONE COMMAND tests1)
