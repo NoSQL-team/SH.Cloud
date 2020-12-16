@@ -13,9 +13,10 @@ class Database {
 public:
     Database() : database_("dbname=users host=localhost user=andrewkireev password=") {}
     virtual ~Database() {}
-    virtual bool insert_(const std::map<std::string, std::string>& users_data) = 0;
-    virtual bool delete_(int id) = 0;
-    virtual bool update_(const std::map<std::string, std::string>& data) = 0;
+    void insert_();
+//    virtual bool delete_(int id) = 0;
+//    pqxx::result select_();
+
 protected:
     pqxx::connection database_;
 };

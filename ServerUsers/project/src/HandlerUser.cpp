@@ -17,10 +17,27 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
             std::stringstream stream_request(request);
             boost::property_tree::read_json(stream_request, pt);
             std::map<string, string> result;
-            char alf = 'A';
             for (ptree::const_iterator it = pt.begin(); it != pt.end(); ++it) {
-                result[alf + std::string(it->first)] = it->second.get_value<string>();
-                alf++;
+                string field;
+                if (std::string(it->first) == "id") {
+                    field = "Aid";
+                }
+                if (std::string(it->first) == "firstname") {
+                    field = "Bfirstname";
+                }
+                if (std::string(it->first) == "lastname") {
+                    field = "Clastname";
+                }
+                if (std::string(it->first) == "nickname") {
+                    field = "Dlastname";
+                }
+                if (std::string(it->first) == "email") {
+                    field = "Eemail";
+                }
+                if (std::string(it->first) == "photo") {
+                    field = "Fphoto";
+                }
+                result[field] = it->second.get_value<string>();
             }
             return result;
         }
@@ -80,7 +97,7 @@ void HandlerUser::handle_request(string& request) {
         is_exist(num_request, id_exists);
     }
     else if (data_id != 0) {
-        data_user(data_id, num_request, id_user);
+        data_user(data_id, num_request);
     }
     else {
         id_by_nick(num_request, method);
@@ -89,7 +106,7 @@ void HandlerUser::handle_request(string& request) {
 
 void HandlerUser::create_user(int number_request, const std::map<string, string>& data_user, int user_id) const {
     try {
-        int result = data_base_.insert_(data_user);
+        int result = data_base_.insert_(data_user, user_id);
         string str_result = std::to_string(number_request) + "\n";
         str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
 //        if (result == 200) {
@@ -104,7 +121,7 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
     }
 }
 
-void HandlerUser::data_user(int id, int number_request, int user_id) const {
+void HandlerUser::data_user(int id, int number_request) const {
     try {
         data_base_.data_user(id);
         string result = std::to_string(number_request) + "\n";
@@ -158,7 +175,7 @@ void HandlerUser::all_users(int number_request) const {
 
 void HandlerUser::update_data(int number_request, const std::map<string, string>& data_user, int user_id) const {
     try {
-        int result = data_base_.update_(data_user);
+        int result = data_base_.update_(data_user, user_id);
         string str_result = std::to_string(number_request) + "\n";
         str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
 //        if (result == 200) {
@@ -185,7 +202,7 @@ void HandlerUser::is_exist(int number_request, int id_user) const {
     }
 }
 
-void HandlerUser::id_by_nick(int number_request, std::string& nickname) {
+void HandlerUser::id_by_nick(int number_request, string& nickname) {
     try {
         data_base_.all_users();
         string result = std::to_string(number_request) + "\n";

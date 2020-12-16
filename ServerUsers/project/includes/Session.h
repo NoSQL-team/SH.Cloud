@@ -10,6 +10,8 @@
 #include <boost/asio.hpp>
 #include "UsersDatabase.h"
 
+const int max_length = 1024;
+
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
@@ -30,9 +32,7 @@ private:
 
     boost::asio::io_service& io_service_;
     boost::asio::ip::tcp::socket socket_;
-    int max_length = 1024;
-    char data_[1024];
-//    std::string data_;
+    char data_[max_length];
     UsersDatabase& data_base_;
 };
 
