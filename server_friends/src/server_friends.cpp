@@ -4,7 +4,7 @@
 
 #include "server_friends.h"
 #include <memory>
-#include <boost/log/trivial.hpp>
+//#include <boost/log/trivial.hpp>
 
 using namespace boost;
 using namespace boost::system;
@@ -30,7 +30,7 @@ namespace tcp_network {
 		if (!error) {
 			new_session->start(new_session);
 		} else {
-			BOOST_LOG_TRIVIAL(info) << "Connection closed " << error.message();
+//			BOOST_LOG_TRIVIAL(info) << "Connection closed " << error.message();
 			new_session.reset();
 		}
 

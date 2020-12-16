@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <memory>
-#include <boost/log/trivial.hpp>
+//#include <boost/log/trivial.hpp>
 #include "requst_handler.h"
 
 
@@ -39,7 +39,7 @@ namespace tcp_network {
 			Destination destination = servers_adrs_.at(test);
 			return destination;
 		} catch (std::out_of_range& e) {
-			BOOST_LOG_TRIVIAL(error) << "error parsing destination " << e.what();
+//			BOOST_LOG_TRIVIAL(error) << "error parsing destination " << e.what();
 			return {0, 0};
 		}
 	}
@@ -57,7 +57,7 @@ namespace tcp_network {
 //			});
 
 		} else {
-			BOOST_LOG_TRIVIAL(error) << error.message();
+//			BOOST_LOG_TRIVIAL(error) << error.message();
 			current_session.reset();
 		}
 	}
@@ -72,7 +72,7 @@ namespace tcp_network {
 			if (!error) {
 				boost::asio::write(sock, boost::asio::buffer(respones, respones.size()));
 			} else {
-				BOOST_LOG_TRIVIAL(error) << error.message();
+//				BOOST_LOG_TRIVIAL(error) << error.message();
 			}
 		});
 		service.run();

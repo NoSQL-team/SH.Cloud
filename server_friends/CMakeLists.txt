@@ -46,7 +46,7 @@ add_executable(TESTS
         tests/tests.cpp)
 
 add_executable(TESTS_BD
-        tests/test_bd.cpp)
+        tests/test_with_bd.cpp)
 
 # Server-friends
 add_executable(server_friends_test

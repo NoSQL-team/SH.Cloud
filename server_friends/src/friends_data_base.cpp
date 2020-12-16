@@ -17,6 +17,10 @@ DataBase::~DataBase() {
 	database_.close();
 }
 
+FriendsDataBase::~FriendsDataBase() {
+	database_.close();
+}
+
 
 bool FriendsDataBase::add_friend(int user_1, int user_2) {
 	if (is_friend(user_1, user_2)) {

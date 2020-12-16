@@ -46,12 +46,7 @@ namespace tcp_network {
 	void RequestHandler::handle_get_all_friends() {
 		std::vector<int> all_friends = database_.get_all_friends(
 				std::atoi(request_["user_1"].c_str()));
-//		std::stringstream response;
-//		for (auto it : all_friends) {
-//			response << it << ' ';
-//		}
-//		std::cout << response.str() << std::endl;
-//		std::string string_respones(response.str());
+
 		std::string string_respones = form_get_fr_response(all_friends);
 		session_->send_response(string_respones);
 	}
@@ -83,14 +78,6 @@ namespace tcp_network {
 	}
 
 	std::string RequestHandler::form_get_fr_response(const std::vector<int>& friends) {
-		int j = 0;
-		for (auto it : friends) {
-			if (j != 0)
-				std::cout << it << ", ";
-			std::cout << it;
-			j = 1;
-		}
-
 		std::stringstream response;
 		response << "{\n \"response\": ";
 		response << "\"true\"";

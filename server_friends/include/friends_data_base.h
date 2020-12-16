@@ -22,9 +22,11 @@ protected:
 	pqxx::connection database_;
 };
 
-class FriendsDataBase final : public DataBase{
+class FriendsDataBase : public DataBase{
 public:
 	explicit FriendsDataBase(std::map<std::string, std::string>& db_settings);
+
+	virtual ~FriendsDataBase();
 
 	bool add_friend(int user_1, int user_2);
 
