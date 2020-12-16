@@ -205,6 +205,9 @@ std::string RequestsHandler::add()
                 "users",
                 {
                     std::make_tuple("username", _userName, "string"),
+                    std::make_tuple("refresh_token", "", "string"),
+                    std::make_tuple("access_token", "", "string"),
+                    std::make_tuple("user_id", _user_id, "number"),
                     std::make_tuple("password", _userPassword, "string")
                 }
             );
@@ -288,6 +291,7 @@ std::string RequestsHandler::getResponse(std::istream& stream)
         } else if (_type == ADD) {
             _userName = _ptRequest.get<std::string>("username");
             _userPassword = _ptRequest.get<std::string>("password");
+            _user_id = _ptRequest.get<std::string>("user_id");
         } else if (_type == REFRESH) {
             _userName = _ptRequest.get<std::string>("username");
             _refreshToken = _ptRequest.get<std::string>("refresh_token");

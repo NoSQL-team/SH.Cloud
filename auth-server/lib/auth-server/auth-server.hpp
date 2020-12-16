@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include <thread>
+#include <chrono>
 
 #include <pqxx/pqxx>
 
@@ -26,6 +28,7 @@ class RequestsHandler
     std::string _userName;
     std::string _refreshToken;
     std::string _accessToken;
+    std::string _user_id;
 
     std::string authRequest();
     std::string auth();
@@ -68,7 +71,17 @@ protected:
     ) {
         std::stringstream ss;
         ss << "dbname=" << dbname << " host=" << host << " user=" << user << " password=" << password << " port=27001";
-        _db = new pqxx::connection(ss.str());
+        while (true) {
+            try {
+                _db = new pqxx::connection(ss.str());
+                break;
+            }
+            catch(const std::exception& e) {
+                std::cerr << e.what() << '\n';
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+        }
+        std::cout << "Connecting!" << std::endl;
     }
     ~DateBaseConnection() {
         delete _db;
