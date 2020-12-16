@@ -13,9 +13,9 @@ class Database {
 public:
     Database() : database_("dbname=users host=localhost user=andrewkireev password=") {}
     virtual ~Database() {}
-    void insert_();
+    void insert_(std::string& request);
 //    virtual bool delete_(int id) = 0;
-//    pqxx::result select_();
+    pqxx::result select_(std::string& request);
 
 protected:
     pqxx::connection database_;

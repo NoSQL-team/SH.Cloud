@@ -29,7 +29,7 @@ using std::string;
         sql_request += ")";
 
         if (exist(atoi(users_data.at("Aid").c_str())) == false) {
-            insert_();
+            insert_(sql_request);
             return true;
         }
         return false;
@@ -39,8 +39,9 @@ using std::string;
         string sql_request = "SELECT * FROM Users WHERE id=";
         sql_request += std::to_string(id);
 
-        pqxx::nontransaction N(database_);
-        pqxx::result R( N.exec( sql_request ));
+//        pqxx::nontransaction N(database_);
+//        pqxx::result R( N.exec( sql_request ));
+        pqxx::result R = select_(sql_request);
 
         string answer = "{\n";
 
@@ -63,8 +64,9 @@ using std::string;
     string UsersDatabase::all_users(){
         string sql_request("SELECT nickname FROM users");
 
-        pqxx::nontransaction N(database_);
-        pqxx::result R( N.exec( sql_request ));
+//        pqxx::nontransaction N(database_);
+//        pqxx::result R( N.exec( sql_request ));
+        pqxx::result R = select_(sql_request);
 
         string answer = "{\n";
 
@@ -84,8 +86,9 @@ using std::string;
         string sql_request("SELECT id FROM Users WHERE id=");
         sql_request += std::to_string(id);
 
-        pqxx::nontransaction N(database_);
-        pqxx::result R( N.exec( sql_request ));
+//        pqxx::nontransaction N(database_);
+//        pqxx::result R( N.exec( sql_request ));
+        pqxx::result R = select_(sql_request);
 
         string answer = "{\n";
 
@@ -104,8 +107,9 @@ using std::string;
         string sql_request("SELECT id FROM Users WHERE nickname=");
         sql_request += nickname;
 
-        pqxx::nontransaction N(database_);
-        pqxx::result R( N.exec( sql_request ));
+//        pqxx::nontransaction N(database_);
+//        pqxx::result R( N.exec( sql_request ));
+        pqxx::result R = select_(sql_request);
 
         string answer = "{\n";
 
@@ -159,10 +163,7 @@ using std::string;
         if(exist(atoi(data.at("Aid").c_str())) == false) {
             return false;
         }
-        pqxx::work W(database_);
-
-        W.exec( sql_request );
-        W.commit();
+        insert_(sql_request);
         return true;
     }
 

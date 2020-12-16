@@ -4,14 +4,14 @@
 
 #include "Database.h"
 
-void Database::insert_() {
+void Database::insert_(std::string& request) {
     pqxx::work W(database_);
-    W.exec(sql_request);
+    W.exec(request);
     W.commit();
 }
 
-//pqxx::result Database::select_() {
-//    pqxx::nontransaction N(database_);
-//    return pqxx::result R( N.exec( sql_request ));
-//}
+pqxx::result Database::select_(std::string& request) {
+    pqxx::nontransaction N(database_);
+    return pqxx::result R( N.exec( request ));
+}
 
