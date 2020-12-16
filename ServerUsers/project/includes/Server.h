@@ -14,7 +14,6 @@
 class Server
 {
 public:
-//    Server(boost::asio::io_service& io_service, short port);
     explicit Server(short port);
 
 private:

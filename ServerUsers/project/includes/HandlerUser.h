@@ -18,14 +18,16 @@ class HandlerUser {
 public:
     explicit HandlerUser(boost::asio::io_service& io_service, Session& session,
                          UsersDatabase& data_base) : session_(session), data_base_(data_base) {}
-    ~HandlerUser() {}
-    static std::map<std::string, std::string> parser_json(std::stringstream& request);
+    ~HandlerUser() = default;
+    static std::map<std::string, std::string> parser_json(std::string& request);
     void handle_request(std::string& request);
-    void create_user(const std::map<std::string, std::string>& data_user, int number_request);
-    void data_user(int id, int number_request);
-    void all_users(int number_request);
-    void delete_user(int id, int number_request);
-    void change_user_data(const std::map<std::string, std::string>& user_data, int number_request);
+    void create_user(int number_request, const std::map<std::string, std::string>& data_user, int user_id) const;
+    void data_user(int id, int number_request, int user_id) const;
+    void all_users(int number_request) const;
+//    void delete_user(int id, int number_request) const;
+    void update_data(int number_request, const std::map<std::string, std::string>& data_user, int user_id) const;
+    void is_exist(int number_request, int id_user) const;
+    void id_by_nick(int number_request, std::string& nickname);
 
 private:
     Session& session_;

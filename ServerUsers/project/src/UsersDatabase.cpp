@@ -2,25 +2,23 @@
 // Created by lerakry on 04.12.2020.
 //
 
-#include <iostream>
-#include <string>
-#include <map>
 #include "UsersDatabase.h"
+#include "pqxx/pqxx"
 
 using std::string;
 
-    UsersDatabase::~UsersDatabase() {}
+    UsersDatabase::~UsersDatabase() = default;
 
-    int UsersDatabase::insert_(const std::map<string, string>& users_data) {
+    bool UsersDatabase::insert_(const std::map<string, string>& users_data) {
         string sql_request("INSERT INTO users VALUES(");
         int i = 0;
-        for(auto& string : users_data) {
+        for(auto& data : users_data) {
             if (i != 0)
                 sql_request += ", ";
-            if (string.first.substr(1) != "id") {
-                sql_request += "\'" + string.second + "\'";
+            if (data.first.substr(1) != "id") {
+                sql_request += "\'" + data.second + "\'";
             } else {
-                sql_request += string.second;
+                sql_request += data.second;
             }
             i = 1;
         }
@@ -30,13 +28,13 @@ using std::string;
             pqxx::work W(database_);
             W.exec(sql_request);
             W.commit();
-            return 200;
+            return true;
         }
-        return 300;
+        return false;
     }
 
 
-    const string UsersDatabase::data_user(int id) {
+    string UsersDatabase::data_user(int id) {
         string sql_request("SELECT * FROM Users WHERE id=");
         sql_request += std::to_string(id);
 
@@ -45,7 +43,6 @@ using std::string;
         pqxx::result R( N.exec( sql_request ));
 
         string answer = "{\n";
-        "  \"Id\": 5,\n";
 
         for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
             answer += "  \"firstname\": \"" + c[1].as<string>() + "\" ,\n";
@@ -63,7 +60,7 @@ using std::string;
         return answer;
     }
 
-    const string UsersDatabase::all_users() {
+    string UsersDatabase::all_users(){
         string sql_request("SELECT nickname FROM users");
 
         pqxx::nontransaction N(database_);
@@ -83,13 +80,55 @@ using std::string;
 
         return answer;
     }
-    int UsersDatabase::delete_(int id) {
+
+    bool UsersDatabase::exist(int id) {
+        string sql_request("SELECT id FROM Users WHERE id=");
+        sql_request += std::to_string(id);
+
+        pqxx::nontransaction N(database_);
+
+        pqxx::result R( N.exec( sql_request ));
+
+        string answer = "{\n";
+
+        for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
+            answer += "  \"id\": \"" + c[0].as<string>() + "\" ,\n";
+        }
+        answer += "}";
+
+        if (answer == "{\n}") {
+            return false;
+        }
+        return true;
+    }
+
+    std::string UsersDatabase::id_by_nick(int number_request, std::string& nickname) {
+        string sql_request("SELECT id FROM Users WHERE nickname=");
+        sql_request += nickname;
+
+        pqxx::nontransaction N(database_);
+
+        pqxx::result R( N.exec( sql_request ));
+
+        string answer = "{\n";
+
+        for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
+            answer += "  \"id\": \"" + c[0].as<string>() + "\" ,\n";
+        }
+        answer += "}";
+
+        if (answer == "{\n}") {
+            return "No user";
+        }
+        return answer;
+    }
+
+    bool UsersDatabase::delete_(int id) {
         string sql_request("DELETE FROM users WHERE id=");
         sql_request += std::to_string(id);
-        std::cout << sql_request << std::endl;
 
         if (data_user(id) == "No user") {
-            return 0;
+            return false;
         }
 
         pqxx::work W(database_);
@@ -97,10 +136,10 @@ using std::string;
         W.exec( sql_request );
         W.commit();
 
-        return 200;
+        return true;
     }
 
-    int UsersDatabase::update_(const std::map<string, string>& data) {
+    bool UsersDatabase::update_(const std::map<string, string>& data) {
         string sql_request("UPDATE users SET ");
 
         int i = 0;
@@ -117,12 +156,12 @@ using std::string;
         sql_request += " WHERE id=" + data.at("Aid");
 
         if(data_user(atoi(data.at("Aid").c_str())) == "No user") {
-            return 0;
+            return false;
         }
         pqxx::work W(database_);
 
         W.exec( sql_request );
         W.commit();
-        return 200;
+        return true;
     }
 

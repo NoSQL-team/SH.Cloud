@@ -12,77 +12,74 @@ using boost::property_tree::ptree;
 using std::string;
 
 
-std::map<string, string> parser_json(std::stringstream& request) {
-    ptree pt;
-    if (!request.str().empty()) {
-        boost::property_tree::read_json(request, pt);
-        std::map<string, string> result;
-        ptree::const_iterator end = pt.end();
-        char alf = 'A';
-        for (ptree::const_iterator it = pt.begin(); it != end; ++it) {
-            result[alf + std::string(it->first)] = it->second.get_value<string>();
-            alf++;
+std::map<string, string> parser_json(string& request) {
+    try {
+        ptree pt;
+        if (!request.empty()) {
+            std::stringstream stream_request(request);
+            boost::property_tree::read_json(stream_request, pt);
+            std::map<string, string> result;
+            ptree::const_iterator end = pt.end();
+            char alf = 'A';
+            for (ptree::const_iterator it = pt.begin(); it != end; ++it) {
+                result[alf + std::string(it->first)] = it->second.get_value<string>();
+                alf++;
+            }
+            return result;
         }
-        return result;
+        return {};
     }
-    return {};
-}
-
-int insert_user(std::map<string, string>& users_data) {
-    string sql_request("INSERT INTO Users VALUES(");
-    int i = 0;
-    for(auto& string : users_data) {
-        if (i != 0)
-            sql_request += ", ";
-        if (string.first.substr(1) != "Id") {
-            sql_request += "\'" + string.second + "\'";
-        } else {
-            sql_request += string.second;
-        }
-        i = 1;
+    catch (std::exception& e) {
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.62 " << e.what();
     }
-    sql_request += ")";
-    std::cout << sql_request << std::endl;
-    return 200;
-}
-
-int update_data(const std::map<string, string>& data) {
-    string sql_request("UPDATE Users SET ");
-
-    int i = 0;
-    for(const auto& v : data) {
-        i++;
-        if (i == 1)
-            continue;
-        if (i != 2 ) {
-            sql_request += ", ";
-        }
-        sql_request += v.first.substr(1) + "=" + v.second;
-    }
-
-    sql_request += " WHERE Id=" + data.at("AId");
-    std::cout << sql_request << std::endl;
-    return 200;
 }
 
 void  handle_request(string& request) {
-    std::stringstream stream_request(request);
-    int number_request, priority;
+    auto num = request.find('\n');
+    string num_request = request.substr(0, num);
+
+    auto find_method = request.find('\n', num + 1);
+    string api_method = request.substr(num + 1, find_method - num - 1);
+    const string str = "api/users/";
     string method;
-    stream_request >> number_request;
-    stream_request >> priority;
-    stream_request >> method;
-    std::map<string, string> parse_request = parser_json(stream_request);
-    string str;
-    if (method == "create") {
-        str = insert_user(parse_request);
+
+    int num_slash = std::count(api_method.begin(), api_method.end(), '/');
+    int id_exists = -1;
+    if (num_slash == 4 ) {
+        string find_id = api_method.substr(api_method.find_last_of('/', api_method.size() - 2) + 1);
+        find_id.pop_back();
+        id_exists = atoi(find_id.c_str());
+        method = api_method.substr(str.size(), api_method.find_last_of('/', api_method.size() - 2) - str.size());
     }
-    std::cout << str << std::endl;
+    else {
+        method = api_method.substr(str.size());
+        method.pop_back();
+    }
+
+    int id_user = atoi(request.substr(find_method + 1, request.find("\n\n") - find_method - 1).c_str());
+
+    auto fjson = request.find_first_of('{');
+    string json_body = "";
+    if (fjson != std::string::npos) {
+        json_body = request.substr(fjson);
+    }
+
+    std::map<string, string> parser = parser_json(json_body);
+
+    int data = atoi(method.c_str());
+
+    std::cout << "num_request: " << num_request << std::endl;
+    std::cout << "method: " << method << std::endl;
+    std::cout << "user_id: " << id_user << std::endl;
+    std::cout << "json_body: " << json_body << std::endl;
+    std::cout << "id_exists: " << id_exists << std::endl;
+    std::cout << "data: " << data << std::endl;
+    std::cout << std::endl;
 }
 
 int main(int argc, char* argv[])
 {
-   string example = "5\n0\ncreate\n{\n"
+   string example = "123\napi/users/create/\n4\n\n{\n"
                     "  \"id\": 5,\n"
                     "  \"firstname\": \"lera\",\n"
                     "  \"lastname\": \"guseva\",\n"
@@ -91,12 +88,29 @@ int main(int argc, char* argv[])
                     "  \"photo\": \"lera.png\"\n"
                     "}";
 
+   string example1 = "123\napi/users/exists/5/\n4\n\n";
+   string example2 = "123\napi/users/update/\n4\n\n{\n"
+                     "  \"id\": 5,\n"
+                     "  \"lastname\": \"guseva\",\n"
+                     "  \"nickname\": \"lerakrya\"\n"
+                     "}";
+   string example3 = "123\napi/users/all/\n4\n\n";
+   string example4 = "123\napi/users/5/\n4\n\n";
+   string example5 = "123\napi/users/lerakrya/\n4\n\n";
+
    std::stringstream stream(example);
+
+   handle_request(example);
+   handle_request(example1);
+   handle_request(example2);
+   handle_request(example3);
+   handle_request(example4);
+   handle_request(example5);
+
 
 //    UsersDatabase database;
 
-    auto m = parser_json(stream);
-    int k = insert_user(m);
+//    auto m = parser_json(stream);
 //    database.insert_user(m);
 
     return 0;
