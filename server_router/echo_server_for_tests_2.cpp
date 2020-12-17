@@ -23,7 +23,7 @@ void session(socket_ptr sock)
 			char data[max_length];
 
 			boost::system::error_code error;
-			size_t length = sock->read_some(boost::asio::buffer(data), error);
+			sock->read_some(boost::asio::buffer(data), error);
 			std::cout << data << std::endl;
 	}
 	catch (std::exception& e)
@@ -43,7 +43,7 @@ void server(boost::asio::io_service& io_service, unsigned short port)
 	}
 }
 
-int main(int argc, char* argv[])
+int main()
 {
 	try
 	{

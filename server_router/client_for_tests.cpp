@@ -5,12 +5,14 @@
 #include <boost/asio.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
+#include <boost/log/trivial.hpp>
+
 using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
 
 
-int main(int argc, char **argv) {
+int main() {
 
 	boost::property_tree::ptree pt;
 	boost::property_tree::ini_parser::read_ini("../router_settings.ini", pt);

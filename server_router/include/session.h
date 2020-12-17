@@ -26,8 +26,7 @@ namespace tcp_network {
 	private:
 		Destination define_location();
 
-		void handle_read(std::shared_ptr<Session> current_session, const system::error_code& error,
-						 size_t bytes_transferred);
+		void handle_read(std::shared_ptr<Session> current_session, const system::error_code& error);
 
 		std::map<RequestDestination, Destination> servers_adrs_;
 		ip::tcp::socket socket_;

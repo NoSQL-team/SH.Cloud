@@ -2,21 +2,12 @@
 // Created by Andrew Kireev on 12.11.2020.
 //
 
-
-#include "session.h"
-#include <unistd.h>
-#include <iostream>
 #include <stdexcept>
 
+#include <boost/log/trivial.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
-
-//=
-//{{RequestDestination::POST_SERV, {"127.0.0.1", 9999}},
-//{RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
-//{RequestDestination::USER_SERV, {"127.0.0.1", 8883}},
-//{RequestDestination::AUTH_SERV, {"127.0.0.1", 8884}}
-//};
+#include "session.h"
 
 namespace tcp_network {
 
@@ -25,7 +16,6 @@ namespace tcp_network {
 		boost::property_tree::ptree pt;
 		boost::property_tree::ini_parser::read_ini("../router_settings.ini", pt);
 		try {
-			uint16_t http_port = pt.get<uint16_t>("http_serv.port");
 			uint16_t friends_port = pt.get<uint16_t>("friends_queue.port");
 			uint16_t post_port = pt.get<uint16_t>("post_queue.port");
 			uint16_t users_port = pt.get<uint16_t>("users_queue.port");
@@ -35,7 +25,7 @@ namespace tcp_network {
 			servers_adrs_.insert({RequestDestination::USER_SERV, {"127.0.0.1", users_port}});
 
 		} catch (const std::exception& e) {
-
+			BOOST_LOG_TRIVIAL(error) << e.what();
 		}
 	}
 
@@ -46,8 +36,7 @@ namespace tcp_network {
 	void Session::start(std::shared_ptr<Session> current_session) {
 		socket_.async_receive(buffer(&data_[0], 5024),
 								boost::bind(&Session::handle_read, this, current_session,
-											boost::asio::placeholders::error,
-											boost::asio::placeholders::bytes_transferred));
+											boost::asio::placeholders::error));
 	}
 
 	Destination Session::define_location() {
@@ -59,13 +48,12 @@ namespace tcp_network {
 			Destination destination = servers_adrs_.at(test);
 			return destination;
 		} catch (std::out_of_range& e) {
-			std::cerr << e.what() << std::endl;
+			BOOST_LOG_TRIVIAL(error) << e.what();
 			return {0, 0};
 		}
 	}
 
-	void Session::handle_read(std::shared_ptr<Session> current_session, const system::error_code& error,
-							  size_t bytes_transferred) {
+	void Session::handle_read(std::shared_ptr<Session> current_session, const system::error_code& error) {
 		if (!error) {
 			Destination destination = define_location();
 
@@ -84,6 +72,7 @@ namespace tcp_network {
 			service.run();
 		} else {
 			current_session.reset();
+			BOOST_LOG_TRIVIAL(error) << error.message();
 		}
 	}
 }

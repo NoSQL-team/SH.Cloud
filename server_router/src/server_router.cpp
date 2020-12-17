@@ -2,6 +2,8 @@
 // Created by Andrew Kireev on 06.11.2020.
 //
 
+#include <boost/log/trivial.hpp>
+
 #include "server_router.h"
 
 namespace tcp_network {
@@ -25,6 +27,7 @@ namespace tcp_network {
 			new_session->start(new_session);
 		} else {
 			new_session.reset();
+			BOOST_LOG_TRIVIAL(error) << error.message();
 		}
 
 		start_accept();

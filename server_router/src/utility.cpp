@@ -3,8 +3,13 @@
 //
 
 #include "utilty.h"
-#include <map>
-#include <string>
+
+static const std::map<std::string, tcp_network::RequestDestination> servers_adrs_ =
+		{{"auth", tcp_network::RequestDestination::AUTH_SERV},
+		 {"post", tcp_network::RequestDestination::POST_SERV},
+		 {"users", tcp_network::RequestDestination::USER_SERV},
+		 {"friends", tcp_network::RequestDestination::FRIEND_SERV}
+		};
 
 namespace tcp_network {
 

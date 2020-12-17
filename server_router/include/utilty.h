@@ -7,8 +7,8 @@
 
 #include <string>
 #include <map>
-#include <unordered_map>
 #include <iostream>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
@@ -34,17 +34,9 @@ namespace tcp_network {
 
         ParseJson() = default;
 
-        RequestDestination get_destination(std::string& request);
+        static RequestDestination get_destination(std::string& request);
 
-        std::map<std::string, std::string> parse(std::string& request);
-
-	private:
-		std::map<std::string, RequestDestination> servers_adrs_ =
-				{{"auth", RequestDestination::AUTH_SERV},
-				 {"post", RequestDestination::POST_SERV},
-				 {"users", RequestDestination::USER_SERV},
-				 {"friends", RequestDestination::FRIEND_SERV}
-				};
+        static std::map<std::string, std::string> parse(std::string& request);
     };
 }
 

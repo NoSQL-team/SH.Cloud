@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <boost/property_tree/ini_parser.hpp>
+#include <boost/log/trivial.hpp>
 
 #include "server_router.h"
 
@@ -14,14 +15,14 @@ using namespace boost::system;
 using namespace boost::asio;
 
 
-int main(int argc, char *argv[]) {
+int main() {
 	try {
 		boost::property_tree::ptree pt;
 		boost::property_tree::ini_parser::read_ini("../router_settings.ini", pt);
 		tcp_network::Server s(pt.get<int>("router.port"));
 	}
-	catch (std::exception &e) {
-		std::cerr << "Exception: " << e.what() << "\n";
+	catch (std::exception& e) {
+		BOOST_LOG_TRIVIAL(error) << e.what();
 	}
 
 	return 0;

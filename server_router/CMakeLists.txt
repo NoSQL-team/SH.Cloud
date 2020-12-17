@@ -7,16 +7,18 @@ set(Boost_USE_MULTITHREAD ON)
 
 option(test_build "" OFF)
 
-#set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread -lgtest -L/usr/local/lib")
-set(CMAKE_CXX_FLAGS "-Wall -lgtest -L/usr/local/lib")
+# для сборки в докере обязательно нужены -lpthread -lboost_thread
+set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread -lgtest -L/usr/local/lib -DBOOST_LOG_DYN_LINK")
+#set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -DBOOST_LOG_DYN_LINK")
+#set(CMAKE_CXX_FLAGS "-Wall -lgtest -L/usr/local/lib -DBOOST_LOG_DYN_LINK")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-find_package(Boost REQUIRED COMPONENTS system thread regex)
+find_package(Boost REQUIRED COMPONENTS system thread regex log)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
-set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")

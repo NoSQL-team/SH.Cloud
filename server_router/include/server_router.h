@@ -5,15 +5,8 @@
 #ifndef NOSKOOL_SERVER_ROUTER_H
 #define NOSKOOL_SERVER_ROUTER_H
 
-
-#include <unordered_map>
-#include <string>
-#include <cstdlib>
-#include <iostream>
-#include <boost/bind.hpp>
-#include <boost/asio.hpp>
 #include <memory>
-#include <session.h>
+#include "session.h"
 
 namespace tcp_network {
 
