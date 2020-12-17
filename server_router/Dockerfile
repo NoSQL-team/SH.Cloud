@@ -14,8 +14,7 @@ RUN mkdir libtmp && cd libtmp && \
     tar -zxvf cmake-3.19.1.tar.gz && cd cmake-3.19.1 && \
     ./bootstrap && make && make install && cd ..
 
-RUN apt-get install libboost-all-dev -y && \
-    apt-get install libgtest-dev -y
+RUN apt-get install libboost-all-dev -y
 
 
 ADD ./include /app/include

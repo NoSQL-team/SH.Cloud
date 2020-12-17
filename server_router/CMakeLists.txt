@@ -5,12 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(Boost_USE_MULTITHREAD ON)
 
+option(test_build "" OFF)
+
 #set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread -lgtest -L/usr/local/lib")
 set(CMAKE_CXX_FLAGS "-Wall -lgtest -L/usr/local/lib")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-
-find_package(GTest REQUIRED)
-find_package(Threads REQUIRED)
 
 find_package(Boost REQUIRED COMPONENTS system thread regex)
 if(Boost_FOUND)
@@ -28,7 +27,6 @@ set(SRC_DIR ${DIR}/src)
 
 set(TESTS_DIR ${DIR}/tests)
 
-include_directories("${GTEST_INCLUDE_DIRS}")
 include_directories(include/)
 include_directories(tests/)
 
@@ -38,17 +36,11 @@ add_library(server_router STATIC
         ${SRC_DIR}/session.cpp
         ${SRC_DIR}/server_router.cpp)
 
-
-add_executable(TESTS
-        ${TESTS_DIR}/tests.cpp)
-
 # Исполняймый файл для теста Router-servera
 add_executable(server_router_test
         server_router_for_tests.cpp)
 
-# Исполняймый файл для теста парсера
-add_executable(test_parser
-        test_parser.cpp)
+
 
 
 # Эхо серверы для теста роутинга запросов с rout-сервера
@@ -68,21 +60,33 @@ target_include_directories(server_router_test PUBLIC ${TESTS_DIR})
 
 target_link_libraries(server_router_test ${USED_LIBS} server_router)
 
-target_link_libraries(test_parser ${USED_LIBS} server_router)
-
-target_link_libraries(test_parser ${USED_LIBS})
-
-
 # Echo-servers
 target_link_libraries(echo_server_1 ${USED_LIBS})
 target_link_libraries(echo_server_2 ${USED_LIBS})
 
 # Тесты
-target_include_directories(TESTS PUBLIC ${INC_DIR})
+if(TESTS)
+    find_package(GTest REQUIRED)
+    find_package(Threads REQUIRED)
+    add_executable(TESTS
+            ${TESTS_DIR}/tests.cpp)
 
-target_include_directories(TESTS PUBLIC ${TESTS_DIR})
+    # Исполняймый файл для теста парсера
+    add_executable(test_parser
+            test_parser.cpp)
 
-target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_router)
+    include_directories("${GTEST_INCLUDE_DIRS}")
 
-enable_testing()
-add_test(NAME TEST_ONE COMMAND tests1)
+    target_include_directories(TESTS PUBLIC ${INC_DIR})
+
+    target_include_directories(TESTS PUBLIC ${TESTS_DIR})
+
+    target_link_libraries(test_parser ${USED_LIBS} server_router)
+
+    target_link_libraries(test_parser ${USED_LIBS})
+
+    target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_router)
+
+    enable_testing()
+    add_test(NAME TEST_ONE COMMAND tests1)
+endif()

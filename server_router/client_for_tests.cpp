@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	sock.async_connect(ep, [&sock](const system::error_code& error) {
 		if (!error) {
 			std::string requst = "123423\n"
-								 "/api/friends/add/\n"
+								 "/api/post/add/\n"
 								 "4\n"
 								 "\n"
 								 "{\n"
