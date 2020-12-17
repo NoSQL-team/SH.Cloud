@@ -8,10 +8,35 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <boost/property_tree/ini_parser.hpp>
+
+
+//=
+//{{RequestDestination::POST_SERV, {"127.0.0.1", 9999}},
+//{RequestDestination::FRIEND_SERV, {"127.0.0.1", 9998}},
+//{RequestDestination::USER_SERV, {"127.0.0.1", 8883}},
+//{RequestDestination::AUTH_SERV, {"127.0.0.1", 8884}}
+//};
+
 namespace tcp_network {
 
 	Session::Session(boost::asio::io_service &io_service)
 			: socket_(io_service), data_{} {
+		boost::property_tree::ptree pt;
+		boost::property_tree::ini_parser::read_ini("../router_settings.ini", pt);
+		try {
+			uint16_t http_port = pt.get<uint16_t>("http_serv.port");
+			uint16_t friends_port = pt.get<uint16_t>("friends_queue.port");
+			uint16_t post_port = pt.get<uint16_t>("post_queue.port");
+			uint16_t users_port = pt.get<uint16_t>("users_queue.port");
+
+			servers_adrs_.insert({RequestDestination::POST_SERV, {"127.0.0.1", post_port}});
+			servers_adrs_.insert({RequestDestination::FRIEND_SERV, {"127.0.0.1", friends_port}});
+			servers_adrs_.insert({RequestDestination::USER_SERV, {"127.0.0.1", users_port}});
+
+		} catch (const std::exception& e) {
+
+		}
 	}
 
 	ip::tcp::socket& Session::socket() {
@@ -28,8 +53,6 @@ namespace tcp_network {
 	Destination Session::define_location() {
 		try {
 			std::string requst(data_);
-//
-//			std::istream(&data_) >> requst;
 
 			auto test = parser_.get_destination(requst);
 			print_destination(test);
@@ -53,8 +76,6 @@ namespace tcp_network {
 			sock.async_connect(ep, [&sock, this](const system::error_code& error) {
 				if (!error) {
 					std::string requst(data_);
-
-//					std::istream(&data_) >> requst;
 					boost::asio::write(sock, boost::asio::buffer(requst.c_str(), strlen(data_)));
 
 					std::cout << data_ << std::endl;
@@ -65,17 +86,4 @@ namespace tcp_network {
 			current_session.reset();
 		}
 	}
-
-//	void Session::handle_write(std::shared_ptr<Session> current_session, const boost::system::error_code &error) {
-//		if (!error) {
-//			std::cout << std::string(data_);
-//			socket_.async_read_some(boost::asio::buffer(data_, max_length),
-//									boost::bind(&Session::handle_read, this, current_session,
-//												boost::asio::placeholders::error,
-//												boost::asio::placeholders::bytes_transferred));
-//		} else {
-//			current_session.reset();
-//		}
-//	}
-
 }

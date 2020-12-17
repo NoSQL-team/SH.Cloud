@@ -11,16 +11,12 @@ namespace tcp_network {
     RequestDestination ParseJson::get_destination(std::string& request) {
 		auto iter = request.find('\n');
 		request.erase(0, iter + 1);
-//		iter = request.find('\n');
-//		requsts.insert({"priority", request.substr(0, iter)});
-//		request.erase(0, iter + 1);
 
 		iter = request.find('\n');
 		std::string destination = request.substr(0, iter);
 		destination.erase(0, std::find(destination.begin() + destination.find('/')
 									  + 1, destination.end(), '/') - destination.begin() + 1);
 		destination.erase(destination.find('/'));
-//        std::cout << destination << std::endl;
 
         if (servers_adrs_.count(destination) == 0) {
         	std::cerr << "Несуществующй адрес" << std::endl;
@@ -35,9 +31,6 @@ namespace tcp_network {
 		auto iter = request.find('\n');
 		requsts.insert({"type", request.substr(0, iter)});
 		request.erase(0, iter + 1);
-//		iter = request.find('\n');
-//		requsts.insert({"priority", request.substr(0, iter)});
-//		request.erase(0, iter + 1);
 
 		iter = request.find('\n');
 		std::string desination = request.substr(0, iter);
