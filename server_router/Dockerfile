@@ -16,7 +16,7 @@ RUN mkdir libtmp && cd libtmp && \
 
 RUN apt-get install libboost-all-dev -y
 
-
+ADD ./router_settings.ini /app
 ADD ./include /app/include
 ADD ./src /app/src
 ADD ./tests /app/tests

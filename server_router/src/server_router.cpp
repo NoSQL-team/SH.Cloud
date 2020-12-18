@@ -27,7 +27,8 @@ namespace tcp_network {
 			new_session->start(new_session);
 		} else {
 			new_session.reset();
-			BOOST_LOG_TRIVIAL(error) << error.message();
+			std::cerr << error.message() << std::endl;
+//			BOOST_LOG_TRIVIAL(error) << error.message();
 		}
 
 		start_accept();
