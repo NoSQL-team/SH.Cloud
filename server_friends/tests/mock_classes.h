@@ -6,7 +6,7 @@
 #define TESTS_MOCK_CLASSES_H
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
+//#include <gmock/gmock.h>
 #include <memory>
 #include <memory>
 #include "utilty.h"
@@ -27,16 +27,16 @@ protected:
 													  {"user", "andrewkireev"}, {"password", ""}};
 };
 
-class MockDatabase : public FriendsDataBase {
-public:
-	explicit MockDatabase(std::map<std::string, std::string>& db_settings) :
-	FriendsDataBase(db_settings) {}
-
-	MOCK_METHOD2(add_friend, bool(int user_1, int user_2));
-	MOCK_METHOD1(get_all_friends, std::vector<int>(int user_id));
-	MOCK_METHOD2(delete_friend, bool(int user_1, int user_2));
-	MOCK_METHOD2(is_friend, bool(int user_1, int user_2));
-};
+//class MockDatabase : public FriendsDataBase {
+//public:
+//	explicit MockDatabase(std::map<std::string, std::string>& db_settings) :
+//	FriendsDataBase(db_settings) {}
+//
+//	MOCK_METHOD2(add_friend, bool(int user_1, int user_2));
+//	MOCK_METHOD1(get_all_friends, std::vector<int>(int user_id));
+//	MOCK_METHOD2(delete_friend, bool(int user_1, int user_2));
+//	MOCK_METHOD2(is_friend, bool(int user_1, int user_2));
+//};
 
 //class TestServer {
 //protected:

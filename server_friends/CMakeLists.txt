@@ -75,14 +75,14 @@ target_include_directories(TESTS PUBLIC ${INC_DIR})
 
 target_include_directories(TESTS PUBLIC ${TESTS_DIR})
 
-target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
+target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends)
 
 
 target_include_directories(TESTS_BD PUBLIC ${INC_DIR})
 
 target_include_directories(TESTS_BD PUBLIC ${TESTS_DIR})
 
-target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends -lgmock)
+target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends)
 
 target_link_libraries(client ${USED_LIBS})
 
