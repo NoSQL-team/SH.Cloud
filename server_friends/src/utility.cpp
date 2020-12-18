@@ -3,8 +3,12 @@
 //
 
 #include "utilty.h"
-#include <map>
 
+#include <map>
+#include <iostream>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 static const std::map<std::string, tcp_network::RequestDestination> servers_adrs_ =
 		{{"5", tcp_network::RequestDestination::POST_SERV},

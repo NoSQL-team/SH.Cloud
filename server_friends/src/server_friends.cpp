@@ -3,7 +3,7 @@
 //
 
 #include "server_friends.h"
-#include <memory>
+
 //#include <boost/log/trivial.hpp>
 
 using namespace boost;

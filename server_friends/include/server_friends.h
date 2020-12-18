@@ -6,11 +6,7 @@
 #define NOSKOOL_SERVER_FRIENDS_H
 
 #include "friends_data_base.h"
-#include <unordered_map>
-#include <boost/bind.hpp>
-#include <boost/asio.hpp>
-#include <memory>
-#include <session.h>
+#include "session.h"
 
 namespace tcp_network {
 

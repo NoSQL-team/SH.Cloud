@@ -29,7 +29,7 @@ before_script:
   - sudo cp *.a /usr/lib
   - sudo apt-get install postgresql-12
   - sudo wget https://github.com/jtv/libpqxx/archive/7.2.1.tar.gz
-  - tar -zxvf 7.2.1.tar.gz
+  - sudo tar -zxvf 7.2.1.tar.gz
   - ls
   - cd libpqxx && cmake . && sudo make && sudo make install
   - cd "${TRAVIS_BUILD_DIR}"/server_friends/tests

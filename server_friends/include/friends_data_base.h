@@ -5,10 +5,11 @@
 #ifndef NOSKOOL_FRIENDS_DATA_BASE_H
 #define NOSKOOL_FRIENDS_DATA_BASE_H
 
-#include <string>
-#include <pqxx/pqxx>
 #include <map>
-#include <iostream>
+#include <string>
+
+#include <pqxx/pqxx>
+
 
 class DataBase {
 public:

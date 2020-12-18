@@ -5,11 +5,14 @@
 #ifndef NOSKOOL_CONNECTION_H
 #define NOSKOOL_CONNECTION_H
 
+#include "utilty.h"
+#include "friends_data_base.h"
+
+#include <memory>
 
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
-#include "utilty.h"
-#include "friends_data_base.h"
+
 
 namespace tcp_network {
 

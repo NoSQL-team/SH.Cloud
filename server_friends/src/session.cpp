@@ -3,11 +3,10 @@
 //
 
 #include "session.h"
-#include <unistd.h>
-#include <stdexcept>
-#include <memory>
-#include <boost/log/trivial.hpp>
 #include "requst_handler.h"
+
+#include <boost/log/trivial.hpp>
+
 
 
 using namespace boost;

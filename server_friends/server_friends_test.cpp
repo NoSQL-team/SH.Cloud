@@ -4,6 +4,8 @@
 
 #include "server_friends.h"
 
+#include <iostream>
+
 using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;

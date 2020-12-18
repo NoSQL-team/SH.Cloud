@@ -2,8 +2,9 @@
 // Created by Andrew Kireev on 11.11.2020.
 //
 
-#include <algorithm>
 #include "friends_data_base.h"
+
+#include <iostream>
 
 DataBase::DataBase(std::map<std::string, std::string> &db_settings) {
 	database_ = pqxx::connection("dbname=" + db_settings["dbname"] +

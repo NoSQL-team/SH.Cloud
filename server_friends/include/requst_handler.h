@@ -8,8 +8,6 @@
 #include "utilty.h"
 #include "session.h"
 #include "friends_data_base.h"
-#include <boost/bind.hpp>
-#include <boost/asio.hpp>
 
 namespace tcp_network {
 

@@ -6,11 +6,7 @@
 #define NOSKOOL_UTILTY_H
 
 #include <map>
-#include <iostream>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/log/sources/basic_logger.hpp>
+#include <string>
 
 namespace tcp_network {
 
