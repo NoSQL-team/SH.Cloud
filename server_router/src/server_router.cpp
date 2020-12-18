@@ -2,7 +2,7 @@
 // Created by Andrew Kireev on 06.11.2020.
 //
 
-#include <boost/log/trivial.hpp>
+//#include <boost/log/trivial.hpp>
 
 #include "server_router.h"
 
