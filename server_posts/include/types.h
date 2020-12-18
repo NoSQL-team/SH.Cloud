@@ -1,6 +1,13 @@
-#pragma once
+//
+// Created by steve on 15.12.2020.
+//
+
+#ifndef MAIN_TP_TYPES_H
+#define MAIN_TP_TYPES_H
 
 #include <iostream>
+#include <string>
+#include <map>
 #include <optional>
 #include <queue>
 #include <functional>
@@ -21,35 +28,58 @@ namespace io = boost::asio;
 namespace ip = io::ip;
 using tcp = ip::tcp;
 using error_code = boost::system::error_code;
-using namespace std::placeholders;
+
 
 using boost::property_tree::ptree;
 
-using string_group = std::vector<std::string>;
 
 struct dispatcher_entry {
-    std::size_t const args; // количество аргументов
-    std::function<std::string (const std::string& , const std::map<std::string, size_t>& )> const handler;
+    std::size_t const args = 0; // количество аргументов
+    std::function<std::string (const std::string &, const std::map<std::string, size_t> &)> const handler;
+
+
 };
 
 struct dispatcher_entry_with_body {
-    std::size_t const args; // количество аргументов
-    std::function<std::string (const std::string& , const std::map<std::string, size_t>&, const std::string& )> const handler;
+    std::size_t const args = 0; // количество аргументов
+    std::function<std::string (const std::string &, const std::map<std::string, size_t> &, const std::string &)> const handler;
 };
 
-// map обработчиков команд (название - диспетчер)
-using dispatcher_type = std::map<std::string, dispatcher_entry>;
-using dispatcher_type_with_body = std::map<std::string, dispatcher_entry_with_body>;
 
 
-using separator = boost::char_separator<char>;
-using tokenizer = boost::tokenizer<separator>;
-// вспомогательная функция, которая разбивает заданную строку на вектор строк
-// drop - символ по которому разбивается строка
-string_group split(std::string const& string, const char *drop) {
-    string_group group;
-    for(auto&& str : tokenizer(string, separator(drop))) {
-        group.emplace_back(str);
-    }
-    return group;
-}
+class RequestWithBody {
+public:
+    RequestWithBody(
+            std::string id_request,
+            std::string command,
+            std::map<std::string, size_t> args,
+            std::string body) :
+            id_request(std::move(id_request)),
+            command(std::move(command)),
+            args(std::move(args)),
+            body(std::move(body)) {}
+
+    std::string id_request;
+    std::string command;
+    std::map<std::string, size_t> args;
+    std::string body;
+};
+
+
+class RequestWithoutBody {
+public:
+    RequestWithoutBody(
+            std::string id_request,
+            std::string command,
+            std::map<std::string, size_t> args
+    ) :
+            id_request(std::move(id_request)),
+            command(std::move(command)),
+            args(std::move(args)) {}
+
+    std::string id_request;
+    std::string command;
+    std::map<std::string, size_t> args;
+};
+
+#endif //MAIN_TP_TYPES_H

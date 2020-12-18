@@ -1,49 +1,31 @@
 //
-// Created by steve on 09.12.2020.
+// Created by steve on 18.12.2020.
 //
 
-#ifndef SERVER_POSTS_UTILITY_PARSER_H
-#define SERVER_POSTS_UTILITY_PARSER_H
+//
+// Created by steve on 15.12.2020.
+//
 
+#ifndef MAIN_TP_UTILITY_H
+#define MAIN_TP_UTILITY_H
+
+#include "../include/utility_for_lib.h"
 #include "../include/types.h"
 #include "../include/post.h"
 
 
 
-
-class RequestWithBody {
-public:
-    RequestWithBody(
-            std::string id_request,
-            std::string command,
-            std::map<std::string, size_t> args,
-            std::string body) :
-            id_request(std::move(id_request)),
-            command(std::move(command)),
-            args(std::move(args)),
-            body(std::move(body)) {}
-
-    std::string id_request;
-    std::string command;
-    std::map<std::string, size_t> args;
-    std::string body;
-};
-
-class RequestWithoutBody {
-public:
-    RequestWithoutBody(
-            std::string id_request,
-            std::string command,
-            std::map<std::string, size_t> args
-    ) :
-            id_request(std::move(id_request)),
-            command(std::move(command)),
-            args(std::move(args)) {}
-
-    std::string id_request;
-    std::string command;
-    std::map<std::string, size_t> args;
-};
+using separator = boost::char_separator<char>;
+using tokenizer = boost::tokenizer<separator>;
+// вспомогательная функция, которая разбивает заданную строку на вектор строк
+// drop - символ по которому разбивается строка
+std::vector<std::string> split(std::string const& string, const char *drop) {
+    std::vector<std::string> result;
+    for(auto&& str : tokenizer(string, separator(drop))) {
+        result.emplace_back(str);
+    }
+    return result;
+}
 
 
 
@@ -70,7 +52,7 @@ Post parse_body(const std::string& body_str) {
     return post;
 }
 
-std::map<std::string, size_t> get_url_parameters(const string_group& vector_parameters) {
+std::map<std::string, size_t> get_url_parameters(const std::vector<std::string>& vector_parameters) {
     std::map<std::string, size_t> result;
     if (vector_parameters.size() % 2 != 0) {
         std::cout << "bad vector_parameters" << std::endl;
@@ -82,11 +64,11 @@ std::map<std::string, size_t> get_url_parameters(const string_group& vector_para
 }
 
 
-RequestWithoutBody parse_without_body(const string_group& args) {
+RequestWithoutBody parse_without_body(const std::vector<std::string>& args) {
     std::string id_request = args[0];
     std::string url_request = args[1];
 
-    string_group url_param = split(url_request, "?");
+    std::vector<std::string> url_param = split(url_request, "?");
     std::string command = url_param[0];
     std::map<std::string, size_t> parameters;
 
@@ -98,12 +80,12 @@ RequestWithoutBody parse_without_body(const string_group& args) {
 }
 
 
-RequestWithBody parse_with_body(const string_group& args) {
+RequestWithBody parse_with_body(const std::vector<std::string>& args) {
     std::string id_request = args[0];
     std::string url_request = args[1];
     std::string body_request = args[2];
 
-    string_group url_param = split(url_request, "?");
+    std::vector<std::string> url_param = split(url_request, "?");
     std::string command = url_param[0];
     std::map<std::string, size_t> parameters;
 
@@ -114,32 +96,40 @@ RequestWithBody parse_with_body(const string_group& args) {
     return RequestWithBody(id_request, command, parameters, body_request);
 }
 
+std::string one_post_to_str(Post& one_post) {
+    boost::format parsed_body = (boost::format(
+            "post_id: %1%,\n"
+            " creator_id: %2%,\n"
+            " creation_date: %3%,\n"
+            " title: %4%,\n"
+            " text: %5%,\n"
+            " attach: %6%\n\n"
+    )
+                                 % one_post.post_id
+                                 % one_post.creator_id
+                                 % one_post.creation_date
+                                 % one_post.title
+                                 % one_post.text
+                                 % one_post.attach);
+    return boost::str(parsed_body);
+}
+
+
 std::string vec_posts_to_str(std::vector<Post>& vec_posts) {
-    std::string res = "";
-    for (const auto& i : vec_posts) {
-        boost::format parsed_body =
-                (boost::format(
-                        "post_id: %1%,\n"
-                        " creator_id: %2%,\n"
-                        " creation_date: %3%,\n"
-                        " title: %4%,\n"
-                        " text: %5%,\n"
-                        " attach: %6%\n\n")
-                 %i.post_id
-                 %i.creator_id
-                 %i.creation_date
-                 %i.title
-                 %i.text
-                 %i.attach);
-        std::string body_str = boost::str(parsed_body);
-        res += body_str;
+    std::string res;
+    for (auto& i : vec_posts) {
+        res += one_post_to_str(i);
     }
     return res;
 }
+
+
+
+
 //try {
 //    dispatch("123 /posts/all/ {}");
 //} catch(boost::bad_lexical_cast &) {
-//    std::cout << "hui" << std::endl;
+//    std::cout << "bad" << std::endl;
 //}
 
-#endif //SERVER_POSTS_UTILITY_PARSER_H
+#endif //MAIN_TP_UTILITY_H

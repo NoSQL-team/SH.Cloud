@@ -1,13 +1,20 @@
 //
-// Created by steve on 10.12.2020.
+// Created by steve on 15.12.2020.
 //
 
-#ifndef SERVER_POSTS_POST_H
-#define SERVER_POSTS_POST_H
-
+#ifndef MAIN_TP_POST_H
+#define MAIN_TP_POST_H
 
 class Post {
 public:
+    Post() :
+            post_id(0),
+            creator_id(0),
+            creation_date(""),
+            title(""),
+            text(""),
+            attach("") {}
+
     Post(
             int post_id,
             int creator_id,
@@ -21,6 +28,14 @@ public:
                                   text(std::move(text)),
                                   attach(std::move(attach)) {}
 
+    // конструктор копирования
+    Post(const Post& p) : post_id(p.post_id),
+                                  creator_id(p.creator_id),
+                                  creation_date(p.creation_date),
+                                  title(p.title),
+                                  text(p.text),
+                                  attach(p.attach) {}
+
     int post_id;
     int creator_id;
     std::string creation_date{};
@@ -30,4 +45,4 @@ public:
 
 };
 
-#endif //SERVER_POSTS_POST_H
+#endif //MAIN_TP_POST_H
