@@ -17,8 +17,11 @@ ADD ./lib /app/src/lib
 ADD ./CMakeLists.txt /app/src
 ADD ./main.cpp /app/src
 
-RUN cd /app/src/ && mkdir tmp && cd tmp && cmake .. && make
+RUN cd /app/src/ && mkdir tmp && cd tmp && mkdir out && cmake .. && make && cd ..
 
 ADD ./lib/http-server/noskoolHTTP.ini /
+ADD ./static/m-skull/spa/out /out
+
+RUN ls -a -l /app/src/tmp/
 
 CMD ["/bin/sh", "-c", "/app/src/tmp/main >&1"]

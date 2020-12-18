@@ -12,6 +12,9 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace boost;
 using namespace boost::system;
@@ -79,7 +82,17 @@ protected:
     RequesterRouter(const std::string& addr, const std::string& port):
     _ep(ip::address::from_string(addr), lexical_cast<int>(port)),
     _sock(_requesterService) {
-        _sock.connect(_ep);
+        while (true) {
+            try {
+                _sock.connect(_ep);
+                std::cout << "Connecting" << std::endl;
+                break;
+            }
+            catch(const std::exception& e) {
+                std::cerr << e.what() << '\n';
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }   
+        }
         _requesterService.run();
     }
     static RequesterRouter* _objPtr;
