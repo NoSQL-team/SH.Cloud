@@ -5,7 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <boost/property_tree/ini_parser.hpp>
-#include <boost/log/trivial.hpp>
+//#include <boost/log/trivial.hpp>
 
 #include "server_router.h"
 
@@ -22,7 +22,7 @@ int main() {
 		tcp_network::Server s(pt.get<int>("router.port"));
 	}
 	catch (std::exception& e) {
-		BOOST_LOG_TRIVIAL(error) << e.what();
+//		BOOST_LOG_TRIVIAL(error) << e.what();
 	}
 
 	return 0;
