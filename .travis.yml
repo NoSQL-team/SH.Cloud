@@ -31,11 +31,11 @@ before_script:
   - sudo wget https://github.com/jtv/libpqxx/archive/7.2.1.tar.gz
   - sudo tar -zxvf 7.2.1.tar.gz
   - ls
-  - cd libpqxx-7.2.1 && cmake . && sudo make && sudo make install
+  - cd libpqxx-7.2.1 && sudo cmake . && sudo make && sudo make install
   - cd "${TRAVIS_BUILD_DIR}"/server_friends/tests
   - cd ..
-  - cmake .
-  - make
+  - sudo cmake .
+  - sudo make
 #  - apt-get install -y libpqxx-dev
 
 
