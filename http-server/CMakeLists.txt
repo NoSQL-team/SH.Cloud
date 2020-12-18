@@ -28,7 +28,8 @@ add_definitions(-DBOOST_LOG_DYN_LINK)
 add_library(libhttp-server STATIC 
   lib/http-server/requests-handler.cpp
   lib/http-server/responses-handler.cpp
-  lib/http-server/requester.cpp
+  lib/http-server/requesterRouter.cpp
+  lib/http-server/requesterAuth.cpp
   lib/http-server/http-server.cpp
   lib/http-server/session.cpp
 )

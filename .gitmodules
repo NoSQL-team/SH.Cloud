@@ -1,3 +1,6 @@
 [submodule "auth-server/ex_lib/jwt-cpp"]
 	path = auth-server/ex_lib/jwt-cpp
 	url = https://github.com/Thalhammer/jwt-cpp.git
+[submodule "http-server/static/m-skull"]
+	path = http-server/static/m-skull
+	url = https://github.com/CUzkov/m-skull.git

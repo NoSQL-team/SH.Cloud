@@ -24,8 +24,10 @@ void HTTPServer::getConfFile() {
         _loggerPath = pt.get<std::string>("logger.path");
         _loggerLevel = pt.get<std::string>("logger.level");
         _context.insert({"staticPath", pt.get<std::string>("server.static_path")});
-        _context.insert({"QRAddr", pt.get<std::string>("request-handler.queue-router-addr")});
-        _context.insert({"QRPort", pt.get<std::string>("request-handler.queue-router-port")});
+        _ipMap.insert({"QRAddr", pt.get<std::string>("request-handler.queue-router-addr")});
+        _ipMap.insert({"QRPort", pt.get<std::string>("request-handler.queue-router-port")});
+        _ipMap.insert({"APort", pt.get<std::string>("server-auth.server-auth-port")});
+        _ipMap.insert({"AAddr", pt.get<std::string>("server-auth.server-auth-addr")});
     }
     catch(const std::exception& e)
     {

@@ -5,6 +5,10 @@
 
 #include <boost/thread/thread.hpp>
 
+#include <boost/lexical_cast.hpp>
+
+#include <boost/property_tree/json_parser.hpp>
+
 #include <string>
 #include <vector>
 #include <functional>
@@ -22,12 +26,14 @@ class RequestsHandler
     std::string _contentType;
     std::string _responseFirstStr;
     std::string _responseBody;
+    ssize_t _user_auth_id = -1;
     size_t _responseStatus;
     std::map<std::string, std::string> _requestHeaders;
     std::map<std::string, std::string> _responseHeaders;
     int isOurServer = 0;
     bool isResponseReady = false;
     size_t _number;
+    boost::property_tree::ptree _ptBuffer;
 
     void parseHeaders(std::istream& stream);
     std::string readResponseFile(const std::string& staticPath);
@@ -41,6 +47,7 @@ class RequestsHandler
     std::string formationRequest();
     bool isOurServerFn(const std::string& header);
     void logRequestOur();
+    void authHandler();
 
 public:
     RequestsHandler() {};
@@ -66,27 +73,52 @@ public:
     void setCallback(std::function<void()> fn, size_t number);
 };
 
-class Requester
+class RequesterRouter
 {
 protected:
-    Requester():
-    _ep(ip::address::from_string("127.0.0.1"), 8080),
+    RequesterRouter(const std::string& addr, const std::string& port):
+    _ep(ip::address::from_string(addr), lexical_cast<int>(port)),
     _sock(_requesterService) {
         _sock.connect(_ep);
         _requesterService.run();
     }
-    static Requester* _objPtr;
+    static RequesterRouter* _objPtr;
     static std::mutex _requesterMutex;
     io_service _requesterService;
     ip::tcp::endpoint _ep;
     ip::tcp::socket _sock;
 
 public:
-    Requester(Requester &other) = delete;
-    void operator=(const Requester &) = delete;
-    static Requester* getInstance();
+    RequesterRouter(RequesterRouter &other) = delete;
+    void operator=(const RequesterRouter &) = delete;
+    static RequesterRouter* getInstance();
+    static RequesterRouter* getInstance(const std::string& addr, const std::string& port);
 
     void sendRequest(std::string body, std::function<void()> fn, size_t number);
+};
+
+class RequesterAuth
+{
+protected:
+    RequesterAuth(const std::string& addr, const std::string& port):
+    _ep(ip::address::from_string(addr), lexical_cast<int>(port)),
+    _sock(_requesterService) {
+        _requesterService.run();
+    }
+    static RequesterAuth* _objPtr;
+    static std::mutex _requesterAuthMutex;
+    io_service _requesterService;
+    ip::tcp::endpoint _ep;
+    ip::tcp::socket _sock;
+    std::string _body;
+
+public:
+    RequesterAuth(RequesterAuth &other) = delete;
+    void operator=(const RequesterAuth &) = delete;
+    static RequesterAuth* getInstance();
+    static RequesterAuth* getInstance(const std::string& addr, const std::string& port);
+
+    std::string getResponse(std::string body);
 };
 
 class Session:  public std::enable_shared_from_this<Session>
@@ -112,6 +144,7 @@ class HTTPServer
     ip::tcp::acceptor _acceptor;
     ip::tcp::socket _socket;
     std::map<std::string, std::string> _context;
+    std::map<std::string, std::string> _ipMap;
     void acceptAndRun();
     void initServer();
     void getConfFile();
@@ -123,6 +156,9 @@ public:
         _socket(io_service)
     {
         initServer();
+        ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+        RequesterRouter* requesterRouter = RequesterRouter::getInstance(_ipMap.at("QRAddr"), _ipMap.at("QRPort"));
+        RequesterAuth* requesterAuth = RequesterAuth::getInstance(_ipMap.at("AAddr"), _ipMap.at("APort"));
         acceptAndRun();
     };
     ~HTTPServer() {};

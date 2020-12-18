@@ -6,11 +6,11 @@
 
 #include <iostream>
 
-const std::string AUTH_REQUEST = "authRequest";
-const std::string AUTH = "auth";
-const std::string LOGOUT = "logout";
-const std::string ADD = "add";
-const std::string REFRESH = "refresh";
+const std::string AUTH_REQUEST = "/api/auth/authRequest/";
+const std::string AUTH = "/api/auth/auth/";
+const std::string LOGOUT = "/api/auth/logout/";
+const std::string ADD = "/api/auth/add/";
+const std::string REFRESH = "/api/auth/refresh/";
 const std::string SECRET_KEY = "dwabkU&#BN#*(NP*#*(";
 
 void RequestsHandler::logError(const std::string& log)
@@ -31,7 +31,7 @@ std::string RequestsHandler::errorAnswer(const std::string& error)
     logError("Bad request");
     _ptResponse.put("response", error);
     boost::property_tree::write_json(response, _ptResponse);
-    return response.str();
+    return (response.str() + '\r');
 }
 
 std::string RequestsHandler::authRequest()
@@ -70,7 +70,7 @@ std::string RequestsHandler::authRequest()
     }
 
     boost::property_tree::write_json(response, _ptResponse);
-    return response.str();
+    return (response.str() + '\r');
 }
 
 std::string RequestsHandler::auth() 
@@ -93,45 +93,49 @@ std::string RequestsHandler::auth()
         return response.str();
     }
 
-    if (r[0][0].c_str() == _userPassword) {
-        try {
-            auto aToken = jwt::create()
-                .set_issuer(_userName)
-                .set_type("JWS")
-                .set_issued_at(std::chrono::system_clock::now())
-                .set_expires_at(std::chrono::system_clock::now() + std::chrono::seconds{360})
-                .sign(jwt::algorithm::hs256{SECRET_KEY});
+    if (!r.empty()) {
+        if (r[0][0].c_str() == _userPassword) {
+            try {
+                auto aToken = jwt::create()
+                    .set_issuer(_userName)
+                    .set_type("JWS")
+                    .set_issued_at(std::chrono::system_clock::now())
+                    .set_expires_at(std::chrono::system_clock::now() + std::chrono::seconds{360})
+                    .sign(jwt::algorithm::hs256{SECRET_KEY});
 
-            auto rToken = jwt::create()
-                .set_issuer(_userName)
-                .set_type("JWS")
-                .set_issued_at(std::chrono::system_clock::now())
-                .set_expires_at(std::chrono::system_clock::now() + std::chrono::hours{9000})
-                .sign(jwt::algorithm::hs256{SECRET_KEY});
+                auto rToken = jwt::create()
+                    .set_issuer(_userName)
+                    .set_type("JWS")
+                    .set_issued_at(std::chrono::system_clock::now())
+                    .set_expires_at(std::chrono::system_clock::now() + std::chrono::hours{9000})
+                    .sign(jwt::algorithm::hs256{SECRET_KEY});
 
-            db->update(
-                "users", 
-                {
-                    std::make_tuple("refresh_token", rToken, "string"),
-                    std::make_tuple("access_token", aToken, "string")
-                }, 
-                {std::make_tuple("username", _userName, "string")}
-            );
+                db->update(
+                    "users", 
+                    {
+                        std::make_tuple("refresh_token", rToken, "string"),
+                        std::make_tuple("access_token", aToken, "string")
+                    }, 
+                    {std::make_tuple("username", _userName, "string")}
+                );
 
-            _ptResponse.put("access_token", aToken);
-            _ptResponse.put("refresh_token", rToken);
-        }
-        catch(const std::exception& e) {
-            std::cerr << e.what() << '\n';
-            _ptResponse.put("response", "error");
-            boost::property_tree::write_json(response, _ptResponse);
-            return response.str();
+                _ptResponse.put("access_token", aToken);
+                _ptResponse.put("refresh_token", rToken);
+            }
+            catch(const std::exception& e) {
+                std::cerr << e.what() << '\n';
+                _ptResponse.put("response", "error");
+                boost::property_tree::write_json(response, _ptResponse);
+                return response.str();
+            }
+        } else {
+            _ptResponse.put("response", "Bad password");
         }
     } else {
-        _ptResponse.put("response", "Bad password");
+        _ptResponse.put("response", "Bad creditance");
     }
     boost::property_tree::write_json(response, _ptResponse);
-    return response.str();
+    return (response.str() + '\r');
 }
 
 std::string RequestsHandler::logout() 
@@ -154,30 +158,34 @@ std::string RequestsHandler::logout()
         return response.str();
     }
 
-    if (r[0][0].c_str() == _accessToken) {
-        try {
-            db->update(
-                "users", 
-                {
-                    std::make_tuple("refresh_token", "", "string"),
-                    std::make_tuple("access_token", "", "string")
-                }, 
-                {std::make_tuple("username", _userName, "string")}
-            );
-            _ptResponse.put("response", "ok");
-        }
-        catch(const std::exception& e) {
-            std::cerr << e.what() << '\n';
-            _ptResponse.put("response", "error");
-            boost::property_tree::write_json(response, _ptResponse);
-            return response.str();
-        }
+    if (r.empty()) {
+        _ptResponse.put("response", "Not found user");
     } else {
-        _ptResponse.put("response", "Bad token");
+        if (r[0][0].c_str() == _accessToken) {
+            try {
+                db->update(
+                    "users", 
+                    {
+                        std::make_tuple("refresh_token", "", "string"),
+                        std::make_tuple("access_token", "", "string")
+                    }, 
+                    {std::make_tuple("username", _userName, "string")}
+                );
+                _ptResponse.put("response", "ok");
+            }
+            catch(const std::exception& e) {
+                std::cerr << e.what() << '\n';
+                _ptResponse.put("response", "error");
+                boost::property_tree::write_json(response, _ptResponse);
+                return response.str();
+            }
+        } else {
+            _ptResponse.put("response", "Bad token");
+        }
     }
 
     boost::property_tree::write_json(response, _ptResponse);
-    return response.str();
+    return (response.str() + '\r');
 }
 
 std::string RequestsHandler::add() 
@@ -185,7 +193,6 @@ std::string RequestsHandler::add()
     DateBaseConnection* db = DateBaseConnection::getInstance();
     std::stringstream response;
     pqxx::result r;
-
     try {
         r = db->select(
                 "users", 
@@ -198,7 +205,6 @@ std::string RequestsHandler::add()
         boost::property_tree::write_json(response, _ptResponse);
         return response.str();
     }
-
     if (r.empty()) {
         try {
             db->insert(
@@ -223,7 +229,7 @@ std::string RequestsHandler::add()
         _ptResponse.put("response", "not unique username");
     }
     boost::property_tree::write_json(response, _ptResponse);
-    return response.str();
+    return (response.str() + '\r');
 }
 
 std::string RequestsHandler::refresh()
@@ -270,15 +276,15 @@ std::string RequestsHandler::refresh()
     }
 
     boost::property_tree::write_json(response, _ptResponse);
-    return response.str();
+    return (response.str() + '\r');
 }
 
 std::string RequestsHandler::getResponse(std::istream& stream)
 {
+    std::getline(stream, _type);
     boost::property_tree::read_json(stream, _ptRequest);
 
     try {
-        _type = _ptRequest.get<std::string>("type");
         if (_type == AUTH_REQUEST) {
             _userName = _ptRequest.get<std::string>("username");
             _accessToken = _ptRequest.get<std::string>("access_token");
