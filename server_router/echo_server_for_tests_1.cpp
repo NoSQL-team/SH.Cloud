@@ -2,7 +2,6 @@
 // Created by Andrew Kireev on 02.12.2020.
 //
 
-#include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/smart_ptr.hpp>
@@ -48,7 +47,6 @@ int main()
 	{
 		boost::asio::io_service io_service;
 
-		using namespace std; // For atoi.
 		server(io_service, 8546);
 	}
 	catch (std::exception& e)

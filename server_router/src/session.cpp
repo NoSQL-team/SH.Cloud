@@ -34,7 +34,7 @@ namespace tcp_network {
 	}
 
 	void Session::start(std::shared_ptr<Session> current_session) {
-		socket_.async_receive(buffer(&data_[0], 5024),
+		socket_.async_receive(buffer(&data_[0], max_length),
 								boost::bind(&Session::handle_read, this, current_session,
 											boost::asio::placeholders::error));
 	}
@@ -65,8 +65,6 @@ namespace tcp_network {
 				if (!error) {
 					std::string requst(data_);
 					boost::asio::write(sock, boost::asio::buffer(requst.c_str(), strlen(data_)));
-
-					std::cout << data_ << std::endl;
 				}
 			});
 			service.run();

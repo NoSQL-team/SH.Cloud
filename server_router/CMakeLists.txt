@@ -7,9 +7,18 @@ set(Boost_USE_MULTITHREAD ON)
 
 option(test_build "" OFF)
 
+if(UNIX AND APPLE)
+    set(LINUX TRUE)
+endif()
+
 # для сборки в докере обязательно нужены -lpthread -lboost_thread
-set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread -lgtest -L/usr/local/lib -DBOOST_LOG_DYN_LINK")
-#set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -DBOOST_LOG_DYN_LINK")
+if (LINUX)
+    set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread -lgtest -L/usr/local/lib -DBOOST_LOG_DYN_LINK")
+endif()
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -DBOOST_LOG_DYN_LINK")
+endif()
+
 #set(CMAKE_CXX_FLAGS "-Wall -lgtest -L/usr/local/lib -DBOOST_LOG_DYN_LINK")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
