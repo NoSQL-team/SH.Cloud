@@ -18,7 +18,9 @@ addons:
       - lcov
       - gcovr
       - libboost-all-dev
+      - libpq-dev
       - libpqxx-dev
+      - postgresql-server-dev-all
 #      - boost
 #      - pqxx
 
