@@ -4,8 +4,9 @@
 #include <thread>
 #include <chrono>
 
-// std::unique_ptr<DateBaseConnection> DateBaseConnection::_objPtr = std::make_unique<DateBaseConnection>(nullptr);
+std::unique_ptr<DateBaseConnection> DateBaseConnection::_objPtr(nullptr);
 std::mutex DateBaseConnection::_mutex;
+std::once_flag flag;
 
 DateBaseConnection* DateBaseConnection::getInstance()
 {
@@ -41,22 +42,35 @@ DateBaseConnection *DateBaseConnection::getInstance(
     std::string password
 ) {
     std::lock_guard<std::mutex> lock(_mutex);
-    if (_objPtr == nullptr)
-    {
-        _objPtr = std::make_unique<DateBaseConnection>(
+    std::call_once(flag, [dbname, host, user, password]() {
+        DateBaseConnection::_objPtr.reset(new DateBaseConnection(
             dbname,
             host,
             user,
             password
-        );
-    }
+        ));
+    });
     return _objPtr.get();
 }
 
-void DateBaseConnection::dbRequest() {
-    std::lock_guard<std::mutex> lock(_mutex);
-    pqxx::work w(*_db);
-    std::stringstream request;
+std::string getWhere(const std::vector<std::tuple<std::string, std::string, std::string>>& where) {
+    std::stringstream buffer;
+    if (!where.empty()) {
+        buffer << "WHERE ";
+        for (const auto& whereEntry : where) {
+            buffer << 
+                get<0>(whereEntry) << 
+                "=" <<
+                (get<2>(whereEntry) == "number" ? "" : "\'") <<
+                get<1>(whereEntry) <<
+                (get<2>(whereEntry) == "number" ? "" : "\'") <<
+                ", ";
+        }
+        buffer.seekp(-2, std::ios_base::end);
+        buffer << '\0';
+        return buffer.str();
+    }
+    return "";
 }
 
 pqxx::result DateBaseConnection::select(
@@ -74,20 +88,7 @@ pqxx::result DateBaseConnection::select(
         request << column << (colQuant - 1 == &column  - &columns[0] ? " " : ", ");
     }
     request << "FROM " << table << " ";
-    if (!where.empty()) {
-        request << "WHERE ";
-        for (const auto& whereEntry : where) {
-            request << 
-                get<0>(whereEntry) << 
-                "=" <<
-                (get<2>(whereEntry) == "number" ? "" : "\'") <<
-                get<1>(whereEntry) <<
-                (get<2>(whereEntry) == "number" ? "" : "\'") <<
-                ", ";
-        }
-        request.seekp(-2, std::ios_base::end);
-        request << '\0';
-    }
+    request << getWhere(where);
 
     pqxx::result r = w.exec(request.str());
     w.commit();
@@ -115,21 +116,7 @@ pqxx::result DateBaseConnection::update(
     }
     request.seekp(-2, std::ios_base::end);
     request << '\0' << " ";
-
-    if (!where.empty()) {
-        request << "WHERE ";
-        for (const auto& whereEntry : where) {
-            request << 
-                get<0>(whereEntry) << 
-                "=" <<
-                (get<2>(whereEntry) == "number" ? "" : "\'") <<
-                get<1>(whereEntry) <<
-                (get<2>(whereEntry) == "number" ? "" : "\'") <<
-                ", ";
-        }
-        request.seekp(-2, std::ios_base::end);
-        request << '\0';
-    }
+    request << getWhere(where);
 
     pqxx::result r = w.exec(request.str());
     w.commit();
