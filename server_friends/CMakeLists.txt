@@ -88,7 +88,7 @@ target_include_directories(TESTS_BD PUBLIC ${INC_DIR})
 
 target_include_directories(TESTS_BD PUBLIC ${TESTS_DIR})
 
-target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends)
+target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends ${PQXX_LIB} ${PQ_LIB})
 
 target_link_libraries(client ${USED_LIBS})
 
