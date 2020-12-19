@@ -1,17 +1,11 @@
-cmake_minimum_required(VERSION 3.19.1)
+cmake_minimum_required(VERSION 3.13.4)
 
-project(http-nosool)
+project(auth-server-noskool)
 #======================================================================================
 
-option(TESTS "" OFF)
-
-#======================================================================================
-
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREAD ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "-lpthread")
+set(CMAKE_CXX_FLAGS "-lpthread -lpqxx -lpq")
 
 #======================================================================================
 
@@ -25,14 +19,19 @@ add_definitions(-DBOOST_LOG_DYN_LINK)
 
 #======================================================================================
 
-add_library(libhttp-server STATIC 
-  lib/http-server/requests-handler.cpp
-  lib/http-server/responses-handler.cpp
-  lib/http-server/requesterRouter.cpp
-  lib/http-server/requesterAuth.cpp
-  lib/http-server/http-server.cpp
-  lib/http-server/session.cpp
+add_library(libauth-server STATIC 
+  lib/auth-server/auth-server.cpp
+  lib/auth-server/requests-handler.cpp
+  lib/auth-server/session.cpp
+  lib/auth-server/data-base-connection.cpp
 )
+
+#======================================================================================
+
+add_subdirectory(ex_lib/jwt-cpp)
+include_directories(ex_lib/jwt-cpp/include)
+
+#======================================================================================
 
 if(TESTS)
   find_package(GTest REQUIRED)
@@ -51,12 +50,12 @@ if(TESTS)
       mainTest  
       ${GTEST_LIBRARIES} 
       Threads::Threads
-      ${USED_LIBS} 
-      libhttp-server
+      libauth-server
       -lgmock
+      ${USED_LIBS}
   )
 
 else()
   add_executable(main main.cpp)
-  target_link_libraries(main ${USED_LIBS} libhttp-server -lboost_iostreams)
+  target_link_libraries(main jwt-cpp::jwt-cpp libauth-server ${USED_LIBS} -lboost_iostreams)
 endif()

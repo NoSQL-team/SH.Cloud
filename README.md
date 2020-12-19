@@ -3,6 +3,10 @@ noskool social network
 #### Общая структура:
 ![Main struct](https://github.com/NoSQL-team/noskool/raw/readme_images/img/main_struct.png)
 ___________________________________________________________________________________________
+#### Запуск
+sudo docker-compose down --volumes
+sudo docker-compose up
+docker image prune
 #### По структурно:
 1. HTTP-server — принимает http-запросы от клиента, передаёт роутеру очередей
 2. Queue router — делегирует запросы очередям (несколько очередей для уменьшения нагрузки на них, по сути инстансы одного класса)
