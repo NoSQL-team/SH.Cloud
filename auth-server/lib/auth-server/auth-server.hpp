@@ -5,11 +5,9 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <string>
-#include <iostream>
 #include <vector>
 #include <tuple>
-#include <thread>
-#include <chrono>
+#include <memory>
 
 #include <pqxx/pqxx>
 
@@ -68,26 +66,9 @@ protected:
         std::string host,
         std::string user,
         std::string password
-    ) {
-        std::stringstream ss;
-        ss << "dbname=" << dbname << " host=" << host << " user=" << user << " password=" << password << " port=27001";
-        while (true) {
-            try {
-                _db = new pqxx::connection(ss.str());
-                break;
-            }
-            catch(const std::exception& e) {
-                std::cerr << e.what() << '\n';
-                std::this_thread::sleep_for(std::chrono::seconds(1));
-            }
-        }
-        std::cout << "Connecting!" << std::endl;
-    }
-    ~DateBaseConnection() {
-        delete _db;
-    }
+    );
 
-    static DateBaseConnection* _objPtr;
+    static std::unique_ptr<DateBaseConnection> _objPtr;
     static std::mutex _mutex;
 
 public:
@@ -115,7 +96,9 @@ public:
         const std::vector<std::tuple<std::string, std::string, std::string>>& columnsValue
     );
 
-    pqxx::connection* _db;
+    void dbRequest();
+
+    std::unique_ptr<pqxx::connection> _db;
 };
 
 class AuthServer

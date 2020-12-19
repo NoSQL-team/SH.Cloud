@@ -4,17 +4,12 @@ project(auth-server-noskool)
 #======================================================================================
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "-lpthread -lpqxx -lpq")
 
 #======================================================================================
 
 find_package(Boost 1.67.0 REQUIRED COMPONENTS system thread regex log_setup log)
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-  link_directories(${Boost_LIBRARY_DIRS})
-endif(Boost_FOUND)
-set(USED_LIBS ${Boost_LIBRARIES})
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
 add_definitions(-DBOOST_LOG_DYN_LINK)
 
 #======================================================================================
@@ -57,5 +52,5 @@ if(TESTS)
 
 else()
   add_executable(main main.cpp)
-  target_link_libraries(main jwt-cpp::jwt-cpp libauth-server ${USED_LIBS} -lboost_iostreams)
+  target_link_libraries(main jwt-cpp::jwt-cpp libauth-server ${Boost_LIBRARIES} -lpqxx)
 endif()

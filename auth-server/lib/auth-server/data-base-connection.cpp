@@ -1,12 +1,37 @@
 #include "auth-server.hpp"
 
-DateBaseConnection* DateBaseConnection::_objPtr= nullptr;;
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+// std::unique_ptr<DateBaseConnection> DateBaseConnection::_objPtr = std::make_unique<DateBaseConnection>(nullptr);
 std::mutex DateBaseConnection::_mutex;
 
-DateBaseConnection *DateBaseConnection::getInstance()
+DateBaseConnection* DateBaseConnection::getInstance()
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return _objPtr;
+    return _objPtr.get();
+}
+
+DateBaseConnection::DateBaseConnection(
+    std::string dbname,
+    std::string host,
+    std::string user,
+    std::string password
+) {
+    std::stringstream ss;
+    ss << "dbname=" << dbname << " host=" << host << " user=" << user << " password=" << password << " port=27001";
+    while (true) {
+        try {
+            _db = std::make_unique<pqxx::connection>(ss.str());
+            break;
+        }
+        catch(const std::exception& e) {
+            std::cerr << e.what() << '\n';
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
+    std::cout << "Connecting!" << std::endl;
 }
 
 DateBaseConnection *DateBaseConnection::getInstance(
@@ -18,14 +43,20 @@ DateBaseConnection *DateBaseConnection::getInstance(
     std::lock_guard<std::mutex> lock(_mutex);
     if (_objPtr == nullptr)
     {
-        _objPtr = new DateBaseConnection(
+        _objPtr = std::make_unique<DateBaseConnection>(
             dbname,
             host,
             user,
             password
         );
     }
-    return _objPtr;
+    return _objPtr.get();
+}
+
+void DateBaseConnection::dbRequest() {
+    std::lock_guard<std::mutex> lock(_mutex);
+    pqxx::work w(*_db);
+    std::stringstream request;
 }
 
 pqxx::result DateBaseConnection::select(
