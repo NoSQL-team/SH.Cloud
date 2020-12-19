@@ -6,9 +6,12 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/log/trivial.hpp>
 #include "HandlerUser.h"
+#include <iostream>
 
 using std::string;
 using boost::property_tree::ptree;
+
+using namespace boost::asio;
 
 std::map<string, string> HandlerUser::parser_json(string& request) {
     try {
@@ -18,23 +21,23 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
             boost::property_tree::read_json(stream_request, pt);
             std::map<string, string> result;
             for (ptree::const_iterator it = pt.begin(); it != pt.end(); ++it) {
-                string field;
+                string field = std::string(it->first);
                 if (std::string(it->first) == "id") {
                     field = "Aid";
                 }
-                if (std::string(it->first) == "firstname") {
+                else if (std::string(it->first) == "firstname") {
                     field = "Bfirstname";
                 }
-                if (std::string(it->first) == "lastname") {
+                else if (std::string(it->first) == "lastname") {
                     field = "Clastname";
                 }
-                if (std::string(it->first) == "nickname") {
+                else if (std::string(it->first) == "nickname") {
                     field = "Dlastname";
                 }
-                if (std::string(it->first) == "email") {
+                else if (std::string(it->first) == "email") {
                     field = "Eemail";
                 }
-                if (std::string(it->first) == "photo") {
+                else if (std::string(it->first) == "photo") {
                     field = "Fphoto";
                 }
                 result[field] = it->second.get_value<string>();
@@ -44,7 +47,7 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
         return {};
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.62 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.16 " << e.what();
     }
 }
 
@@ -106,18 +109,38 @@ void HandlerUser::handle_request(string& request) {
 
 void HandlerUser::create_user(int number_request, const std::map<string, string>& data_user, int user_id) const {
     try {
-        int result = data_base_.insert_(data_user, user_id);
-        string str_result = std::to_string(number_request) + "\n";
-        str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
-//        if (result == 200) {
-//            str_result += "{\n \"response\": \"success create user\"\n}";
-//        } else {
-//            str_result += "{\n \"response\": \"fail create user\"\n}";
-//        }
-        session_.send_answer(str_result);
+    	std::string request = "/auth/add/\n\n{\n  \"id\": ";
+    	request += std::to_string(data_base_.get_id());
+    	request += "\n  \"password\": \"" + data_user.at("password") + "\",\n  \"login\": \"" + data_user.at("Eemail") + "\"\n}";
+
+    	boost::asio::io_service service;
+		boost::asio::ip::tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 9999);
+		ip::tcp::socket socket(service);
+		socket.connect(end);
+		boost::asio::write(socket, boost::asio::buffer(request));
+		service.run();
+
+		char response[1024];
+		socket.read_some(boost::asio::buffer(response, 1024));
+
+
+		std::string answer = response;
+		std::map<string, string> parse_answer = parser_json(answer);
+
+		if (parse_answer.at("response") != "ok") {
+			string str_result = std::to_string(number_request) + "\n";
+			str_result += "{\n  \"response\": true \n}";
+			session_.send_answer(str_result);
+		}
+		else {
+			int result = data_base_.insert(data_user, user_id);
+			string str_result = std::to_string(number_request) + "\n";
+			str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
+			session_.send_answer(str_result);
+		}
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.62 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.110 " << e.what();
     }
 }
 
@@ -155,34 +178,11 @@ void HandlerUser::all_users(int number_request) const {
     }
 }
 
-//void HandlerUser::delete_user(int id, int number_request) const {
-//    try {
-//        int result = data_base_.delete_(id);
-//        string str_result = std::to_string(number_request) + "\n";
-//        str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
-////        if (result == 200) {
-////            str_result += "{\n \"response\": \"success delete user\"\n}";
-////        } else {
-////            str_result += "{\n \"response\": \"fail delete user\"\n}";
-////        }
-//        session_.send_answer(str_result);
-//    }
-//    catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp delete_user c.113 " << e.what();
-//    }
-//}
-
-
 void HandlerUser::update_data(int number_request, const std::map<string, string>& data_user, int user_id) const {
     try {
-        int result = data_base_.update_(data_user, user_id);
+        int result = data_base_.update(data_user, user_id);
         string str_result = std::to_string(number_request) + "\n";
         str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
-//        if (result == 200) {
-//            str_result += "{\n \"response\": \"success update user\"\n}";
-//        } else {
-//            str_result += "{\n \"response\": \"fail update user\"\n}";
-//        }
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {

@@ -5,6 +5,7 @@
 #include "Server.h"
 #include <memory>
 #include <boost/asio.hpp>
+#include <iostream>
 
 using boost::asio::ip::tcp;
 
@@ -21,7 +22,7 @@ using boost::asio::ip::tcp;
     Server::Server(short port) : acceptor_(io_service_,
                         boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
     {
-//        std::cout << "constr" << std::endl;
+        std::cout << "constr" << std::endl;
         start_accept();
         io_service_.run();
     }
@@ -30,7 +31,7 @@ using boost::asio::ip::tcp;
     {
         std::shared_ptr<Session> new_session = std::make_shared<Session>(io_service_, data_base_);
 
-//        std::cout << "Обрабатываем1" << std::endl;
+        std::cout << "Обрабатываем1" << std::endl;
 
         acceptor_.async_accept(new_session->socket(),
                                boost::bind(&Server::handle_accept, this, new_session,
@@ -42,7 +43,7 @@ using boost::asio::ip::tcp;
     {
         if (!error)
         {
-//            std::cout << "Обрабатываем" << std::endl;
+            std::cout << "Обрабатываем" << std::endl;
             new_session->start();
         }
         else

@@ -4,6 +4,7 @@
 
 #include "Session.h"
 #include "HandlerUser.h"
+#include <iostream>
 
 using boost::asio::ip::tcp;
 
@@ -13,7 +14,7 @@ tcp::socket& Session::socket()
 }
 
 void Session::send_answer(std::string& answer) {
-//	std::cout << "ООТвет " << answer << std::endl;
+	std::cout << "ООТвет " << answer << std::endl;
     boost::asio::io_service service;
     tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 8888);
     tcp::socket socket(service);
@@ -27,7 +28,7 @@ void Session::send_answer(std::string& answer) {
 
 void Session::start()
 {
-//	std::cout << "start" << std::endl;
+	std::cout << "start" << std::endl;
 	socket_.async_read_some(boost::asio::buffer(data_, max_length),
 							boost::bind(&Session::handle_read, this,shared_from_this(),
 										boost::asio::placeholders::error));
@@ -38,7 +39,7 @@ void Session::handle_read(std::shared_ptr<Session> session, const boost::system:
 {
     if (!error)
     {
-//        std::cout << data_ << std::endl;
+        std::cout << data_ << std::endl;
 
         auto handler = std::make_shared<HandlerUser>(io_service_,
 													 *session.get(), data_base_);

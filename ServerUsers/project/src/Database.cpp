@@ -12,6 +12,7 @@ void Database::insert_(std::string& request) {
 
 pqxx::result Database::select_(std::string& request) {
     pqxx::nontransaction N(database_);
-    return pqxx::result R( N.exec( request ));
+    pqxx::result R (N.exec( request ));
+    return R;
 }
 
