@@ -33,7 +33,7 @@ before_script:
   - sudo cmake CMakeLists.txt && sudo make
   - sudo cp *.a /usr/lib
   - sudo apt-get install postgresql-12
-  - apt-get install -y libpqxx-dev
+  - sudo apt-get install -y libpqxx-dev
 #  - sudo wget https://github.com/jtv/libpqxx/archive/7.2.1.tar.gz
 #  - sudo tar -zxvf 7.2.1.tar.gz
 #  - ls
