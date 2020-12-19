@@ -47,7 +47,7 @@ int main()
 	{
 		boost::asio::io_service io_service;
 
-		server(io_service, 8546);
+		server(io_service, 9008);
 	}
 	catch (std::exception& e)
 	{

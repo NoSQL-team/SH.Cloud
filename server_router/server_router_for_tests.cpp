@@ -20,6 +20,7 @@ int main() {
 		boost::property_tree::ptree pt;
 		boost::property_tree::ini_parser::read_ini("../router_settings.ini", pt);
 		tcp_network::Server s(pt.get<int>("router.port"));
+//		tcp_network::Server s(8042);
 	}
 	catch (std::exception& e) {
 //		BOOST_LOG_TRIVIAL(error) << e.what();

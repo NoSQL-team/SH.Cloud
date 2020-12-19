@@ -4,8 +4,9 @@
 
 #include <boost/asio.hpp>
 #include <boost/property_tree/ini_parser.hpp>
-
 #include <boost/log/trivial.hpp>
+
+#include <iostream>
 
 using namespace boost;
 using namespace boost::system;
@@ -31,6 +32,8 @@ int main() {
 								 "   \"password\": \"qwerty\",\n"
 								 "   \"id\": 23\n"
 								 "}";
+
+			std::cout << "пишем" << std::endl;
 
 			boost::asio::write(sock, boost::asio::buffer(requst.c_str(), requst.size()));
 		}

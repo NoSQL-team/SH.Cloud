@@ -16,7 +16,6 @@ RUN mkdir libtmp && cd libtmp && \
 
 RUN apt-get install libboost-all-dev -y
 
-ADD ./router_settings.ini /app
 ADD ./include /app/include
 ADD ./src /app/src
 ADD ./tests /app/tests
@@ -28,5 +27,7 @@ ADD ./test_parser.cpp /app
 ADD ./CMakeLists.txt /app
 
 RUN cd /app/ && mkdir tmp && cd tmp && cmake .. && make
+
+ADD ./router_settings.ini /
 
 CMD ["/bin/sh", "-c", "/app/tmp/server_router_test >&1"]

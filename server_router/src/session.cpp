@@ -23,7 +23,6 @@ namespace tcp_network {
 			servers_adrs_.insert({RequestDestination::POST_SERV, {"127.0.0.1", post_port}});
 			servers_adrs_.insert({RequestDestination::FRIEND_SERV, {"127.0.0.1", friends_port}});
 			servers_adrs_.insert({RequestDestination::USER_SERV, {"127.0.0.1", users_port}});
-
 		} catch (const std::exception& e) {
 			std::cerr << e.what() << std::endl;
 //			BOOST_LOG_TRIVIAL(error) << e.what();
