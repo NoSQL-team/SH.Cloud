@@ -9,10 +9,10 @@ using boost::asio::ip::tcp;
 
 int main() {
     boost::asio::io_service service;
-    tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 8082);
+    tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 8092);
     tcp::socket socket(service);
     socket.async_connect(end, [&socket] (const boost::system::error_code& err) {
-        std::string requst = "5\n0\ndelete\n{\n"
+        std::string requst = "5\n0\npoka\n{\n"
                              "  \"id\": 15,\n"
                              "  \"firstname\": \"antoha\",\n"
                              "  \"lastname\": \"guseerva\",\n"

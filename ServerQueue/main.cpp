@@ -1,16 +1,16 @@
 #include <iostream>
-#include "project/includes/Server.h"
-int main() {
 
-    std::cout << "hello";
+#include <boost/property_tree/ini_parser.hpp>
+
+#include "Server.h"
+
+
+int main() {
     try
     {
-
-//        boost::asio::io_service io_service;
-
-        Server s(8082);
-
-//        io_service.run();
+		boost::property_tree::ptree pt;
+		boost::property_tree::ini_parser::read_ini("../queue_settings.ini", pt);
+        Server s(pt.get<int>("queue.port"));
     }
     catch (std::exception& e)
     {

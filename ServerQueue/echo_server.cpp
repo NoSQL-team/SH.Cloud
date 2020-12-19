@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     try
     {
         boost::asio::io_service io_service;
-        server(io_service, 8888);
+        server(io_service, 8093);
     }
     catch (std::exception& e)
     {
