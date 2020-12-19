@@ -6,6 +6,7 @@
 #include <boost/log/expressions.hpp>
 
 #include <cstdlib>
+#include <iostream>
 
 #include "auth-server.hpp"
 
