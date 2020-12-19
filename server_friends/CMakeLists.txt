@@ -6,7 +6,13 @@ set(CMAKE_CXX_COMPILER "/usr/bin/clang")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib -lpqxx -lpq -DBOOST_LOG_DYN_LINK")
+set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -DBOOST_LOG_DYN_LINK")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
+
+set(PQXX /usr/local/include/pqxx)
+
+find_library(PQXX_LIB pqxx)
+find_library(PQ_LIB pq)
 
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
@@ -63,9 +69,9 @@ add_executable(client
         client_for_tests.cpp)
 
 
-target_link_libraries(server_friends_test ${USED_LIBS} server_friends)
+target_link_libraries(server_friends_test ${USED_LIBS} server_friends ${PQXX_LIB} ${PQ_LIB})
 
-target_link_libraries(bd_test ${USED_LIBS} server_friends)
+target_link_libraries(bd_test ${USED_LIBS} server_friends ${PQXX_LIB} ${PQ_LIB})
 
 target_link_libraries(echo_server ${USED_LIBS})
 
