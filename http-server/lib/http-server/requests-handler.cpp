@@ -22,17 +22,9 @@ const std::string BAD_REQUEST = "HTTP/1.1 400 Bad Request";
 const std::string METHOD_NOT_ALLOWED = "HTTP/1.1 405 Method Not Allowed";
 const char NON_ANY_SERVER = 10;
 
-const ssize_t OUR_SERVER_RESPONSE = 1;
-const ssize_t BAD_METHOD = -1;
-const ssize_t STATICT = 2;
-const ssize_t HTTP_REQUEST = 0;
-const ssize_t API_AUTH_REQUEST = 3;
-const ssize_t OUR_SERVER_REQUEST = 4;
-
 extern size_t number;
 extern std::mutex ResponsesHandler::_mutex;
-extern std::mutex RequesterRouter::_requesterMutex;
-extern std::mutex RequesterAuth::_requesterAuthMutex;
+extern std::mutex Requester::_requesterMutex;
 
 std::string RequestsHandler::getExt(const std::string& st)
 {
@@ -73,7 +65,7 @@ bool RequestsHandler::isOurServerFn(const std::string& header)
         }
     }
     _number = isOur ? lexical_cast<size_t>(header) : 0;
-    isOurServer = (isOur ? OUR_SERVER_RESPONSE : NON_ANY_SERVER);
+    isOurServer = (isOur ? 1 : NON_ANY_SERVER);
     return isOur;
 }
 
@@ -83,36 +75,20 @@ void RequestsHandler::parseHeaders(std::istream& stream)
     std::string headerBuffer;
     std::getline(stream, headerBuffer);
     boost::split(splitVect, headerBuffer, boost::is_any_of(" "));
-    if (std::strncmp(headerBuffer.c_str(), "/api/", 5) == 0) {
-        isOurServer = OUR_SERVER_REQUEST;
-        _url = headerBuffer;
-        if (std::strncmp(_url.c_str(), "/api/auth/", 10) == 0) {
-            isOurServer = API_AUTH_REQUEST;
-        }
-        while (std::getline(stream, headerBuffer)) {
-            _body += headerBuffer + '\n';
-        }
-        return;
-    } else if (isOurServerFn(headerBuffer)) {
+    if (isOurServerFn(headerBuffer)) {
         while (std::getline(stream, headerBuffer)) {
             _body += headerBuffer + '\n';
         }
         return;
     } else if (
         splitVect[0] == "GET" || splitVect[0] == "POST" || splitVect[0] == "PUT") {
-        isOurServer = HTTP_REQUEST;
+        isOurServer = 0;
     } else {
-        isOurServer = BAD_METHOD;
+        isOurServer = -1;
         return;
     }
     _method = splitVect[0];
     _url = splitVect[1];
-    if (std::strncmp(_url.c_str(), "/api/", 5) != 0) {
-        isOurServer = STATICT;
-    }
-    if (std::strncmp(_url.c_str(), "/api/auth/", 10) == 0) {
-        isOurServer = API_AUTH_REQUEST;
-    }
     _httpVersion = splitVect[2];
     splitVect.clear();
     while (std::getline(stream, headerBuffer)) {
@@ -159,11 +135,9 @@ std::string RequestsHandler::encodeSStream(std::stringstream& stream)
 std::string RequestsHandler::responseFormation(const std::string& body = "")
 {
     std::stringstream buffer;
-    if (isOurServer != OUR_SERVER_REQUEST) {
-        buffer << _responseFirstStr << std::endl;
-        for (const auto& [header, value] : _responseHeaders) {
-            buffer << header << ": " << value << std::endl;
-        }
+    buffer << _responseFirstStr << std::endl;
+    for (const auto& [header, value] : _responseHeaders) {
+        buffer << header << ": " << value << std::endl;
     }
     buffer << std::endl
            << boost::lexical_cast<std::string>(body);
@@ -231,68 +205,45 @@ std::string RequestsHandler::formationRequest()
     buffer
         << number << "\n"
         << _url << "\n"
-        << _user_auth_id << "\n"
         << "\n"
         << _body << "\r";
     return buffer.str();
 }
 
-void RequestsHandler::authHandler() {
-    if (_requestHeaders.count("Authorization") != 0) {
-        RequesterAuth* requesterAuth = RequesterAuth::getInstance();
-        std::stringstream buffer;
-        std::vector<std::string> splitVect;
-        boost::split(splitVect, _requestHeaders.at("Authorization"), boost::is_any_of(" "));
-        _ptBuffer.add("username", "CUzkov");
-        splitVect[2].pop_back();
-        _ptBuffer.add("access_token", splitVect[2]);
-        boost::property_tree::write_json(buffer, _ptBuffer);
-        std::string res = requesterAuth->getResponse("/api/auth/authRequest/\n\n" + buffer.str() + '\r');
-        std::istringstream b(res);
-        boost::property_tree::read_json(b, _ptBuffer);
-        if (_ptBuffer.get<std::string>("response") == "ok") {
-            _user_auth_id = lexical_cast<ssize_t>(splitVect[1]);
-        } else {
-            _user_auth_id = -1;
-        }
-    }
-}
-
 std::string RequestsHandler::getResponse(std::istream& stream, const std::map<std::string, std::string>& context)
 {
     parseHeaders(stream);
-    authHandler();
     _responseHeaders.insert({ "Server", "linuxbox" });
-    if (isOurServer == BAD_METHOD) {
+    if (isOurServer == -1) {
         _responseStatus = 405;
         _responseBody = "Method not allowed";
-    } else if (isOurServer == OUR_SERVER_RESPONSE) {
+    } else if (isOurServer == 1) {
         ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
         responsesHandler->setResponse(_body, _number);
-    } else if (isOurServer == HTTP_REQUEST || isOurServer == OUR_SERVER_REQUEST) {
-        RequesterRouter* requester = RequesterRouter::getInstance();
-        requester->sendRequest(formationRequest(), [this]() { isResponseReady = true; }, number + 1);
-        _number = number;
-        while (!isResponseReady) {
-            std::this_thread::sleep_for(std::chrono::microseconds(100));
+    } else if (isOurServer == 0) {
+        std::stringstream ssOut;
+        if (std::strncmp(_url.c_str(), "/api/", 5)) {
+            isOurServer = 2;
+            _responseBody = readResponseFile(context.at("staticPath"));
+        } else {
+            Requester* requester = Requester::getInstance();
+            requester->sendRequest(formationRequest(), [this]() { isResponseReady = true; }, number + 1);
+            _number = number;
+            while (!isResponseReady) {
+                std::this_thread::sleep_for(std::chrono::microseconds(100));
+            }
+            ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+            _responseBody = responsesHandler->getResponse(_number);
+            _responseHeaders.insert({ "Content-Type", "application/json; charset=UTF-8" });
+            _responseStatus = 200;
         }
-        ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
-        _responseBody = responsesHandler->getResponse(_number);
-        _responseHeaders.insert({ "Content-Type", "application/json; charset=UTF-8" });
-        _responseStatus = 200;
-    } else if (isOurServer == STATICT) {
-        _responseBody = readResponseFile(context.at("staticPath"));
-        _responseStatus = 200;
-    } else if (isOurServer == API_AUTH_REQUEST) {
-        RequesterAuth* requesterAuth = RequesterAuth::getInstance();
-        std::stringstream buffer;
-        buffer << _url << std::endl << std::endl << _body << "\r";
-        _responseBody = requesterAuth->getResponse(buffer.str());
-        _responseHeaders.insert({ "Content-Type", "application/json; charset=UTF-8" });
-        _responseStatus = 200;
     }
     setFirstHeader();
-    _responseHeaders.insert({ "Content-Length", boost::lexical_cast<std::string>(_responseBody.length()) });
-    (isOurServer == OUR_SERVER_RESPONSE) ? logRequestOur() : logRequest();
-    return (isOurServer == OUR_SERVER_RESPONSE) ? "our" : responseFormation(_responseBody);
+    if (!(isOurServer == 1)) {
+        _responseHeaders.insert({ "Content-Length", boost::lexical_cast<std::string>(_responseBody.length()) });
+        logRequest();
+    } else {
+        logRequestOur();
+    }
+    return (isOurServer == 1) ? "our" : responseFormation(_responseBody);
 }

@@ -8,6 +8,8 @@ using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
 
+ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
+Requester* requester = Requester::getInstance();
 size_t number = 0;
 
 void runServer() {
