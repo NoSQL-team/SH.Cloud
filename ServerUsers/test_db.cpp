@@ -6,6 +6,8 @@
 #include "UsersDatabase.h"
 #include "HandlerUser.h"
 
+#include <iostream>
+
 using boost::property_tree::ptree;
 using std::string;
 
@@ -43,7 +45,6 @@ int main() {
 
 	auto m = parser_json(stream);
 
-	std::cout << db.delete_(5) << std::endl;
 
 	return 0;
 }
