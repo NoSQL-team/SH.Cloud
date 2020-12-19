@@ -1,6 +1,7 @@
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 
-#include "lib/http-server/http-server.hpp"
+#include "lib/auth-server/auth-server.hpp"
 
 #include <iostream>
 
@@ -8,11 +9,10 @@ using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
 
-size_t number = 0;
-
-void runServer() {
+void runServer() 
+{
     boost::asio::io_service io_service_;
-    HTTPServer server(io_service_, 9999);
+    AuthServer server(io_service_, 9992);
 
     boost::thread_group tgroup;
     unsigned corenumber = boost::thread::hardware_concurrency();

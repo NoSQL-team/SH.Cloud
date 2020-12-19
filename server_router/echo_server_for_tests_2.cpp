@@ -1,0 +1,59 @@
+//
+// Created by Andrew Kireev on 03.12.2020.
+//
+
+
+#include <cstdlib>
+#include <iostream>
+#include <boost/bind.hpp>
+#include <boost/smart_ptr.hpp>
+#include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
+
+using boost::asio::ip::tcp;
+
+const int max_length = 2024;
+
+typedef boost::shared_ptr<tcp::socket> socket_ptr;
+
+void session(socket_ptr sock)
+{
+	try
+	{
+			char data[max_length];
+
+			boost::system::error_code error;
+			sock->read_some(boost::asio::buffer(data), error);
+			std::cout << data << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Exception in thread: " << e.what() << "\n";
+	}
+}
+
+void server(boost::asio::io_service& io_service, unsigned short port)
+{
+	tcp::acceptor a(io_service, tcp::endpoint(tcp::v4(), port));
+	for (;;)
+	{
+		socket_ptr sock(new tcp::socket(io_service));
+		a.accept(*sock);
+		boost::thread t(boost::bind(session, sock));
+	}
+}
+
+int main()
+{
+	try
+	{
+		boost::asio::io_service io_service;
+		server(io_service, 8544);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Exception: " << e.what() << "\n";
+	}
+
+	return 0;
+}

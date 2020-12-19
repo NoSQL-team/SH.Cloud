@@ -11,17 +11,16 @@ RUN mkdir libtmp && cd libtmp && \
     tar -zxvf cmake-3.19.1.tar.gz && cd cmake-3.19.1 && \
     ./bootstrap && make && make install && cd ..
 
-RUN apt-get install libboost-all-dev -y
-
+RUN apt-get install libboost-all-dev -y && \
+    apt-get install libpqxx-dev -y
+    
 ADD ./lib /app/src/lib
+ADD ./ex_lib /app/src/ex_lib
 ADD ./CMakeLists.txt /app/src
 ADD ./main.cpp /app/src
 
-RUN cd /app/src/ && mkdir tmp && cd tmp && mkdir out && cmake .. && make && cd ..
+RUN cd /app/src/ && mkdir tmp && cd tmp && cmake .. && make
 
-ADD ./lib/http-server/noskoolHTTP.ini /
-ADD ./static/m-skull/spa/out /out
-
-RUN ls -a -l /app/src/tmp/
+ADD ./lib/auth-server/noskoolAuth.ini /
 
 CMD ["/bin/sh", "-c", "/app/src/tmp/main >&1"]
