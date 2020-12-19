@@ -39,3 +39,6 @@
 
 #CMake
 cmake-build-debug/
+tmp/
+.vscode/
+googletest/
