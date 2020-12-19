@@ -1,2 +1,0 @@
-/usr/bin/ar qc libServerUsers.a  CMakeFiles/ServerUsers.dir/project/src/Session.cpp.o CMakeFiles/ServerUsers.dir/project/src/HandlerUser.cpp.o CMakeFiles/ServerUsers.dir/project/src/Server.cpp.o CMakeFiles/ServerUsers.dir/project/src/Database.cpp.o CMakeFiles/ServerUsers.dir/project/src/UsersDatabase.cpp.o
-/usr/bin/ranlib libServerUsers.a

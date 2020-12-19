@@ -1,9 +1,0 @@
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/rebuild_cache.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/test_db.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/client.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/test_server.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/echo_server.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/edit_cache.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/http_echo_server.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/test_parser.dir
-/home/lerakrya/nosql/noskool/ServerUsers/CMakeFiles/ServerUsers.dir
