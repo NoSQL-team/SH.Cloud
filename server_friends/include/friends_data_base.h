@@ -7,8 +7,10 @@
 
 #include <map>
 #include <string>
+#include <memory>
 
 #include <pqxx/pqxx>
+
 
 
 class DataBase {
@@ -20,7 +22,7 @@ public:
 	[[nodiscard]] virtual bool is_opened() const;
 
 protected:
-	pqxx::connection database_;
+	std::unique_ptr<pqxx::connection> database_;
 };
 
 class FriendsDataBase : public DataBase{

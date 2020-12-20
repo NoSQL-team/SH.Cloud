@@ -7,19 +7,20 @@
 #include <iostream>
 
 DataBase::DataBase(std::map<std::string, std::string> &db_settings) {
-	database_ = pqxx::connection("dbname=" + db_settings["dbname"] +
-								 " host=" + db_settings["host"] +" user=" + db_settings["user"] +
-								 " password=" + db_settings["password"]);
+	std::string str_db_settings("dbname=" + db_settings["dbname"] +
+							  " host=" + db_settings["host"] +" user=" + db_settings["user"] +
+							  " password=" + db_settings["password"]);
+	database_ = std::make_unique<pqxx::connection>(str_db_settings);
 }
 
 FriendsDataBase::FriendsDataBase(std::map<std::string, std::string>& db_settings) : DataBase(db_settings){ }
 
 DataBase::~DataBase() {
-	database_.close();
+//	database_.close();
 }
 
 FriendsDataBase::~FriendsDataBase() {
-	database_.close();
+//	database_.close();
 }
 
 
@@ -96,7 +97,7 @@ bool FriendsDataBase::delete_friend(int user_1, int user_2) {
 }
 
 bool DataBase::is_opened() const {
-	if (database_.is_open()) {
+	if (database_->is_open()) {
 		std::cout << "Соединение с бд открыто" << std::endl;
 		return true;
 	}
@@ -106,13 +107,13 @@ bool DataBase::is_opened() const {
 
 
 void FriendsDataBase::do_modifying_request(const std::string& sql_request) {
-	pqxx::work W(database_);
+	pqxx::work W(*database_);
 	W.exec(sql_request);
 	W.commit();
 }
 
 pqxx::result FriendsDataBase::do_select_request(const std::string& sql_request) {
-	pqxx::nontransaction N(database_);
+	pqxx::nontransaction N(*database_);
 	return N.exec(sql_request);
 }
 
