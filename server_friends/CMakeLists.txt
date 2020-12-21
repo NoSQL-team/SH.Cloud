@@ -77,7 +77,7 @@ add_executable(server_friends_test
 
 target_link_libraries(server_friends_test server_friends ${USED_LIBS} ${PQXX_LIB} ${PQ_LIB})
 
-if(FALSE)
+if(TRUE)
 
     # Echo-сервер для отладки
     add_executable(echo_server
