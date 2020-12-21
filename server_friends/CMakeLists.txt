@@ -1,10 +1,16 @@
-cmake_minimum_required(VERSION 3.9.2)
-project(ServerFriends CXX)
+cmake_minimum_required(VERSION 3.17)
+project(ServerFriends)
 
-set(CMAKE_CXX_STANDARD 17)
-set(Boost_USE_MULTITHREAD ON)
-
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
+#set(CMAKE_CXX_FLAGS "-D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -L /usr/local/lib -lpqxx -lpq")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread")
+#add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+#
 if(UNIX AND APPLE)
+    set(LINUX TRUE)
+else()
     set(LINUX FALSE)
 endif()
 
@@ -16,13 +22,14 @@ endif()
 if (APPLE)
     set(CMAKE_CXX_FLAGS " -lgtest -DBOOST_LOG_DYN_LINK")
 endif()
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
+
 
 set(PQXX /usr/local/include/pqxx)
 
 find_library(PQXX_LIB pqxx)
 find_library(PQ_LIB pq)
+find_package(Threads REQUIRED)
 
 
 find_package(Boost REQUIRED COMPONENTS system thread regex log_setup log)
@@ -31,14 +38,11 @@ if(Boost_FOUND)
     link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
-#find_package(Boost REQUIRED COMPONENTS system thread regex log_setup log)
-#include_directories(${Boost_INCLUDE_DIRS})
-#link_directories(${Boost_LIBRARY_DIRS})
-#add_definitions(-DBOOST_LOG_DYN_LINK)
+add_definitions(-DBOOST_LOG_DYN_LINK)
 
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
-add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+#add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(INC_DIR ${DIR}/include)
 
@@ -48,7 +52,7 @@ set(TESTS_DIR ${DIR}/tests)
 
 
 include_directories(${INC_DIR}/)
-include_directories(${TESTS_DIR}/)
+#include_directories(${TESTS_DIR}/)
 
 add_library(server_friends STATIC
         ${SRC_DIR}/utility.cpp
@@ -56,6 +60,8 @@ add_library(server_friends STATIC
         ${SRC_DIR}/friends_data_base.cpp
         ${SRC_DIR}/server_friends.cpp
         ${SRC_DIR}/request_handler.cpp)
+
+target_link_directories(server_friends PUBLIC include/)
 
 # Server-friends
 add_executable(server_friends_test
@@ -72,14 +78,13 @@ add_executable(client
 
 target_link_libraries(echo_server ${USED_LIBS})
 
-target_link_libraries(server_friends_test ${USED_LIBS} server_friends -lpqxx)
+target_link_libraries(server_friends_test server_friends ${USED_LIBS} Threads::Threads pthread ${PQXX_LIB} ${PQ_LIB})
 
 target_link_libraries(client ${USED_LIBS})
 
 if(test_build)
 
     find_package(GTest REQUIRED)
-    find_package(Threads REQUIRED)
 
     include_directories("${GTEST_INCLUDE_DIRS}")
 

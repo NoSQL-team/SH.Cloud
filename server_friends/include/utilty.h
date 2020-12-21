@@ -28,7 +28,7 @@ namespace tcp_network {
 
 	class ParseJson {
 	public:
-		ParseJson();
+		explicit ParseJson() = default;
 
 		static RequestDestination get_destination(std::string& request);
 

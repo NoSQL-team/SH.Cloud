@@ -7,8 +7,6 @@
 #include "session.h"
 #include "requst_handler.h"
 
-#include <boost/log/trivial.hpp>
-
 
 
 using namespace boost;
@@ -37,19 +35,6 @@ namespace tcp_network {
 								boost::bind(&Session::handle_read, this, current_session,
 											boost::asio::placeholders::error,
 											boost::asio::placeholders::bytes_transferred));
-	}
-
-	Destination Session::define_location() {
-		try {
-			std::string requst(data_);
-			auto test = parser_.get_destination(requst);
-			print_destination(test);
-			Destination destination = servers_adrs_.at(test);
-			return destination;
-		} catch (std::out_of_range& e) {
-//			BOOST_LOG_TRIVIAL(error) << "error parsing destination " << e.what();
-			return {0, 0};
-		}
 	}
 
 	void Session::handle_read(std::shared_ptr<Session> current_session, const system::error_code& error,

@@ -19,7 +19,7 @@ public:
 
 	virtual ~DataBase();
 
-	[[nodiscard]] virtual bool is_opened() const;
+	virtual bool is_opened() const;
 
 protected:
 	std::unique_ptr<pqxx::connection> database_;

@@ -29,7 +29,6 @@ namespace tcp_network {
 		void send_response(std::string& response);
 
 	private:
-		Destination define_location();
 
 		void handle_read(std::shared_ptr<Session> current_session, const boost::system::error_code& error,
 						 size_t bytes_transferred);
