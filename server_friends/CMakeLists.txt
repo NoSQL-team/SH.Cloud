@@ -64,7 +64,7 @@ add_library(server_friends STATIC
         ${SRC_DIR}/server_friends.cpp
         ${SRC_DIR}/request_handler.cpp)
 
-target_link_directories(server_friends PUBLIC include/)
+#target_link_directories(server_friends PUBLIC include/)
 
 # Server-friends
 add_executable(server_friends_test
@@ -105,7 +105,7 @@ if(FALSE)
     target_link_libraries(bd_test ${USED_LIBS} server_friends ${PQXX_LIB} ${PQ_LIB})
 
     target_include_directories(TESTS PUBLIC ${INC_DIR})
-
+#
     target_include_directories(TESTS PUBLIC ${TESTS_DIR})
 
     target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends)
