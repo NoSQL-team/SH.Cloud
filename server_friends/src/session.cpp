@@ -64,7 +64,8 @@ namespace tcp_network {
 	}
 
 	void Session::send_response(std::string& respones) {
-		Destination destination = servers_adrs_.at(RequestDestination::HTTP_SERV);
+//		Destination destination = servers_adrs_.at(RequestDestination::HTTP_SERV);
+		auto destination = define_location();
 		io_service service;
 		ip::tcp::endpoint ep( ip::address::from_string(destination.ip),
 							  destination.port);
@@ -81,5 +82,23 @@ namespace tcp_network {
 			}
 		});
 		service.run();
+	}
+
+	Destination Session::define_location() {
+		try {
+			std::string requst(data_);
+
+			auto test = tcp_network::ParseJson::get_destination(requst);
+			print_destination(test);
+			Destination destination = servers_adrs_.at(test);
+			return destination;
+		} catch (std::out_of_range& e) {
+			#ifdef DEBUG
+				std::cerr << e.what() << std::endl;
+			#else
+				BOOST_LOG_TRIVIAL(error) << e.what();
+			#endif
+			return {0, 0};
+		}
 	}
 }

@@ -33,6 +33,8 @@ namespace tcp_network {
 		void handle_read(std::shared_ptr<Session> current_session, const boost::system::error_code& error,
 						 size_t bytes_transferred);
 
+		Destination define_location();
+
 		boost::asio::ip::tcp::socket socket_;
 		ParseJson parser_;
 		FriendsDataBase& database_;
