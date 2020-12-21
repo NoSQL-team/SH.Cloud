@@ -36,4 +36,8 @@
 
 #CMake
 cmake-build-debug/
+
 .DS_Store
+tmp/
+.vscode/
+googletest/
