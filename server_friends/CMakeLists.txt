@@ -24,7 +24,7 @@ else()
     set(LINUX FALSE)
 endif()
 
-option(test_build "" OFF)
+SET(test_build FALSE)
 
 if (LINUX)
     set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread")
@@ -77,7 +77,23 @@ add_executable(server_friends_test
 
 target_link_libraries(server_friends_test server_friends ${USED_LIBS} ${PQXX_LIB} ${PQ_LIB})
 
-if(TRUE)
+if (CI)
+    find_package(GTest REQUIRED)
+
+    include_directories("${GTEST_INCLUDE_DIRS}")
+
+    add_executable(TESTS
+            tests/tests.cpp)
+
+    target_include_directories(TESTS PUBLIC ${INC_DIR})
+    target_include_directories(TESTS PUBLIC ${TESTS_DIR})
+
+    target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread server_friends)
+
+endif()
+
+
+if(test_build)
 
     # Echo-сервер для отладки
     add_executable(echo_server
