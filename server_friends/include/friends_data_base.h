@@ -22,7 +22,7 @@ public:
 	virtual bool is_opened() const;
 
 protected:
-	std::unique_ptr<pqxx::connection> database_;
+	pqxx::connection database_;
 };
 
 class FriendsDataBase : public DataBase{
@@ -40,8 +40,8 @@ public:
     bool is_friend(int user_1, int user_2);
 
 private:
-	void do_modifying_request(const std::string& sql_request);
-	pqxx::result do_select_request(const std::string& sql_request);
+	void do_modifying_request(std::string& sql_request);
+	pqxx::result do_select_request(std::string& sql_request);
 };
 
 #endif //NOSKOOL_FRIENDS_DATA_BASE_H

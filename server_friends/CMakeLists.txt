@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.12.4)
+cmake_minimum_required(VERSION 3.17)
 project(ServerFriends)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -lpqxx -lpq")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-lpqxx -lpq")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -lpqxx -lpq")
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -L /usr/local/lib -lpqxx -lpq")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread")
@@ -22,14 +24,7 @@ endif()
 if (APPLE)
     set(CMAKE_CXX_FLAGS " -lgtest -DBOOST_LOG_DYN_LINK")
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
 
-
-set(PQXX /usr/local/include/pqxx)
-
-find_library(PQXX_LIB pqxx)
-find_library(PQ_LIB pq)
-find_package(Threads REQUIRED)
 
 
 find_package(Boost REQUIRED COMPONENTS system thread regex log_setup log)
@@ -40,9 +35,12 @@ endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 add_definitions(-DBOOST_LOG_DYN_LINK)
 
+#set(PQXX /usr/local/include/pqxx)
+#
+#find_library(PQXX_LIB pqxx)
+#find_library(PQ_LIB pq)
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
-#add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(INC_DIR ${DIR}/include)
 
@@ -61,13 +59,13 @@ add_library(server_friends STATIC
         ${SRC_DIR}/server_friends.cpp
         ${SRC_DIR}/request_handler.cpp)
 
-#target_link_directories(server_friends PUBLIC include/)
+target_link_directories(server_friends PUBLIC include/)
 
 # Server-friends
 add_executable(server_friends_test
         server_friends_test.cpp)
 
-target_link_libraries(server_friends_test server_friends ${USED_LIBS} Threads::Threads pthread ${PQXX_LIB} ${PQ_LIB})
+target_link_libraries(server_friends_test server_friends ${USED_LIBS} ${PQXX_LIB} ${PQ_LIB})
 
 if(test_build)
 
@@ -112,7 +110,7 @@ if(test_build)
 
     target_include_directories(TESTS_BD PUBLIC ${TESTS_DIR})
 
-    target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends ${PQXX_LIB} ${PQ_LIB})
+    target_link_libraries(TESTS_BD ${GTEST_LIBRARIES} Threads::Threads pthread server_friends)
 
     enable_testing()
     add_test(NAME TEST_ONE COMMAND tests1)

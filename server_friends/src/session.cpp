@@ -2,7 +2,7 @@
 // Created by Andrew Kireev on 11.11.2020.
 //
 
-#define _GLIBCXX_USE_CXX11_ABI 0
+//#define _GLIBCXX_USE_CXX11_ABI 0
 
 #include "session.h"
 #include "requst_handler.h"

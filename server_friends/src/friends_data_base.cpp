@@ -2,16 +2,16 @@
 // Created by Andrew Kireev on 11.11.2020.
 //
 
-#include "friends_data_base.h"
+#include "../include/friends_data_base.h"
 
 #include <iostream>
 
-DataBase::DataBase(std::map<std::string, std::string> &db_settings) {
-	std::string str_db_settings("dbname=" + db_settings["dbname"] +
-							  " host=" + db_settings["host"] +" user=" + db_settings["user"] +
-							  " password=" + db_settings["password"]);
-	database_ = std::make_unique<pqxx::connection>(str_db_settings);
-}
+#include <pqxx/pqxx>
+
+DataBase::DataBase(std::map<std::string, std::string> &db_settings) :
+database_("dbname=" + db_settings["dbname"] +
+" host=" + db_settings["host"] +" user=" + db_settings["user"] +
+" password=" + db_settings["password"]) { }
 
 FriendsDataBase::FriendsDataBase(std::map<std::string, std::string>& db_settings) : DataBase(db_settings){ }
 
@@ -97,7 +97,7 @@ bool FriendsDataBase::delete_friend(int user_1, int user_2) {
 }
 
 bool DataBase::is_opened() const {
-	if (database_->is_open()) {
+	if (database_.is_open()) {
 		std::cout << "Соединение с бд открыто" << std::endl;
 		return true;
 	}
@@ -106,15 +106,16 @@ bool DataBase::is_opened() const {
 }
 
 
-void FriendsDataBase::do_modifying_request(const std::string& sql_request) {
-	pqxx::work W(*database_);
+void FriendsDataBase::do_modifying_request(std::string& sql_request) {
+	pqxx::work W(database_);
 	W.exec(sql_request);
 	W.commit();
 }
 
-pqxx::result FriendsDataBase::do_select_request(const std::string& sql_request) {
-	pqxx::nontransaction N(*database_);
-	return N.exec(sql_request);
+pqxx::result FriendsDataBase::do_select_request(std::string& sql_request) {
+	pqxx::nontransaction N(database_);
+	pqxx::result R (N.exec(sql_request));
+	return R;
 }
 
 
