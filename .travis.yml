@@ -39,9 +39,8 @@ before_script:
 #  - ls
 #  - cd libpqxx-7.2.1 && sudo cmake . && sudo make && sudo make install
 #  - cd "${TRAVIS_BUILD_DIR}"/server_friends/tests
-  - cd
+  - cd ${TRAVIS_BUILD_DIR}/server_friends
   - ls
-  - cd server_friends
   - sudo cmake .
   - sudo make
 
