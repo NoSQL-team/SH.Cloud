@@ -1,18 +1,24 @@
 #include "http-server.hpp"
 
-Requester* Requester::_objPtr = nullptr;
+RequesterRouter* RequesterRouter::_objPtr = nullptr;
 
-Requester *Requester::getInstance()
+RequesterRouter *RequesterRouter::getInstance()
+{
+    std::lock_guard<std::mutex> lock(_requesterMutex);
+    return _objPtr;
+}
+
+RequesterRouter *RequesterRouter::getInstance(const std::string& addr, const std::string& port)
 {
     std::lock_guard<std::mutex> lock(_requesterMutex);
     if (_objPtr == nullptr)
     {
-        _objPtr = new Requester();
+        _objPtr = new RequesterRouter(addr, port);
     }
     return _objPtr;
 }
 
-void Requester::sendRequest(std::string body, std::function<void()> fn, size_t number) {
+void RequesterRouter::sendRequest(std::string body, std::function<void()> fn, size_t number) {
     std::lock_guard<std::mutex> lock(_requesterMutex);
     async_write(
         _sock,

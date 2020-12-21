@@ -2,41 +2,32 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-#include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-
 
 #include <cstdlib>
-#include <future>
+#include <iostream>
 
-#include "http-server.hpp"
+#include "auth-server.hpp"
 
 namespace logging = boost::log;
 
-void HTTPServer::getConfFile() {
+void AuthServer::getConfFile() {
     boost::property_tree::ptree pt;
-    boost::property_tree::ini_parser::read_ini("noskoolHTTP.ini", pt);
-    try
-    {
-        _loggerPath = pt.get<std::string>("logger.path");
+    boost::property_tree::ini_parser::read_ini("noskoolAuth.ini", pt);
+    try {
         _loggerLevel = pt.get<std::string>("logger.level");
-        _context.insert({"staticPath", pt.get<std::string>("server.static_path")});
-        _ipMap.insert({"QRAddr", pt.get<std::string>("request-handler.queue-router-addr")});
-        _ipMap.insert({"QRPort", pt.get<std::string>("request-handler.queue-router-port")});
-        _ipMap.insert({"APort", pt.get<std::string>("server-auth.server-auth-port")});
-        _ipMap.insert({"AAddr", pt.get<std::string>("server-auth.server-auth-addr")});
-    }
-    catch(const std::exception& e)
-    {
+        _dbname = pt.get<std::string>("db.dbname");
+        _host = pt.get<std::string>("db.host");
+        _user = pt.get<std::string>("db.user");
+        _password = pt.get<std::string>("db.password");
+    } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
         exit(EXIT_FAILURE);
     }
 }
 
-void HTTPServer::setLoggerLevel() {
+void AuthServer::setLoggerLevel() {
     auto level = logging::trivial::warning;
     if (_loggerLevel == "trace") {
         level = logging::trivial::trace;
@@ -54,22 +45,22 @@ void HTTPServer::setLoggerLevel() {
     );
 }
 
-void HTTPServer::initLogger() {
+void AuthServer::initLogger() {
     setLoggerLevel();
 }
 
-void HTTPServer::initServer() {
+void AuthServer::initServer() {
     getConfFile();
     initLogger();
 }
 
-void HTTPServer::acceptAndRun()
+void AuthServer::acceptAndRun()
 {
     _acceptor.async_accept(
         _socket,
         [this](const error_code& accept_error) {
             if(!accept_error) {
-                std::make_shared<Session>(std::move(_socket))->start(_context);
+                std::make_shared<Session>(std::move(_socket))->start();
             }
             acceptAndRun();
         }
