@@ -13,17 +13,14 @@ RUN mkdir libtmp && cd libtmp && \
 
 RUN apt-get install libboost-all-dev -y && \
     apt-get install libpqxx-dev -y
+    
+ADD ./lib /app/src/lib
+ADD ./ex_lib /app/src/ex_lib
+ADD ./CMakeLists.txt /app/src
+ADD ./main.cpp /app/src
 
-ADD ./project/includes /app/project/includes
-ADD ./project/src /app/project/src
-ADD ./client.cpp /app
-ADD ./echo_server.cpp /app
-ADD ./http_echo_server.cpp /app
-ADD ./main.cpp /app
-ADD ./test_db.cpp /app
-ADD ./test_server.cpp /app
-ADD ./CMakeLists.txt /app
+RUN cd /app/src/ && mkdir tmp && cd tmp && cmake .. && make
 
-RUN cd /app/ && mkdir tmp && cd tmp && cmake .. && make
+ADD ./lib/auth-server/noskoolAuth.ini /
 
-CMD ["/bin/sh", "-c", "/app/tmp/test_server >&1"]
+CMD ["/bin/sh", "-c", "/app/src/tmp/main >&1"]

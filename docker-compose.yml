@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+  # friends-db:
+  #   image: postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_PASSWORD=
+  #     - POSTGRES_USER=andrewkireev
+  #     - POSTGRES_DB=Friends
+  #   ports:
+  #     - "27001:5432"
+  #   volumes:
+  #     - ./server_friends/init.sql:/docker-entrypoint-initdb.d/init.sql
+  # friends-server:
+  #   image: noskool-friends
+  #   network_mode: "host"
+  #   ports:
+  #     - "9992:9992"
+  auth-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=cuzkov
+      - POSTGRES_DB=auth
+    ports:
+      - "27001:5432"
+    volumes:
+      - ./auth-server/lib/auth-server/init.sql:/docker-entrypoint-initdb.d/init.sql
+  auth-server:
+    image: noskool-auth
+    network_mode: "host"
+  http-server:
+    image: noskool-http
+    network_mode: "host"
+  router:
+    image: noskool-router
+    network_mode: "host"
+
