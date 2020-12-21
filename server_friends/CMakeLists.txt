@@ -61,7 +61,7 @@ add_library(server_friends STATIC
         ${SRC_DIR}/server_friends.cpp
         ${SRC_DIR}/request_handler.cpp)
 
-target_link_directories(server_friends PUBLIC include/)
+#target_link_directories(server_friends PUBLIC include/)
 
 # Server-friends
 add_executable(server_friends_test
