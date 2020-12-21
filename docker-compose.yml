@@ -1,6 +1,22 @@
 version: '3.1'
 
 services:
+  friends-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=andrewkireev
+      - POSTGRES_DB=Friends
+    ports:
+      - "27001:5432"
+    volumes:
+      - ./server_friends/init.sql:/docker-entrypoint-initdb.d/init.sql
+  friends-server:
+    image: noskool-friends
+    network_mode: "host"
+    ports:
+      - "9992:9992"
   auth-db:
     image: postgres
     restart: always
