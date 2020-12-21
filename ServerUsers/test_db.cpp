@@ -45,6 +45,5 @@ int main() {
 
 	auto m = parser_json(stream);
 
-
 	return 0;
 }

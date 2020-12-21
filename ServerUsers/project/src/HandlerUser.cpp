@@ -4,7 +4,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <boost/log/trivial.hpp>
+//#include <boost/log/trivial.hpp>
 #include "HandlerUser.h"
 #include <iostream>
 
@@ -47,7 +47,7 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
         return {};
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.16 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.16 " << e.what();
     }
 }
 
@@ -140,7 +140,7 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 		}
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.110 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.110 " << e.what();
     }
 }
 
@@ -157,7 +157,7 @@ void HandlerUser::data_user(int id, int number_request) const {
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp data_user c.79 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp data_user c.79 " << e.what();
     }
 }
 
@@ -174,7 +174,7 @@ void HandlerUser::all_users(int number_request) const {
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp all_users c.96 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp all_users c.96 " << e.what();
     }
 }
 
@@ -186,7 +186,7 @@ void HandlerUser::update_data(int number_request, const std::map<string, string>
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp change_user_data c.130 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp change_user_data c.130 " << e.what();
     }
 }
 
@@ -198,7 +198,7 @@ void HandlerUser::is_exist(int number_request, int id_user) const {
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp is_exist c.177 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp is_exist c.177 " << e.what();
     }
 }
 
@@ -215,7 +215,7 @@ void HandlerUser::id_by_nick(int number_request, string& nickname) {
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
+//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
     }
 }
 

@@ -1,13 +1,9 @@
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.17)
 project(ServerUsers)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
-
-set(PQXX /usr/local/include/pqxx)
-
-find_library(PQXX_LIB pqxx)
-find_library(PQ_LIB pq)
+set(CMAKE_CXX_FLAGS "-lpqxx -lpq")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 find_package(Boost REQUIRED COMPONENTS system thread regex log)
 if(Boost_FOUND)
@@ -49,12 +45,12 @@ add_executable(test_db test_db.cpp)
 
 target_link_libraries(test_parser ${USED_LIBS} ServerUsers)
 
-target_link_libraries(test_server ${USED_LIBS} ServerUsers ${PQXX_LIB} ${PQ_LIB})
+target_link_libraries(test_server ${USED_LIBS} ServerUsers)
 
 
 target_link_libraries(ServerUsers ${USED_LIBS})
 
-target_link_libraries(test_db ServerUsers ${PQXX_LIB} ${PQ_LIB})
+target_link_libraries(test_db ServerUsers)
 
 target_link_libraries(echo_server ${USED_LIBS})
 

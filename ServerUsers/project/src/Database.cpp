@@ -5,13 +5,13 @@
 #include "Database.h"
 
 void Database::insert_(std::string& request) {
-    pqxx::work W(database_);
+    pqxx::work W(*database_);
     W.exec(request);
     W.commit();
 }
 
 pqxx::result Database::select_(std::string& request) {
-    pqxx::nontransaction N(database_);
+    pqxx::nontransaction N(*database_);
     pqxx::result R (N.exec( request ));
     return R;
 }
