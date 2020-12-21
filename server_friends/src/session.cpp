@@ -7,7 +7,11 @@
 #include "session.h"
 #include "requst_handler.h"
 
+#include <iostream>
 
+#if !defined(DEBUG)
+	#include <boost/log/trivial.hpp>
+#endif
 
 using namespace boost;
 using namespace boost::system;
@@ -50,7 +54,11 @@ namespace tcp_network {
 //			});
 
 		} else {
-//			BOOST_LOG_TRIVIAL(error) << error.message();
+			#ifdef DEBUG
+				std::cerr << error.message() << std::endl;
+			#else
+				BOOST_LOG_TRIVIAL(error) << error.message();
+			#endif
 			current_session.reset();
 		}
 	}
@@ -65,7 +73,11 @@ namespace tcp_network {
 			if (!error) {
 				boost::asio::write(sock, boost::asio::buffer(respones, respones.size()));
 			} else {
-//				BOOST_LOG_TRIVIAL(error) << error.message();
+				#ifdef DEBUG
+					std::cerr << error.message() << std::endl;
+				#else
+					BOOST_LOG_TRIVIAL(error) << error.message();
+				#endif
 			}
 		});
 		service.run();

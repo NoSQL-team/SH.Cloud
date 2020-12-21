@@ -5,10 +5,13 @@
 #ifndef NOSKOOL_UTILTY_H
 #define NOSKOOL_UTILTY_H
 
+# define DEBUG 1
+
 #include <map>
 #include <string>
 
 namespace tcp_network {
+
 
 	enum class RequestDestination {
 		FRIEND_SERV,
