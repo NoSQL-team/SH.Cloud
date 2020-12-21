@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 project(ServerFriends)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CI TRUE)
+
+if (CI)
+    set(CMAKE_CXX_STANDARD 14)
+else()
+    set(CMAKE_CXX_STANDARD 17)
+endif()
 set(CMAKE_CXX_FLAGS "-lpqxx -lpq")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -lpqxx -lpq")
@@ -11,7 +17,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 #add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 #
 
-set(CI TRUE)
 
 if(UNIX AND APPLE)
     set(LINUX TRUE)

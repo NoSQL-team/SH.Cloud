@@ -27,4 +27,4 @@ RUN cd /app/ && mkdir tmp && cd tmp && cmake .. && make
 
 ADD ./friends_settings.ini /
 
-CMD ["/bin/sh", "-c", "/app/src/tmp/server_friends_test >&1"]
+CMD ["/bin/sh", "-c", "/app/tmp/server_friends_test >&1"]
