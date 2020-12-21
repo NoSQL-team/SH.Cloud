@@ -10,6 +10,9 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread")
 #add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 #
+
+set(CI TRUE)
+
 if(UNIX AND APPLE)
     set(LINUX TRUE)
 else()
@@ -35,10 +38,12 @@ endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 add_definitions(-DBOOST_LOG_DYN_LINK)
 
-#set(PQXX /usr/local/include/pqxx)
-#
-#find_library(PQXX_LIB pqxx)
-#find_library(PQ_LIB pq)
+if (CI)
+    set(PQXX /usr/local/include/pqxx)
+
+    find_library(PQXX_LIB pqxx)
+    find_library(PQ_LIB pq)
+endif()
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
