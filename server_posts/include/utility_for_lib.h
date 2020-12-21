@@ -26,6 +26,17 @@ std::string vec_posts_to_str(std::vector<Post>& vec_posts);
 
 std::vector<std::string> split(std::string const& string, const char *drop);
 
+std::string trim(const std::string& str,
+                 const std::string& whitespace = " \t");
+
+std::string reduce(std::string& str,
+                   const std::string& fill = " ",
+                   const std::string& whitespace = " \t");
+
+void print_post(const Post& p);
+
+bool is_authorized(const std::string& user_id);
+
 
 
 #endif //MAIN_TP_UTILITY_H

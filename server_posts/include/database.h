@@ -29,9 +29,12 @@ public:
     ~PostsDataBase();
 
     std::string create_post(Post& post);
-    std::string update_post(int post_id, Post& updated);
+    std::string delete_post(std::string& post_id, std::string& creator_id);
 
-    std::string delete_post(int post_id);
+    std::string get_likes(const std::string& post_id);
+    std::string add_like_by_id(std::string post_id, const std::string& user_id);
+    std::string del_like_by_id(std::string post_id, const std::string& user_id);
+
 
     std::vector<Post> get_all_posts();
     std::vector<Post> get_user_posts(int user_id);

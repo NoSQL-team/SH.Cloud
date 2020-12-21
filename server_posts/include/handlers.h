@@ -16,25 +16,21 @@ public:
     Handlers() : _db() {};
 
     std::string for_user(const std::string& id_request, const std::map<std::string, size_t>& args);
-
     std::string all_posts(const std::string& id_request, const std::map<std::string, size_t>& args);
+    std::string user_posts(const std::string& id_request, const std::map<std::string, size_t>& args);
+    std::string one_post(const std::string& id_request, const std::map<std::string, size_t>& args);
+    std::string delete_post(const std::string& id_request, const std::map<std::string, size_t>& args);
+    std::string add_like(const std::string& id_request, const std::map<std::string, size_t>& args);
+    std::string del_like(const std::string& id_request, const std::map<std::string, size_t>& args);
 
-    std::string user_posts(std::string const& id_request, std::map<std::string, size_t> const& args);
 
-    std::string one_post(std::string const& id_request, std::map<std::string, size_t> const& args);
-    std::string delete_post(std::string const& id_request, std::map<std::string, size_t> const& args);
+    std::string create_post(const std::string& id_request,
+                            const std::map<std::string, size_t>& args,
+                            const std::string& body);
 
-    std::string create_post(std::string const& id_request,
-                            std::map<std::string, size_t> const& args,
-                            std::string const& body);
-
-    std::string update_post(std::string const& id_request,
-                            std::map<std::string, size_t> const& args,
-                            std::string const& body);
 
 private:
     PostsDataBase _db;
-
 };
 
 #endif //MAIN_TP_HANDLERS_H
