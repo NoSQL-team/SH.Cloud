@@ -22,7 +22,7 @@ public:
 	virtual bool is_opened() const;
 
 protected:
-	pqxx::connection database_;
+	std::unique_ptr<pqxx::connection> database_;
 };
 
 class FriendsDataBase : public DataBase{
