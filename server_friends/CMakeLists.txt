@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12.4)
 project(ServerFriends)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -lpqxx -lpq")
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread -L /usr/local/lib -lpqxx -lpq")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++11 -pthread")
@@ -67,22 +67,21 @@ add_library(server_friends STATIC
 add_executable(server_friends_test
         server_friends_test.cpp)
 
-# Echo-сервер для отладки
-add_executable(echo_server
-        echo_server_for_tests.cpp)
-
-# Клиент для отладки
-add_executable(client
-        client_for_tests.cpp)
-
-
-target_link_libraries(echo_server ${USED_LIBS})
-
 target_link_libraries(server_friends_test server_friends ${USED_LIBS} Threads::Threads pthread ${PQXX_LIB} ${PQ_LIB})
 
-target_link_libraries(client ${USED_LIBS})
-
 if(test_build)
+
+    # Echo-сервер для отладки
+    add_executable(echo_server
+            echo_server_for_tests.cpp)
+
+    # Клиент для отладки
+    add_executable(client
+            client_for_tests.cpp)
+
+    target_link_libraries(echo_server ${USED_LIBS})
+
+    target_link_libraries(client ${USED_LIBS})
 
     find_package(GTest REQUIRED)
 
