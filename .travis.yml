@@ -26,9 +26,9 @@ addons:
 #      - pqxx
 
 before_script:
-  - sudo wget https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1.tar.gz
-  - sudo tar -zxvf cmake-3.19.1.tar.gz && cd cmake-3.19.1
-  - sudo ./bootstrap && sudo make && sudo make install
+#  - sudo wget https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1.tar.gz
+#  - sudo tar -zxvf cmake-3.19.1.tar.gz && cd cmake-3.19.1
+#  - sudo ./bootstrap && sudo make && sudo make install
   - sudo apt-get update
   - sudo apt-get install libc++-dev
   - sudo apt-get install -y libgtest-dev
