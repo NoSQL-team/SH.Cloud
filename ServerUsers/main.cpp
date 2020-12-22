@@ -32,6 +32,7 @@ std::map<string, string> parser_json(string& request) {
     catch (std::exception& e) {
 //        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.62 " << e.what();
     }
+    return {};
 }
 
 void  handle_request(string& request) {

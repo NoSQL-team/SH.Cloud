@@ -49,6 +49,7 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
     catch (std::exception& e) {
 //        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.16 " << e.what();
     }
+    return {};
 }
 
 void HandlerUser::handle_request(string& request) {
@@ -82,12 +83,17 @@ void HandlerUser::handle_request(string& request) {
     if (fjson != std::string::npos) {
         json_body = request.substr(fjson);
     }
-
+    
     std::map<string, string> parse_json = parser_json(json_body);
-
+    
     int data_id = atoi(method.c_str());
-
+    std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
+    std::cout << method << std::endl;
+    std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
     if (method == "create") {
+        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
+        std::cout << num_request << " " << parse_json.empty() << " " << id_user << std::endl;
+        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
         create_user(num_request, parse_json, id_user);
     }
     else if (method == "update") {
@@ -110,7 +116,9 @@ void HandlerUser::handle_request(string& request) {
 void HandlerUser::create_user(int number_request, const std::map<string, string>& data_user, int user_id) const {
     try {
     	std::string request = "/auth/add/\n\n{\n  \"id\": ";
+        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
     	request += std::to_string(data_base_.get_id());
+        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
     	request += "\n  \"password\": \"" + data_user.at("password") + "\",\n  \"login\": \"" + data_user.at("Eemail") + "\"\n}";
 
     	boost::asio::io_service service;

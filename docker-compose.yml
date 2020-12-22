@@ -37,4 +37,20 @@ services:
   router:
     image: noskool-router
     network_mode: "host"
-
+  noskool-queue-1:
+    image: noskool-queue-1
+    network_mode: "host"
+  users-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=lera
+      - POSTGRES_DB=users
+    ports:
+      - "27003:5432"
+    volumes:
+      - ./ServerUsers/init.sql:/docker-entrypoint-initdb.d/init.sql
+  users-server:
+    image: noskool-users
+    network_mode: "host"

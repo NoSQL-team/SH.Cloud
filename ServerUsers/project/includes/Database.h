@@ -16,7 +16,7 @@
 class Database {
 public:
     Database() {
-    	std::string setting = "dbname=users host=localhost user=lera password=";
+    	std::string setting = "dbname=users host=localhost user=lera password=password port=27003";
 		try {
 			database_ = std::make_unique<pqxx::connection>(setting);
 		} catch (const std::exception& e) {

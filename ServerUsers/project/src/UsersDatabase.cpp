@@ -141,7 +141,7 @@ using std::string;
 
 int UsersDatabase::get_id() {
 	string sql_request("SELECT MAX(id) FROM Users");
-
+    
 	pqxx::result R = select_(sql_request);
 
 	string answer;
