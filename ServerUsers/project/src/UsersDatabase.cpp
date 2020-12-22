@@ -113,12 +113,20 @@ using std::string;
     }
 
     bool UsersDatabase::update(const std::map<string, string>& data, int id_user) {
+
+        for (const auto& [el, el1] : data) {
+            std::cout << el << " " << el1 << std::endl;
+        }
+
         if (data.at("Aid") != std::to_string(id_user)) {
+            std::cout << "/* message error*/" << std::endl;
             return false;
         }
 
-        string sql_request("UPDATE users SET ");
+        std::cout << "/* message inside*/" << std::endl;
 
+        string sql_request("UPDATE users SET ");
+std::cout << "/* message inside*/" << std::endl;
         int i = 0;
         for(const auto& v : data) {
             i++;
@@ -129,9 +137,11 @@ using std::string;
             }
             sql_request += v.first.substr(1) + "=\'" + v.second + "\'";
         }
-
+std::cout << "/* message inside*/" << std::endl;
         sql_request += " WHERE id=" + data.at("Aid");
-
+std::cout << "/* message inside*/" << std::endl;
+        std::cout << sql_request << std::endl;
+std::cout << "/* message inside*/" << std::endl;
         if(exist(atoi(data.at("Aid").c_str())) == false) {
             return false;
         }
@@ -141,17 +151,26 @@ using std::string;
 
 int UsersDatabase::get_id() {
 	string sql_request("SELECT MAX(id) FROM Users");
-    
-	pqxx::result R = select_(sql_request);
 
-	string answer;
+    pqxx::result R;
+    string answer;
+    int id;
 
-	for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
-		answer = c[0].as<string>();
-	}
-
-	int id = atoi(answer.c_str());
-
-	return id++;
+    try {
+        R = select_(sql_request);
+        if (!R.empty()) {
+            for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
+                answer = c[0].as<string>();
+            }
+            id = atoi(answer.c_str());
+        } else {
+            id = 0;
+        }
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+        id = 0;
+    }
+	return ++id;
 }
 

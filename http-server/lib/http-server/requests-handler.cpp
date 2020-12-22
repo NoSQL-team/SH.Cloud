@@ -28,6 +28,7 @@ const ssize_t STATICT = 2;
 const ssize_t HTTP_REQUEST = 0;
 const ssize_t API_AUTH_REQUEST = 3;
 const ssize_t OUR_SERVER_REQUEST = 4;
+const ssize_t API_AUTH_REQUEST_OUR = 5;
 
 extern size_t number;
 extern std::mutex ResponsesHandler::_mutex;
@@ -87,7 +88,7 @@ void RequestsHandler::parseHeaders(std::istream& stream)
         isOurServer = OUR_SERVER_REQUEST;
         _url = headerBuffer;
         if (std::strncmp(_url.c_str(), "/api/auth/", 10) == 0) {
-            isOurServer = API_AUTH_REQUEST;
+            isOurServer = API_AUTH_REQUEST_OUR;
         }
         while (std::getline(stream, headerBuffer)) {
             _body += headerBuffer + '\n';
@@ -159,14 +160,14 @@ std::string RequestsHandler::encodeSStream(std::stringstream& stream)
 std::string RequestsHandler::responseFormation(const std::string& body = "")
 {
     std::stringstream buffer;
-    if (isOurServer != OUR_SERVER_REQUEST) {
+    if (isOurServer != OUR_SERVER_REQUEST && isOurServer != API_AUTH_REQUEST_OUR) {
         buffer << _responseFirstStr << std::endl;
         for (const auto& [header, value] : _responseHeaders) {
             buffer << header << ": " << value << std::endl;
         }
+        buffer << std::endl;
     }
-    buffer << std::endl
-           << boost::lexical_cast<std::string>(body);
+    buffer << boost::lexical_cast<std::string>(body);
     return buffer.str();
 }
 
@@ -243,7 +244,7 @@ void RequestsHandler::authHandler() {
         std::stringstream buffer;
         std::vector<std::string> splitVect;
         boost::split(splitVect, _requestHeaders.at("Authorization"), boost::is_any_of(" "));
-        _ptBuffer.add("username", "CUzkov");
+        _ptBuffer.add("user_id", splitVect[1]);
         splitVect[2].pop_back();
         _ptBuffer.add("access_token", splitVect[2]);
         boost::property_tree::write_json(buffer, _ptBuffer);
@@ -283,7 +284,7 @@ std::string RequestsHandler::getResponse(std::istream& stream, const std::map<st
     } else if (isOurServer == STATICT) {
         _responseBody = readResponseFile(context.at("staticPath"));
         _responseStatus = 200;
-    } else if (isOurServer == API_AUTH_REQUEST) {
+    } else if (isOurServer == API_AUTH_REQUEST || isOurServer == API_AUTH_REQUEST_OUR) {
         RequesterAuth* requesterAuth = RequesterAuth::getInstance();
         std::stringstream buffer;
         buffer << _url << std::endl << std::endl << _body << "\r";

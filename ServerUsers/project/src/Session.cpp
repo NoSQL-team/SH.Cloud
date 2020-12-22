@@ -51,6 +51,3 @@ void Session::handle_read(std::shared_ptr<Session> session, const boost::system:
 		session.reset();
     }
 }
-
-
-

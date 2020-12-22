@@ -20,6 +20,7 @@ RequesterRouter *RequesterRouter::getInstance(const std::string& addr, const std
 
 void RequesterRouter::sendRequest(std::string body, std::function<void()> fn, size_t number) {
     std::lock_guard<std::mutex> lock(_requesterMutex);
+    _sock.connect(_ep);
     async_write(
         _sock,
         boost::asio::buffer(body, body.length()),
@@ -27,4 +28,5 @@ void RequesterRouter::sendRequest(std::string body, std::function<void()> fn, si
     );
     ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
     responsesHandler->setCallback(fn, number);
+    _sock.close();
 }

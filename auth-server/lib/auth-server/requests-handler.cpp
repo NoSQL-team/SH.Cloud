@@ -44,7 +44,7 @@ std::string RequestsHandler::authRequest()
         r = db->select(
                 "users", 
                 {"access_token", "refresh_token"}, 
-                {std::make_tuple("username", _userName, "string")}
+                {std::make_tuple("user_id", _user_id, "string")}
             );
     }
     catch(const std::exception& e) {
@@ -286,7 +286,7 @@ std::string RequestsHandler::getResponse(std::istream& stream)
 
     try {
         if (_type == AUTH_REQUEST) {
-            _userName = _ptRequest.get<std::string>("username");
+            _user_id = _ptRequest.get<std::string>("user_id");
             _accessToken = _ptRequest.get<std::string>("access_token");
         } else if (_type == AUTH) {
             _userPassword = _ptRequest.get<std::string>("password");

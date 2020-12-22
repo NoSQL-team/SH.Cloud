@@ -32,7 +32,7 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
                     field = "Clastname";
                 }
                 else if (std::string(it->first) == "nickname") {
-                    field = "Dlastname";
+                    field = "Dnickname";
                 }
                 else if (std::string(it->first) == "email") {
                     field = "Eemail";
@@ -56,10 +56,10 @@ void HandlerUser::handle_request(string& request) {
     // Номер запроса (для отправки ответа)
     auto num = request.find('\n');
     int num_request = atoi(request.substr(0, num).c_str());
-
+    
     auto find_method = request.find('\n', num + 1);
     string api_method = request.substr(num + 1, find_method - num - 1);
-    const string str = "api/users/";
+    const string str = "/api/users/";
     // название метода или id пользователя или никнейм
     string method;
 
@@ -73,9 +73,8 @@ void HandlerUser::handle_request(string& request) {
     }
     else {
         method = api_method.substr(str.size());
-        method.pop_back();
     }
-
+    method.pop_back();
     int id_user = atoi(request.substr(find_method + 1, request.find("\n\n") - find_method - 1).c_str());
 
     auto fjson = request.find_first_of('{');
@@ -87,16 +86,14 @@ void HandlerUser::handle_request(string& request) {
     std::map<string, string> parse_json = parser_json(json_body);
     
     int data_id = atoi(method.c_str());
-    std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
-    std::cout << method << std::endl;
-    std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
+
     if (method == "create") {
-        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
-        std::cout << num_request << " " << parse_json.empty() << " " << id_user << std::endl;
-        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
         create_user(num_request, parse_json, id_user);
     }
     else if (method == "update") {
+        for (const auto& [el, el1] : parse_json) {
+            std::cout << el << " " << el1 << std::endl;
+        }
         update_data(num_request, parse_json, id_user);
     }
     else if (method == "all") {
@@ -115,35 +112,37 @@ void HandlerUser::handle_request(string& request) {
 
 void HandlerUser::create_user(int number_request, const std::map<string, string>& data_user, int user_id) const {
     try {
-    	std::string request = "/auth/add/\n\n{\n  \"id\": ";
-        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
-    	request += std::to_string(data_base_.get_id());
-        std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
-    	request += "\n  \"password\": \"" + data_user.at("password") + "\",\n  \"login\": \"" + data_user.at("Eemail") + "\"\n}";
+    	std::string request = "/api/auth/add/\n\n{\n  \"user_id\": ";
+        request += std::to_string(data_base_.get_id());
+    	request += ",\n  \"password\": \"" + data_user.at("password") + "\",\n  \"username\": \"" + data_user.at("Dnickname") + "\"\n}\r";
 
     	boost::asio::io_service service;
 		boost::asio::ip::tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 9999);
 		ip::tcp::socket socket(service);
 		socket.connect(end);
-		boost::asio::write(socket, boost::asio::buffer(request));
 		service.run();
 
-		char response[1024];
-		socket.read_some(boost::asio::buffer(response, 1024));
+        boost::asio::write(socket, boost::asio::buffer(request));
+		boost::asio::streambuf response;
 
+        read_until(
+            socket,
+            response,
+            '\r'
+        );
 
-		std::string answer = response;
-		std::map<string, string> parse_answer = parser_json(answer);
+        std::string s( (std::istreambuf_iterator<char>(&response)), std::istreambuf_iterator<char>() );
+		std::map<string, string> parse_answer = parser_json(s);
 
 		if (parse_answer.at("response") != "ok") {
 			string str_result = std::to_string(number_request) + "\n";
-			str_result += "{\n  \"response\": true \n}";
+			str_result += "{\n  \"response\": true \n}\r";
 			session_.send_answer(str_result);
 		}
 		else {
 			int result = data_base_.insert(data_user, user_id);
 			string str_result = std::to_string(number_request) + "\n";
-			str_result += "{\n \"response\": " + std::to_string(result) + "\n}";
+			str_result += "{\n \"response\": " + std::to_string(result) + "\n}\r";
 			session_.send_answer(str_result);
 		}
     }
@@ -226,5 +225,3 @@ void HandlerUser::id_by_nick(int number_request, string& nickname) {
 //        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
     }
 }
-
-
