@@ -34,7 +34,10 @@ namespace tcp_network {
 	}
 
 	void Session::start(std::shared_ptr<Session> current_session) {
-		socket_.async_receive(buffer(&data_[0], max_length),
+		for (size_t i = 0; i < 10000; i++) {
+        	data_[i] = '\0';
+    	}
+		socket_.async_read_some(buffer(&data_[0], max_length),
 								boost::bind(&Session::handle_read, this, current_session,
 											boost::asio::placeholders::error));
 	}
@@ -56,6 +59,7 @@ namespace tcp_network {
 
 	void Session::handle_read(std::shared_ptr<Session> current_session, const system::error_code& error) {
 		if (!error) {
+			std::cout << data_ << std::endl;
 			Destination destination = define_location();
 
 			io_service service;

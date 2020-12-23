@@ -31,7 +31,7 @@ namespace tcp_network {
 		std::map<RequestDestination, Destination> servers_adrs_;
 		ip::tcp::socket socket_;
 		ParseJson parser_;
-		static constexpr int max_length = 5024;
+		static constexpr int max_length = 10000;
 		char data_[max_length];
 	};
 

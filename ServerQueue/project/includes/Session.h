@@ -36,7 +36,7 @@ private:
     boost::asio::ip::tcp::endpoint end_;
     boost::asio::ip::tcp::socket socket_;
 
-    char data_[2048];
+    char data_[10000];
 };
 
 #endif //SERVERQUEUE_SESSION_H

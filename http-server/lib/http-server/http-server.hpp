@@ -137,6 +137,7 @@ private:
     std::string _responseBuffer;
     RequestsHandler headers;
     boost::asio::io_service::strand _strand;
+    char buff[10024];
 };
 
 class HTTPServer
