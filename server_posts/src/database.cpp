@@ -12,7 +12,7 @@
 
 PostsDataBase::PostsDataBase(){
 	try {
-		database_ = std::make_shared<pqxx::connection>("dbname=db_posts host=localhost user=amartery password=password");
+		database_ = std::make_shared<pqxx::connection>("dbname=db_posts host=localhost user=amartery password=password port=27007");
 	} catch (const std::exception& e) {
 		std::cerr << e.what() << '\n';
 		std::this_thread::sleep_for(std::chrono::seconds(1));
