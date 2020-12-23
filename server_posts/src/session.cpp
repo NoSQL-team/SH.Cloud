@@ -7,14 +7,7 @@
 
 
 void Session::start() {
-    write("POSTS server is ready to serve");
-    write();
     read();
-}
-
-
-void Session::write(std::string const& string) {
-    outgoing.push(string + "\r\n> ");
 }
 
 
@@ -27,6 +20,22 @@ void Session::read() {
 }
 
 
+void Session::send_response(std::string& response) {
+    io::io_service service;
+    // указать порт http сервера
+    ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 9999);
+    ip::tcp::socket sock(service);
+
+    sock.async_connect(ep, [&sock, &response](const error_code& error) {
+        if (!error) {
+            boost::asio::write(sock, boost::asio::buffer(response, response.size()));
+        } else {
+            std::cerr << error.message() << std::endl;
+        }
+    });
+    service.run();
+}
+
 void Session::on_read(error_code error, std::size_t bytes_transferred) {
     if(!error) {
         std::istream stream(&incoming);
@@ -38,36 +47,20 @@ void Session::on_read(error_code error, std::size_t bytes_transferred) {
         incoming.consume(bytes_transferred);
         std::string trim_full_line = reduce(full_line);
         if(!line.empty()) {
-            dispatch(trim_full_line);
+            std::string response = dispatch(trim_full_line) + "\n\r";
+            send_response(response);
         }
         read();
     }
 }
 
-// TODO: реализовать функцию отправки на сокет http сервера
 
-void Session::write() {
-    io::async_write(
-            socket,
-            io::buffer(outgoing.front()),
-            std::bind(&Session::on_write, shared_from_this(), std::placeholders::_1,  std::placeholders::_2));
-}
-
-
-void Session::on_write(error_code error, std::size_t bytes_transferred) {
-    if(!error) {
-        outgoing.pop();
-        if(!outgoing.empty()) {
-            write();
-        }
-    }
-}
 
 
 // Находим соответствующий обработчик команд, применяем его,
 // если он найден, отправляем ответ обратно.
-void Session::dispatch(std::string const& line) {
-    std::stringstream response; // строка ответа
+std::string Session::dispatch(std::string const& line) {
+    std::string response; // строка ответа
 
     auto parameters_request = split(line, " ");
 
@@ -81,18 +74,18 @@ void Session::dispatch(std::string const& line) {
                 if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
                     try {
                         // вызов хендлера
-                        std::cout << entry.handler(result.id_request, result.args);
+                        response =  entry.handler(result.id_request, result.args);
                     } catch(std::exception const& e) {
-                        std::cout << "{'error': 'handler execution error'}";
+                        response = "{'error': 'handler execution error'}";
                     }
                 } else {
-                    std::cout << "{'error': 'bad args or not authorized'}";
+                    response = "{'error': 'bad args or not authorized'}";
                 }
             } else {
-                std::cout << "{'error': 'handler not found'}";
+                response = "{'error': 'handler not found'}";
             }
         } catch(boost::bad_lexical_cast &) {
-            std::cout << "{'error': 'parse request error'}";
+            response = "{'error': 'parse request error'}";
         }
 
     } else if (parameters_request.size() == 4) {  // боди есть
@@ -105,33 +98,24 @@ void Session::dispatch(std::string const& line) {
                 if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
                     try {
                         // вызов хендлера
-                        std::cout << entry.handler(result.id_request, result.args, result.body);
+                        response = entry.handler(result.id_request, result.args, result.body);
                     } catch(std::exception const& e) {
-                        std::cout << "{'error': 'handler execution error'}";
+                        response = "{'error': 'handler execution error'}";
                     }
                 } else {
-                    std::cout << "{'error': 'bad args or not authorized'}";
+                    response = "{'error': 'bad args or not authorized'}";
                 }
             } else {
-                std::cout << "{'error': 'handler not found'}";
+                response = "{'error': 'handler not found'}";
             }
         } catch(boost::bad_lexical_cast &) {
-            std::cout << "{'error': 'parse request error'}";
+            response = "{'error': 'parse request error'}";
         }
     } else {
-        std::cout <<
-                        "{'error': 'too many arguments (" +
+        response = "{'error': 'too many arguments (" +
                         std::to_string(parameters_request.size())
                         + ")'}";
     }
-
-    response << "OK";
-    // Поместим ответ в исходящую очередь
-    write(response.str());
-
-    // Если очередь была пуста до этого, то мы должны инициировать доставку сообщения обратно клиенту
-    if(outgoing.size() == 1) {
-        write();
-    }
+    return response;
 }
 

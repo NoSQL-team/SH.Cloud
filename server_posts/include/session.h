@@ -21,31 +21,15 @@ public:
     void start();
 
 private:
-
-    void write(std::string const& string);
-
-
+    static void send_response(std::string& response);
     void read();
-
-
     void on_read(error_code error, std::size_t bytes_transferred);
-
-// TODO: реализовать функцию отправки на сокет http сервера
-
-    void write();
-
-
-    void on_write(error_code error, std::size_t bytes_transferred);
-
 
 // Находим соответствующий обработчик команд, применяем его,
 // если он найден, отправляем ответ обратно.
-    void dispatch(std::string const& line);
+    std::string dispatch(std::string const& line);
 
-// Сеанс считывает входящие данные с помощью async_read_until до тех пор,
-// пока не будет найден символ \n, а затем анализирует полученную строку.
 
-    // TODO: добавить еще сокет для отправки на сразу на http сервер
     tcp::socket socket;
     // сохраняем диспетчер внутри объекта сервера и передаем ссылку на него в сеанс
     std::map<std::string, dispatcher_entry> const& dispatcher;

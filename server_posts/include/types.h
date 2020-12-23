@@ -23,13 +23,10 @@
 #include <boost/foreach.hpp>
 
 
-
 namespace io = boost::asio;
 namespace ip = io::ip;
 using tcp = ip::tcp;
 using error_code = boost::system::error_code;
-
-
 using boost::property_tree::ptree;
 
 
@@ -44,7 +41,7 @@ struct dispatcher_entry {
 struct dispatcher_entry_with_body {
     std::size_t const args = 0; // количество аргументов
     bool required_auth;  // нужна ли авторизация
-    std::function<std::string (const std::string &, const std::map<std::string, size_t> &, const std::string &)> const handler;
+    std::function<std::string (const std::string &, const std::map<std::string, size_t> &, std::string &)> const handler;
 };
 
 

@@ -5,21 +5,11 @@
 #ifndef MAIN_TP_DATABASE_H
 #define MAIN_TP_DATABASE_H
 
-#include <string>
+
 #include <pqxx/pqxx>
-#include <map>
-#include <iostream>
 #include <boost/format.hpp>
-
-
 #include "../include/post.h"
-// Класс Post
-// id поста
-// id пользователя создавшего пост
-// дата создания поста
-// title поста
-// text поста
-// attach url картинок
+
 
 class PostsDataBase {
 public:
@@ -37,11 +27,9 @@ public:
 
 
     std::vector<Post> get_all_posts();
-    std::vector<Post> get_user_posts(int user_id);
-    std::vector<Post> get_posts_for_user(const std::vector<int>& post_ids);
-    Post get_one_post(int post_id);
-
-    bool is_opened();
+    std::vector<Post> get_user_posts(std::string user_id);
+    std::vector<Post> get_posts_for_user(const std::string& friends_id);
+    Post get_one_post(std::string post_id);
 
 private:
     pqxx::connection database_;

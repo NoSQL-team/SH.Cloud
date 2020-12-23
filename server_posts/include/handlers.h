@@ -26,7 +26,7 @@ public:
 
     std::string create_post(const std::string& id_request,
                             const std::map<std::string, size_t>& args,
-                            const std::string& body);
+                            std::string& body);
 
 
 private:

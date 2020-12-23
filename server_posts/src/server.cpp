@@ -101,7 +101,7 @@ void TCPServer::add_endpoint() {
                     true,
                     [this](std::string const& id_request,
                            std::map<std::string, size_t> const& args,
-                           std::string const& body) -> std::string {
+                           std::string& body) -> std::string {
                         return hand.create_post(id_request, args, body);
                     }
             });
@@ -110,10 +110,8 @@ void TCPServer::add_endpoint() {
 
 
 void TCPServer::accept() {
-    socket.emplace(io_context);
-
-    acceptor.async_accept(*socket, [&] (error_code error) {
-        std::make_shared<Session>(std::move(*socket), dispatcher, dispatcher_with_body)->Session::start();
+    acceptor.async_accept(socket, [&] (error_code error) {
+        std::make_shared<Session>(std::move(socket), dispatcher, dispatcher_with_body)->Session::start();
         accept();
     });
 }

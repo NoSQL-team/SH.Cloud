@@ -5,8 +5,10 @@
 #include "../include/database.h"
 #include "../include/utility_for_lib.h"
 
+
+
 PostsDataBase::PostsDataBase() :
-        database_("dbname=db_posts host=localhost user=amartery password=amartery") {}
+        database_("dbname=db_posts host=localhost user=amartery password=") {}
 
 PostsDataBase::~PostsDataBase() {
     database_.disconnect();
@@ -24,10 +26,6 @@ pqxx::result PostsDataBase::do_select_request(const std::string& sql_request) {
 }
 
 
-/*
- * insert into posts(creator_id, creation_date, title, text, attach, amount_likes)
- * values (1, now(), 'some title', 'some text', 'url1 url2', 0);
- */
 std::string PostsDataBase::create_post(Post& post) {
     boost::format creating_sql_req =
             (boost::format(
@@ -56,7 +54,6 @@ std::string PostsDataBase::delete_post(std::string& post_id, std::string& user_i
     pqxx::result r = do_select_request(sql_req);
     auto creator_id = r[0][0].as<std::string>();
 
-
     boost::format creating_sql_req =
             (boost::format("delete from posts where post_id = %1%")%post_id);
     std::string sql_request = boost::str(creating_sql_req);
@@ -66,7 +63,7 @@ std::string PostsDataBase::delete_post(std::string& post_id, std::string& user_i
         try {
             // удаляем пост
             do_modifying_request(sql_request);
-            return "ok";
+            return "success";
         } catch (pqxx::sql_error const &e) {
             return "error";
         }
@@ -96,7 +93,7 @@ std::vector<Post> PostsDataBase::get_all_posts() {
 }
 
 
-std::vector<Post> PostsDataBase::get_user_posts(int user_id) {
+std::vector<Post> PostsDataBase::get_user_posts(std::string user_id) {
     boost::format creating_sql_req =
             (boost::format("select * from posts where creator_id = %1%")%user_id);
     std::string sql_request = boost::str(creating_sql_req);
@@ -118,7 +115,7 @@ std::vector<Post> PostsDataBase::get_user_posts(int user_id) {
 }
 
 
-Post PostsDataBase::get_one_post(int post_id) {
+Post PostsDataBase::get_one_post(std::string post_id) {
     boost::format creating_sql_req =
             (boost::format("select * from posts where post_id = %1%")%post_id);
     std::string sql_request = boost::str(creating_sql_req);
@@ -137,11 +134,23 @@ Post PostsDataBase::get_one_post(int post_id) {
 }
 
 
-std::vector<Post> PostsDataBase::get_posts_for_user(const std::vector<int>& posts_ids) {
+std::vector<Post> PostsDataBase::get_posts_for_user(const std::string& friends_id) {
+    boost::format creating_sql_req =
+            (boost::format("select * from posts where creator_id in(%1%) order by creation_date desc")%friends_id);
+    std::string sql_request = boost::str(creating_sql_req);
+    pqxx::result r = do_select_request(sql_request);
     std::vector<Post> result;
-    result.reserve(posts_ids.size());
-    for (const auto& id : posts_ids) {
-        result.push_back(get_one_post(id));
+    for (const auto& row: r) {
+        Post temp(
+                row[1].as<int>(),
+                row[3].as<std::string>(),
+                row[4].as<std::string>(),
+                row[5].as<std::string>(),
+                row[2].as<std::string>(),
+                row[0].as<int>(),
+                row[6].as<int>(),
+                row[7].as<std::string>());
+        result.push_back(temp);
     }
     return result;
 }
@@ -177,9 +186,9 @@ std::string PostsDataBase::add_like_by_id(std::string post_id, const std::string
                                             "where post_id = " + post_id;
         do_modifying_request(sql_req_update_amount);
 
-        return "{'status': 'ok'}";
+        return "success";
     } else {
-        return "{'status': 'error'}";
+        return "error";
     }
 }
 
@@ -213,17 +222,8 @@ std::string PostsDataBase::del_like_by_id(std::string post_id, const std::string
                                             "where post_id = " + post_id;
         do_modifying_request(sql_req_update_amount);
 
-        return "{'status': 'ok'}";
+        return "success";
     } else {
-        return "{'status': 'error'}";
+        return "error";
     }
-}
-
-bool PostsDataBase::is_opened() {
-    if (database_.is_open()) {
-        std::cout << "Соединение с бд открыто" << std::endl;
-        return true;
-    }
-    std::cout << "Соединение с бд закрыто" << std::endl;
-    return false;
 }
