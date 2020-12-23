@@ -26,6 +26,8 @@ void Session::send_response(std::string& response) {
     ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 9999);
     ip::tcp::socket sock(service);
 
+    std::cout << response << std::endl;
+
     sock.async_connect(ep, [&sock, &response](const error_code& error) {
         if (!error) {
             boost::asio::write(sock, boost::asio::buffer(response, response.size()));
@@ -62,7 +64,7 @@ std::string Session::dispatch(std::string const& line) {
 
     auto parameters_request = split(line, " ");
 
-    if (parameters_request.size() == 3) { // боди нет
+    if (parameters_request.size() == 4) { // боди нет
         try {
             RequestWithoutBody result = parse_without_body(parameters_request);
             // поиск хендлера
@@ -86,23 +88,23 @@ std::string Session::dispatch(std::string const& line) {
             response = "{'error': 'parse request error'}";
         }
 
-    } else if (parameters_request.size() == 4) {  // боди есть
+    } else if (parameters_request.size() == 5) {  // боди есть
         try {
             RequestWithBody result = parse_with_body(parameters_request);
             // поиск хендлера
             if(auto it = dispatcher_with_body.find(result.command); it != dispatcher_with_body.cend()) {
                 auto const& entry = it->second;
                 // проверяем количество параметров из url и авторизирован ли пользователь
-                if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
+                // if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
                     try {
                         // вызов хендлера
                         response = entry.handler(result.id_request, result.args, result.body);
                     } catch(std::exception const& e) {
                         response = "{'error': 'handler execution error'}";
                     }
-                } else {
-                    response = "{'error': 'bad args or not authorized'}";
-                }
+                // } else {
+                //     response = "{'error': 'bad args or not authorized'}";
+                // }
             } else {
                 response = "{'error': 'handler not found'}";
             }
