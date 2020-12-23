@@ -6,6 +6,7 @@
 
 #include "session.h"
 #include "requst_handler.h"
+#include <iostream>
 
 
 
@@ -31,6 +32,9 @@ namespace tcp_network {
 	}
 
 	void Session::start(std::shared_ptr<Session> current_session) {
+		for (size_t i = 0; i < 10000; i++) {
+        	data_[i] = '\0';
+    	}
 		socket_.async_read_some(boost::asio::buffer(data_, max_length),
 								boost::bind(&Session::handle_read, this, current_session,
 											boost::asio::placeholders::error,
@@ -44,11 +48,7 @@ namespace tcp_network {
 			std::map<std::string, std::string> request = parser_.parse(req);
 			auto handler = std::make_shared<RequestHandler>(io_service_, database_,
 												   shared_from_this(), request);
-
-//			io_service_.post([handler, this]() {
-				handler->handle_request();
-//			});
-
+			handler->handle_request();
 		} else {
 //			BOOST_LOG_TRIVIAL(error) << error.message();
 			current_session.reset();

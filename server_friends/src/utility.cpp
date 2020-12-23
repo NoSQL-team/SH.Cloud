@@ -34,13 +34,17 @@ namespace tcp_network {
 		std::map<std::string, std::string> requsts;
 
 		auto iter = request.find('\n');
-		requsts.insert({"destination", request.substr(0, iter)});
+		requsts.insert({"number", request.substr(0, iter)});
 		request.erase(0, iter + 1);
 		iter = request.find('\n');
-		requsts.insert({"priority", request.substr(0, iter)});
+		std::string buffer = request.substr(0, iter);
+		buffer = request.substr(13, iter);
+		auto bufIter = buffer.find('/');
+		buffer = buffer.substr(0, bufIter);
+		requsts.insert({"type", buffer});
 		request.erase(0, iter + 1);
 		iter = request.find('\n');
-		requsts.insert({"type", request.substr(0, iter)});
+		requsts.insert({"auth", request.substr(0, iter)});
 		request.erase(0, iter + 2);
 
 		if(!request.empty()) {

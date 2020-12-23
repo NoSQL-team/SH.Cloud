@@ -4,6 +4,7 @@
 
 
 #include "requst_handler.h"
+#include <iostream>
 
 namespace tcp_network {
 
@@ -14,30 +15,27 @@ namespace tcp_network {
 								request_(request) {}
 
 	void RequestHandler::handle_request() {
+
 		if (request_.count("type") && request_["type"] == "add") {
-//			io_service_.post([this](){
-				handle_add();
-//			});
+			handle_add();
 		} else if (request_.count("type") && request_["type"] == "is_friend") {
-//			io_service_.post([this](){
-				handle_is_friend();
-//			});
+			handle_is_friend();
 		} else if (request_.count("type") && request_["type"] == "delete") {
-//			io_service_.post([this](){
-				handle_delete();
-//			});
+			handle_delete();
 		} else if (request_.count("type") && request_["type"] == "get_all") {
-//			io_service_.post([this](){
-				handle_get_all_friends();
-//			});
+			handle_get_all_friends();
 		}
 	}
 
 	void RequestHandler::handle_add() {
-		bool result = database_.add_friend(std::atoi(request_["user_1"].c_str()),
-					   std::atoi(request_["user_2"].c_str()));
 
-		std::string response = form_post_response(result);
+		bool result = false;
+		// if (request_["user_1"] == request_["auth"]) {
+			result = database_.add_friend(std::atoi(request_["user_1"].c_str()),
+						std::atoi(request_["user_2"].c_str()));
+		// }
+
+		std::string response = (request_["number"] + '\n' + form_post_response(result) + '\r');
 		session_->send_response(response);
 	}
 
@@ -45,15 +43,19 @@ namespace tcp_network {
 		std::vector<int> all_friends = database_.get_all_friends(
 				std::atoi(request_["user_1"].c_str()));
 
-		std::string string_respones = form_get_fr_response(all_friends);
+		std::string string_respones = (request_["number"] + '\n' + form_get_fr_response(all_friends) + '\r');
 		session_->send_response(string_respones);
 	}
 
 	void RequestHandler::handle_delete() {
-		bool result = database_.delete_friend(std::atoi(request_["user_1"].c_str()),
-											 std::atoi(request_["user_2"].c_str()));
-
-		std::string response = form_post_response(result);
+		bool result = false;
+		
+		// if (request_["user_1"] == request_["auth"]) {
+			result = database_.delete_friend(std::atoi(request_["user_1"].c_str()),
+										std::atoi(request_["user_2"].c_str()));
+		// }
+		
+		std::string response = (request_["number"] + '\n' + form_post_response(result) + '\r');
 		session_->send_response(response);
 	}
 
@@ -61,7 +63,7 @@ namespace tcp_network {
 		bool result = database_.is_friend(std::atoi(request_["user_1"].c_str()),
 										  std::atoi(request_["user_2"].c_str()));
 
-		std::string response = form_post_response(result);
+		std::string response = (request_["number"] + '\n' + form_post_response(result) + '\r');
 		session_->send_response(response);
 	}
 

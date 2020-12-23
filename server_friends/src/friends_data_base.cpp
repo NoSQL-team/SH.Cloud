@@ -11,9 +11,9 @@
 #include <chrono>
 
 DataBase::DataBase(std::map<std::string, std::string> &db_settings)  {
-	std::string str_db_settings("dbname=" + db_settings["dbname"] +
+	str_db_settings = ("dbname=" + db_settings["dbname"] +
 							  " host=" + db_settings["host"] +" user=" + db_settings["user"] +
-							  " password=" + db_settings["password"]);
+							  " password=" + db_settings["password"] + " port=27002");
 	try {
 		database_ = std::make_unique<pqxx::connection>(str_db_settings);
 	} catch (const std::exception& e) {
@@ -25,26 +25,26 @@ DataBase::DataBase(std::map<std::string, std::string> &db_settings)  {
 
 FriendsDataBase::FriendsDataBase(std::map<std::string, std::string>& db_settings) : DataBase(db_settings){ }
 
-DataBase::~DataBase() {
-//	database_.close();
-}
+DataBase::~DataBase() {}
 
-FriendsDataBase::~FriendsDataBase() {
-//	database_.close();
-}
-
+FriendsDataBase::~FriendsDataBase() {}
 
 bool FriendsDataBase::add_friend(int user_1, int user_2) {
+
 	if (is_friend(user_1, user_2)) {
 		std::cout << std::to_string(user_1) + " и "
 		+ std::to_string(user_2) + " уже друзья" << std::endl;
 		return false;
 	}
 
+	std::cout << "/* message */" << std::endl;
+
 	auto form_sql_request = [](int user_id_1, int user_id_2){
 		return "insert into friends values (" + std::to_string(user_id_1) + ", "
 			   + std::to_string(user_id_2) + ")";
 	};
+
+	std::cout << "/* message */" << std::endl;
 
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
@@ -74,7 +74,12 @@ bool FriendsDataBase::is_friend(int user_1, int user_2) {
 	+ std::to_string(user_1) + " and second_id = " + std::to_string(user_2));
 	std::cout << sql_request << std::endl;
 
+
+
 	pqxx::result r = do_select_request(sql_request);
+
+	std::cout << "/* message */" << std::endl;
+
 	pqxx::result::const_iterator c = r.begin();
 	bool is_friend = c[0].as<int>();
 	if (is_friend) {
@@ -117,14 +122,17 @@ bool DataBase::is_opened() const {
 
 
 void FriendsDataBase::do_modifying_request(std::string& sql_request) {
-	pqxx::work W(*database_);
+	pqxx::connection con(str_db_settings);
+	pqxx::work W(con);
 	W.exec(sql_request);
 	W.commit();
 }
 
 pqxx::result FriendsDataBase::do_select_request(std::string& sql_request) {
-	pqxx::nontransaction N(*database_);
-	pqxx::result R (N.exec(sql_request));
+	pqxx::connection con(str_db_settings);
+	pqxx::work N(con);
+	pqxx::result R = N.exec(sql_request);
+	N.commit();
 	return R;
 }
 

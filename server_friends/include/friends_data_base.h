@@ -23,6 +23,7 @@ public:
 
 protected:
 	std::unique_ptr<pqxx::connection> database_;
+	std::string str_db_settings;
 };
 
 class FriendsDataBase : public DataBase{

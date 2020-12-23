@@ -38,17 +38,16 @@ using std::string;
         pqxx::result R = select_(sql_request);
 
         string answer = "{\n";
-
         for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
-            answer += "  \"firstname\": \"" + c[1].as<string>() + "\" ,\n";
-            answer += "  \"lastname\": \"" + c[2].as<string>() + "\" ,\n";
-            answer += "  \"nickname\": \"" + c[3].as<string>() + "\" ,\n";
-            answer += "  \"email\": \"" + c[4].as<string>() + "\" ,\n";
-            answer += "  \"photo\": \"" + c[5].as<string>() + "\" ,\n";
+            answer += "  \"firstname\": \"" + c[1].as<string>() + "\",\n";
+            answer += "  \"lastname\": \"" + c[2].as<string>() + "\",\n";
+            answer += "  \"nickname\": \"" + c[3].as<string>() + "\",\n";
+            answer += "  \"email\": \"" + c[4].as<string>() + "\",\n";
+            answer += "  \"photo\": \"" + c[5].as<string>() + "\"";
         }
-        answer += "}";
+        answer += "\n}";
 
-        if (answer == "{\n}") {
+        if (answer == "{\n\n}") {
             return "No user";
         }
 
@@ -62,12 +61,17 @@ using std::string;
 
         string answer = "{\n";
 
+		int i = 0;
         for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
-            answer += "  \"nickname\": \"" + c[0].as<string>() + "\" ,\n";
+        	if (i != 0) {
+        		answer += ",\n";
+        	}
+        	i++;
+            answer += "  \"nickname\": \"" + c[0].as<string>() + "\"";
         }
-        answer += "}";
+        answer += "\n}";
 
-        if (answer == "{\n}") {
+        if (answer == "{\n\n}") {
             return "No users";
         }
 
@@ -95,14 +99,14 @@ using std::string;
 
     std::string UsersDatabase::id_by_nick(std::string& nickname) {
         string sql_request("SELECT id FROM Users WHERE nickname=");
-        sql_request += nickname;
+        sql_request += "\'" + nickname + "\'";
 
         pqxx::result R = select_(sql_request);
 
         string answer = "{\n";
 
         for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
-            answer += "  \"id\": \"" + c[0].as<string>() + "\" ,\n";
+            answer += "  \"id\": \"" + c[0].as<string>() + "\"\n";
         }
         answer += "}";
 

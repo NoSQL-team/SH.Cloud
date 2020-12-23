@@ -211,17 +211,16 @@ void HandlerUser::is_exist(int number_request, int id_user) const {
 
 void HandlerUser::id_by_nick(int number_request, string& nickname) {
     try {
-        data_base_.all_users();
-        string result = std::to_string(number_request) + "\n";
-        string new_result = data_base_.all_users();
-        if (result == "No user") {
-            result += "{\n \"response\": \"false\"\n}";
-        } else {
-            result += new_result;
-        }
-        session_.send_answer(result);
+    	string result = data_base_.id_by_nick(nickname);
+        string str_result = std::to_string(number_request) + "\n";
+		if (result == "No users") {
+			str_result += "{\n \"response\": \"false\"\n}";
+		} else {
+			str_result += result;
+		}
+        session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
+        // BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
     }
 }
