@@ -15,6 +15,9 @@ namespace tcp_network {
 								request_(request) {}
 
 	void RequestHandler::handle_request() {
+		for (auto [first, second] : request_) {
+			std::cout << first << " " << second << std::endl;
+		}
 
 		if (request_.count("type") && request_["type"] == "add") {
 			handle_add();
@@ -24,6 +27,8 @@ namespace tcp_network {
 			handle_delete();
 		} else if (request_.count("type") && request_["type"] == "get_all") {
 			handle_get_all_friends();
+		} else if (request_.count("type") && request_["type"] == "get_stat") {
+			handle_get_statistic();
 		}
 	}
 
@@ -36,6 +41,7 @@ namespace tcp_network {
 		// }
 
 		std::string response = (request_["number"] + '\n' + form_post_response(result) + '\r');
+		std::cout << response << std::endl;
 		session_->send_response(response);
 	}
 
@@ -67,6 +73,14 @@ namespace tcp_network {
 		session_->send_response(response);
 	}
 
+
+	void RequestHandler::handle_get_statistic() {
+		int result = database_.get_statistic(std::atoi(request_["user_1"].c_str()));
+
+		std::string response = (request_["number"] + '\n' + form_stat_response(result) + '\r');
+		session_->send_response(response);
+	}
+
 	std::string RequestHandler::form_post_response(bool result) {
 		std::string response = "{ \"response\": ";
 		if (result)
@@ -76,6 +90,17 @@ namespace tcp_network {
 		response += " }";
 		return response;
 	}
+
+	std::string RequestHandler::form_stat_response(int amount) {
+		std::stringstream response;
+		response << "{\n \"response\": ";
+		response << "\"true\"";
+		response << ",\n \"data\": ";
+
+		response << amount << "\n}";
+		return response.str();
+	}
+
 
 	std::string RequestHandler::form_get_fr_response(const std::vector<int>& friends) {
 		std::stringstream response;

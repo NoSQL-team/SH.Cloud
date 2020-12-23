@@ -49,9 +49,6 @@ bool FriendsDataBase::add_friend(int user_1, int user_2) {
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
 	do_modifying_request(sql_request);
-	std::string sql_request_2 = form_sql_request(user_2, user_1);
-	std::cout << sql_request_2 << std::endl;
-	do_modifying_request(sql_request_2);
 
 	return true;
 }
@@ -103,11 +100,6 @@ bool FriendsDataBase::delete_friend(int user_1, int user_2) {
 	std::string sql_request_1 = form_sql_request(user_1, user_2);
 	std::cout << sql_request_1 << std::endl;
 	do_modifying_request(sql_request_1);
-
-	std::string sql_request_2 = form_sql_request(user_2, user_1);
-	std::cout << sql_request_2 << std::endl;
-	do_modifying_request(sql_request_2);
-
 	return true;
 }
 
@@ -118,6 +110,25 @@ bool DataBase::is_opened() const {
 	}
 	std::cout << "Соединение с бд закрыто" << std::endl;
 	return false;
+}
+
+int FriendsDataBase::get_statistic(int user_1) {
+	std::string sql_requst = "select count(distinct second_id) "
+						  "from friends where first_id = " + std::to_string(user_1);
+
+	std::cout << sql_requst << std::endl;
+
+	pqxx::result result = do_select_request(sql_requst);
+	int friends_amount = 0;
+	try {
+		pqxx::result::const_iterator c = result.begin();
+		friends_amount = c[0].as<int>();
+	} catch (std::exception& ex) {
+		std::cerr << "Error in get_statistic" << std::endl;
+		return friends_amount;
+	}
+	std::cout << "Число друзей " << friends_amount << std::endl;
+	return friends_amount;
 }
 
 

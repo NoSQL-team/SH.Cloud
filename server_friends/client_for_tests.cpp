@@ -39,13 +39,13 @@ public:
 				std::cin >> user_1 >> user_2;
 
 				std::string add_request = "5\n"
-									  "0\n"
-									  "add\n"
-									  "\n"
-									  "{\n"
-									  "  \"user_1\": \"" + std::to_string(user_2) + "\",\n"
-									  "  \"user_2\": \"" + std::to_string(user_1) + "\"\n"
-									  "}";
+										  "/api/friends/add/\n"
+										  "0\n"
+										  "\n"
+										  "{\n"
+										  "  \"user_1\": \"" + std::to_string(user_1) + "\",\n"
+																						"  \"user_2\": \"" + std::to_string(user_2) + "\"\n"
+																																	  "}";
 
 
 				boost::asio::write(socket, boost::asio::buffer(add_request.c_str(), add_request.size()));
@@ -56,11 +56,13 @@ public:
 
 				std::string get_all_request = "5\n"
 									  "0\n"
-									  "get_all\n"
+									  "/api/auth/get_all/\n"
 									  "\n"
 									  "{\n"
 									  "  \"user_1\": \"" + std::to_string(user_id) +"\"\n"
 									  "}";
+
+
 
 				boost::asio::write(socket, boost::asio::buffer(get_all_request.c_str(), get_all_request.size()));
 				std::cout << "Запрос отправлен" << std::endl;
@@ -69,8 +71,8 @@ public:
 				std::cin >> user_1 >> user_2;
 
 				std::string is_friends = "5\n"
+										 "/api/friends/add/\n"
 										 "0\n"
-										 "is_friend\n"
 										 "\n"
 										 "{\n"
 										 "  \"user_1\": \"" + std::to_string(user_1) + "\",\n"
@@ -85,7 +87,7 @@ public:
 
 				std::string delete_user = "5\n"
 										  "0\n"
-										  "delete\n"
+										  "/api/auth/add/\n"
 										  "\n"
 										  "{\n"
 										  "  \"user_1\": \"" + std::to_string(user_1) + "\",\n"
@@ -93,6 +95,21 @@ public:
 										  "}";
 
 				boost::asio::write(socket, boost::asio::buffer(delete_user.c_str(), delete_user.size()));
+				std::cout << "Запрос отправлен" << std::endl;
+			} else if (request_type == "get_stat") {
+				int user_1, user_2;
+				std::cin >> user_1;
+
+				std::string get_stat = "5\n"
+											  "/api/friends/get_stat/\n"
+			 									"0\n"
+											  "\n"
+											  "{\n"
+											  "  \"user_1\": \"" + std::to_string(user_1) +"\"\n"
+																							"}";
+																																	  "}";
+
+				boost::asio::write(socket, boost::asio::buffer(get_stat.c_str(), get_stat.size()));
 				std::cout << "Запрос отправлен" << std::endl;
 			}
 			if (request_type != "end")
@@ -109,7 +126,7 @@ private:
 
 int main(int argc, char **argv) {
 	std::string ip = "127.0.0.1";
-	Client client(ip, 8081);
+	Client client(ip, 12013);
 
 	return 0;
 }
