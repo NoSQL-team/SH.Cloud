@@ -12,6 +12,9 @@ void Session::start() {
 
 
 void Session::read() {
+    // for (size_t i = 0; i < 10000; i++) {
+    //     data_[i] = \"\0\";
+    // }
     io::async_read_until(
             socket,
             incoming,
@@ -71,21 +74,21 @@ std::string Session::dispatch(std::string const& line) {
             if(auto it = dispatcher.find(result.command); it != dispatcher.cend()) {
                 auto const& entry = it->second;
                 // проверяем количество параметров из url и авторизирован ли пользователь
-                if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
+                // if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
                     try {
                         // вызов хендлера
                         response =  entry.handler(result.id_request, result.args);
                     } catch(std::exception const& e) {
-                        response = "{'error': 'handler execution error'}";
+                        response = parameters_request[0] + "\n\n{\"error\": \"handler execution error\"}";
                     }
-                } else {
-                    response = "{'error': 'bad args or not authorized'}";
-                }
+                // } else {
+                //     response = parameters_request[0] + "\n\n{\"error\": \"bad args or not authorized\"}";
+                // }
             } else {
-                response = "{'error': 'handler not found'}";
+                response = parameters_request[0] + "\n\n{\"error\": \"handler not found\"}";
             }
         } catch(boost::bad_lexical_cast &) {
-            response = "{'error': 'parse request error'}";
+            response = parameters_request[0] + "\n\n{\"error\": \"parse request error\"}";
         }
 
     } else if (parameters_request.size() == 5) {  // боди есть
@@ -100,21 +103,21 @@ std::string Session::dispatch(std::string const& line) {
                         // вызов хендлера
                         response = entry.handler(result.id_request, result.args, result.body);
                     } catch(std::exception const& e) {
-                        response = "{'error': 'handler execution error'}";
+                        response = parameters_request[0] + "\n\n{\"error\": \"handler execution error\"}";
                     }
                 // } else {
-                //     response = "{'error': 'bad args or not authorized'}";
+                //     response = parameters_request[0] + "\n\n{\"error\": \"bad args or not authorized\"}";
                 // }
             } else {
-                response = "{'error': 'handler not found'}";
+                response = parameters_request[0] + "\n\n{\"error\": \"handler not found\"}";
             }
         } catch(boost::bad_lexical_cast &) {
-            response = "{'error': 'parse request error'}";
+            response = parameters_request[0] + "\n\n{\"error\": \"parse request error\"}";
         }
     } else {
-        response = "{'error': 'too many arguments (" +
+        response = parameters_request[0] + "\n\n{\"error\": \"too many arguments (" +
                         std::to_string(parameters_request.size())
-                        + ")'}";
+                        + ")\"}";
     }
     return response;
 }

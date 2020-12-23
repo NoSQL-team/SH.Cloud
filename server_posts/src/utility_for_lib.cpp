@@ -127,9 +127,11 @@ std::string post_to_json(const Post& p) {
 
 std::string vec_posts_to_json(std::vector<Post>& vec_posts) {
     std::string res;
+    res += "{\"data\": [";
     for (auto& i : vec_posts) {
-        res += post_to_json(i) + "\n";
+        res += post_to_json(i) + ",";
     }
+    res += "]}";
     return res;
 }
 
@@ -168,26 +170,25 @@ std::string reduce(std::string& str,
 std::vector<std::string> get_friends_id(std::string& user_id) {
     std::vector<std::string> empty_vec(0);
     try {
-        std::string request = "5\n"
-                              "0\n"
-                              "/api/friends/get_all/\n"
-                              "\n"
-                              "{\n"
-                              "  \"user_1\": \"" + user_id +"\"\n}";
+        std::string request = "/api/friends/get_all/\n\n"
+                              "{\"user_1\": \"" + user_id +"\"\n}\r";
 
         boost::asio::io_service service;
-
 
         // указать порт http сервера
         boost::asio::ip::tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 9999);
         ip::tcp::socket socket(service);
         socket.connect(end);
-        boost::asio::write(socket, boost::asio::buffer(request));
         service.run();
+        boost::asio::write(socket, boost::asio::buffer(request));
+        boost::asio::streambuf response;
 
-        char response[2048];
-        socket.read_some(boost::asio::buffer(response, 2048));
-        std::string answer = response;
+        read_until(
+            socket,
+            response,
+            '\r'
+        );
+        std::string answer( (std::istreambuf_iterator<char>(&response)), std::istreambuf_iterator<char>() );
 
         // парсинг
         ptree pt;

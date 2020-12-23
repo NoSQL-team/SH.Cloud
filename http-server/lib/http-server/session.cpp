@@ -15,6 +15,7 @@ void Session::start(std::map<std::string, std::string> context) {
             std::istringstream stream(buff);
             std::cout << buff << std::endl;
             _responseBuffer = headers.getResponse(stream, context);
+            std::cout << _responseBuffer << std::endl;
             if (!(_responseBuffer == "our")) {
                 async_write(
                     _socket,

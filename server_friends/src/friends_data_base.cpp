@@ -37,14 +37,10 @@ bool FriendsDataBase::add_friend(int user_1, int user_2) {
 		return false;
 	}
 
-	std::cout << "/* message */" << std::endl;
-
 	auto form_sql_request = [](int user_id_1, int user_id_2){
 		return "insert into friends values (" + std::to_string(user_id_1) + ", "
 			   + std::to_string(user_id_2) + ")";
 	};
-
-	std::cout << "/* message */" << std::endl;
 
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
@@ -71,11 +67,7 @@ bool FriendsDataBase::is_friend(int user_1, int user_2) {
 	+ std::to_string(user_1) + " and second_id = " + std::to_string(user_2));
 	std::cout << sql_request << std::endl;
 
-
-
 	pqxx::result r = do_select_request(sql_request);
-
-	std::cout << "/* message */" << std::endl;
 
 	pqxx::result::const_iterator c = r.begin();
 	bool is_friend = c[0].as<int>();

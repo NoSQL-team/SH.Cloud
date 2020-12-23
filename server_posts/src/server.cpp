@@ -97,7 +97,7 @@ void TCPServer::add_endpoint() {
     dispatcher_with_body.emplace(
         "/api/posts/create/",
         dispatcher_entry_with_body{
-                1,
+                0,
                 true,
                 [this](std::string const& id_request,
                         std::map<std::string, size_t> const& args,

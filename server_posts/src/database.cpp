@@ -172,11 +172,11 @@ std::string PostsDataBase::add_like_by_id(std::string post_id, const std::string
     std::vector<std::string> vec_likes = split(likes, " ");
 
 
-    auto itr = std::find(vec_likes.begin(), vec_likes.end(), user_id);
+    auto itr = std::find(vec_likes.begin(), vec_likes.end(), "i" + user_id);
     // если такого лайка нет
     if (itr == vec_likes.end()) {
         // обновим поле с id пользователей которые поставили лайк
-        std::string updated_likes = likes + " " + user_id;
+        std::string updated_likes = likes + " i" + user_id;
         boost::format creating_sql_req = (boost::format("update posts "
                                                         "set liked_users = '%1%' "
                                                         "where post_id = %2%")
@@ -202,7 +202,7 @@ std::string PostsDataBase::del_like_by_id(std::string post_id, const std::string
 
     std::vector<std::string> vec_likes = split(likes, " ");
     // если лайк есть
-    auto itr = std::find(vec_likes.begin(), vec_likes.end(), user_id);
+    auto itr = std::find(vec_likes.begin(), vec_likes.end(), ("i" + user_id));
     if (itr != vec_likes.end()) {
         vec_likes.erase(itr); // удалим лайк
 
