@@ -15,7 +15,8 @@ DataBase::DataBase(std::map<std::string, std::string> &db_settings)  {
 							  " host=" + db_settings["host"] +" user=" + db_settings["user"] +
 							  " password=" + db_settings["password"] + " port=27002");
 	try {
-		database_ = std::make_unique<pqxx::connection>(str_db_settings);
+		std::string tmp = str_db_settings;
+		database_ = std::make_unique<pqxx::connection>(tmp);
 	} catch (const std::exception& e) {
 		std::cerr << e.what() << '\n';
 		std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -122,17 +123,23 @@ bool DataBase::is_opened() const {
 
 
 void FriendsDataBase::do_modifying_request(std::string& sql_request) {
-	pqxx::connection con(str_db_settings);
-	pqxx::work W(con);
+//	pqxx::connection con(str_db_settings);
+//	pqxx::work W(con);
+//	W.exec(sql_request);
+//	W.commit();
+	pqxx::work W(*database_);
 	W.exec(sql_request);
 	W.commit();
 }
 
 pqxx::result FriendsDataBase::do_select_request(std::string& sql_request) {
-	pqxx::connection con(str_db_settings);
-	pqxx::work N(con);
-	pqxx::result R = N.exec(sql_request);
-	N.commit();
+//	pqxx::connection con(str_db_settings);
+//	pqxx::work N(con);
+//	pqxx::result R = N.exec(sql_request);
+//	N.commit();
+//	return R;
+	pqxx::nontransaction N(*database_);
+	pqxx::result R (N.exec(sql_request));
 	return R;
 }
 

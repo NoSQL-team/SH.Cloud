@@ -21,7 +21,7 @@ option(test_build "" OFF)
 if (LINUX)
     set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread")
 endif()
-if (APPLE)
+if (TRUE)
     set(CMAKE_CXX_FLAGS " -lgtest -DBOOST_LOG_DYN_LINK")
 endif()
 
