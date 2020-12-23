@@ -5,33 +5,23 @@
 #include "../include/database.h"
 #include "../include/utility_for_lib.h"
 
-#include <iostream>
-#include <thread>
-#include <chrono>
 
 
-PostsDataBase::PostsDataBase(){
-	try {
-		database_ = std::make_shared<pqxx::connection>("dbname=db_posts host=localhost user=amartery password=password");
-	} catch (const std::exception& e) {
-		std::cerr << e.what() << '\n';
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-	std::cout << "Connecting!" << std::endl;
-}
+PostsDataBase::PostsDataBase() :
+        database_("dbname=db_posts host=localhost user=amartery password=amartery") {}
 
 PostsDataBase::~PostsDataBase() {
-//    database_->disconnect();
+    database_.disconnect();
 }
 
 void PostsDataBase::do_modifying_request(const std::string& sql_request) {
-    pqxx::work W(*database_);
+    pqxx::work W(database_);
     W.exec(sql_request);
     W.commit();
 }
 
 pqxx::result PostsDataBase::do_select_request(const std::string& sql_request) {
-    pqxx::nontransaction N(*database_);
+    pqxx::nontransaction N(database_);
     return N.exec(sql_request);
 }
 
