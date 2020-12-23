@@ -40,6 +40,8 @@ public:
 
     bool is_friend(int user_1, int user_2);
 
+    int get_statistic(int user_1);
+
 private:
 	void do_modifying_request(std::string& sql_request);
 	pqxx::result do_select_request(std::string& sql_request);
