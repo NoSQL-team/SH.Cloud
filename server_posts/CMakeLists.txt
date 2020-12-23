@@ -6,15 +6,18 @@ set(CMAKE_CXX_STANDARD 20)
 #set(CMAKE_CXX_FLAGS "-g -Wall -lpthread -lgtest -L/usr/local/lib -lpqxx -lpq")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
 
+set(docker_build TRUE)
+
 set(PQXX /usr/local/include/pqxx)
 
 find_library(PQXX_LIB pqxx)
 find_library(PQ_LIB pq)
 
-
-#find_package(PQXX)
-find_package(GTest REQUIRED)
-find_package(Threads REQUIRED)
+if (FALSE)
+    #find_package(PQXX)
+    find_package(GTest REQUIRED)
+    find_package(Threads REQUIRED)
+endif()
 
 
 #find_package(Boost)

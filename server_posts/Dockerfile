@@ -14,11 +14,11 @@ RUN mkdir libtmp && cd libtmp && \
 RUN apt-get install libboost-all-dev -y && \
     apt-get install libpqxx-dev -y
 
-ADD ./server_posts/include /app/server_posts/include
-ADD ./server_posts/src /app/server_posts/src
+ADD ./include /app/include
+ADD ./src /app/src
 ADD ./main.cpp /app
 ADD ./CMakeLists.txt /app
 
 RUN cd /app/ && mkdir tmp && cd tmp && cmake .. && make
 
-CMD ./app/tmp/main
+CMD ["/bin/sh", "-c", "/app/tmp/main >&1"]
