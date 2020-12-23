@@ -37,6 +37,7 @@ void Session::send_response(std::string& response) {
 }
 
 void Session::on_read(error_code error, std::size_t bytes_transferred) {
+    
     if(!error) {
         std::istream stream(&incoming);
         std::string line;
@@ -53,9 +54,6 @@ void Session::on_read(error_code error, std::size_t bytes_transferred) {
         read();
     }
 }
-
-
-
 
 // Находим соответствующий обработчик команд, применяем его,
 // если он найден, отправляем ответ обратно.

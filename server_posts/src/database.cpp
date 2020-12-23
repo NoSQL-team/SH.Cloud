@@ -10,31 +10,26 @@
 #include <chrono>
 
 
-PostsDataBase::PostsDataBase(){
-	try {
-		database_ = std::make_shared<pqxx::connection>("dbname=db_posts host=localhost user=amartery password=password port=27007");
-	} catch (const std::exception& e) {
-		std::cerr << e.what() << '\n';
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-	std::cout << "Connecting!" << std::endl;
-}
+PostsDataBase::PostsDataBase() {}
 
 PostsDataBase::~PostsDataBase() {
 //    database_->disconnect();
 }
 
 void PostsDataBase::do_modifying_request(const std::string& sql_request) {
-    pqxx::work W(*database_);
+    pqxx::connection con("dbname=db_posts host=localhost user=amartery password=password port=27007");
+    pqxx::work W(con);
     W.exec(sql_request);
     W.commit();
 }
 
 pqxx::result PostsDataBase::do_select_request(const std::string& sql_request) {
-    pqxx::nontransaction N(*database_);
-    return N.exec(sql_request);
+    pqxx::connection con("dbname=db_posts host=localhost user=amartery password=password port=27007");
+    pqxx::nontransaction N(con);
+    auto res = N.exec(sql_request);
+    N.commit();
+    return res;
 }
-
 
 std::string PostsDataBase::create_post(Post& post) {
     boost::format creating_sql_req =
