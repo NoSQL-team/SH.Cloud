@@ -21,7 +21,7 @@ option(test_build "" OFF)
 if (LINUX)
     set(CMAKE_CXX_FLAGS "-Wall -lpthread -lboost_thread")
 endif()
-if (TRUE)
+if (APPLE)
     set(CMAKE_CXX_FLAGS " -lgtest -DBOOST_LOG_DYN_LINK")
 endif()
 
@@ -35,10 +35,10 @@ endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 add_definitions(-DBOOST_LOG_DYN_LINK)
 
-#set(PQXX /usr/local/include/pqxx)
-#
-#find_library(PQXX_LIB pqxx)
-#find_library(PQ_LIB pq)
+set(PQXX /usr/local/include/pqxx)
+
+find_library(PQXX_LIB pqxx)
+find_library(PQ_LIB pq)
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -67,7 +67,7 @@ add_executable(server_friends_test
 
 target_link_libraries(server_friends_test server_friends ${USED_LIBS} ${PQXX_LIB} ${PQ_LIB})
 
-if(FALSE)
+if(TRUE)
 
     # Echo-сервер для отладки
     add_executable(echo_server

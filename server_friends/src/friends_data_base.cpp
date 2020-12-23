@@ -13,10 +13,9 @@
 DataBase::DataBase(std::map<std::string, std::string> &db_settings)  {
 	str_db_settings = ("dbname=" + db_settings["dbname"] +
 							  " host=" + db_settings["host"] +" user=" + db_settings["user"] +
-							  " password=" + db_settings["password"] + " port=27002");
+							  " password=");
 	try {
-		std::string tmp = str_db_settings;
-		database_ = std::make_unique<pqxx::connection>(tmp);
+		database_ = std::make_unique<pqxx::connection>(str_db_settings);
 	} catch (const std::exception& e) {
 		std::cerr << e.what() << '\n';
 		std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -50,9 +49,6 @@ bool FriendsDataBase::add_friend(int user_1, int user_2) {
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
 	do_modifying_request(sql_request);
-	std::string sql_request_2 = form_sql_request(user_2, user_1);
-	std::cout << sql_request_2 << std::endl;
-	do_modifying_request(sql_request_2);
 
 	return true;
 }
@@ -104,11 +100,6 @@ bool FriendsDataBase::delete_friend(int user_1, int user_2) {
 	std::string sql_request_1 = form_sql_request(user_1, user_2);
 	std::cout << sql_request_1 << std::endl;
 	do_modifying_request(sql_request_1);
-
-	std::string sql_request_2 = form_sql_request(user_2, user_1);
-	std::cout << sql_request_2 << std::endl;
-	do_modifying_request(sql_request_2);
-
 	return true;
 }
 
@@ -121,25 +112,38 @@ bool DataBase::is_opened() const {
 	return false;
 }
 
+int FriendsDataBase::get_statistic(int user_1) {
+	std::string sql_requst = "select count(distinct second_id) "
+						  "from friends where first_id = " + std::to_string(user_1);
+
+	std::cout << sql_requst << std::endl;
+
+	pqxx::result result = do_select_request(sql_requst);
+	int friends_amount = 0;
+	try {
+		pqxx::result::const_iterator c = result.begin();
+		friends_amount = c[0].as<int>();
+	} catch (std::exception& ex) {
+		std::cerr << "Error in get_statistic" << std::endl;
+		return friends_amount;
+	}
+	std::cout << "Число друзей " << friends_amount << std::endl;
+	return friends_amount;
+}
+
 
 void FriendsDataBase::do_modifying_request(std::string& sql_request) {
-//	pqxx::connection con(str_db_settings);
-//	pqxx::work W(con);
-//	W.exec(sql_request);
-//	W.commit();
-	pqxx::work W(*database_);
+	pqxx::connection con(str_db_settings);
+	pqxx::work W(con);
 	W.exec(sql_request);
 	W.commit();
 }
 
 pqxx::result FriendsDataBase::do_select_request(std::string& sql_request) {
-//	pqxx::connection con(str_db_settings);
-//	pqxx::work N(con);
-//	pqxx::result R = N.exec(sql_request);
-//	N.commit();
-//	return R;
-	pqxx::nontransaction N(*database_);
-	pqxx::result R (N.exec(sql_request));
+	pqxx::connection con(str_db_settings);
+	pqxx::work N(con);
+	pqxx::result R = N.exec(sql_request);
+	N.commit();
 	return R;
 }
 
