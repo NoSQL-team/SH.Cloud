@@ -13,7 +13,7 @@
 DataBase::DataBase(std::map<std::string, std::string> &db_settings)  {
 	str_db_settings = ("dbname=" + db_settings["dbname"] +
 							  " host=" + db_settings["host"] +" user=" + db_settings["user"] +
-							  " password=");
+							  " password=" + db_settings["password"] + " port=27002");
 	try {
 		database_ = std::make_unique<pqxx::connection>(str_db_settings);
 	} catch (const std::exception& e) {
