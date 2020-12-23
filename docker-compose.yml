@@ -5,14 +5,14 @@ services:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=password
       - POSTGRES_USER=amartery
       - POSTGRES_DB=db_posts
     ports:
       - "27001:5432"
     volumes:
       - ./server_posts/init.sql:/docker-entrypoint-initdb.d/init.sql
-  friends-server:
+  post-serv:
     image: noskool-posts
     network_mode: "host"
     ports:
