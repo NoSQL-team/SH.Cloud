@@ -67,20 +67,20 @@ namespace tcp_network {
 
 	std::string request_are_friends() {
 		std::string response = "{\n"
-							   " \"isFriends\": True,\n"
-							   " \"isHeSub\": False,\n"
-							   " \"isWeSub\": False,\n"
-							   " \"isNotConf\": False";
+							   " \"isFriends\": true,\n"
+							   " \"isHeSub\": false,\n"
+							   " \"isWeSub\": false,\n"
+							   " \"isNotConf\": false";
 
 		return response;
 	}
 
 	std::string request_isNotConf() {
 		std::string response = "{\n"
-							   " \"isFriends\": False,\n"
-							   " \"isHeSub\": False,\n"
-							   " \"isWeSub\": False,\n"
-							   " \"isNotConf\": True";
+							   " \"isFriends\": false,\n"
+							   " \"isHeSub\": false,\n"
+							   " \"isWeSub\": false,\n"
+							   " \"isNotConf\": true";
 
 		return response;
 	}

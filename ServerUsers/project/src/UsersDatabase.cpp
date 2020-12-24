@@ -122,15 +122,12 @@ using std::string;
             std::cout << el << " " << el1 << std::endl;
         }
 
-        if (data.at("Aid") != std::to_string(id_user)) {
-            std::cout << "/* message error*/" << std::endl;
-            return false;
-        }
-
-        std::cout << "/* message inside*/" << std::endl;
+        // if (data.at("Aid") != std::to_string(id_user)) {
+        //     std::cout << "/* message error*/" << std::endl;
+        //     return false;
+        // }
 
         string sql_request("UPDATE users SET ");
-std::cout << "/* message inside*/" << std::endl;
         int i = 0;
         for(const auto& v : data) {
             i++;
@@ -141,11 +138,8 @@ std::cout << "/* message inside*/" << std::endl;
             }
             sql_request += v.first.substr(1) + "=\'" + v.second + "\'";
         }
-std::cout << "/* message inside*/" << std::endl;
         sql_request += " WHERE id=" + data.at("Aid");
-std::cout << "/* message inside*/" << std::endl;
         std::cout << sql_request << std::endl;
-std::cout << "/* message inside*/" << std::endl;
         if(exist(atoi(data.at("Aid").c_str())) == false) {
             return false;
         }

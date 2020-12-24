@@ -242,7 +242,7 @@ std::string RequestsHandler::refresh()
         r = db->select(
                 "users", 
                 {"access_token", "refresh_token"}, 
-                {std::make_tuple("username", _userName, "string")}
+                {std::make_tuple("user_id", _userName, "string")}
             );
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
@@ -252,7 +252,7 @@ std::string RequestsHandler::refresh()
     }
 
     if (r.empty()) {
-        _ptResponse.put("error", "not unique username");
+        _ptResponse.put("error", "not found user");
     } else {
         if (r[0][1].c_str() == _refreshToken) {
             auto aToken = jwt::create()
@@ -299,7 +299,7 @@ std::string RequestsHandler::getResponse(std::istream& stream)
             _userPassword = _ptRequest.get<std::string>("password");
             _user_id = _ptRequest.get<std::string>("user_id");
         } else if (_type == REFRESH) {
-            _userName = _ptRequest.get<std::string>("username");
+            _userName = _ptRequest.get<std::string>("user_id");
             _refreshToken = _ptRequest.get<std::string>("refresh_token");
         }
     }

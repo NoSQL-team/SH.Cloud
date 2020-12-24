@@ -280,6 +280,7 @@ std::string RequestsHandler::getResponse(std::istream& stream, const std::map<st
         ResponsesHandler* responsesHandler = ResponsesHandler::getInstance();
         _responseBody = responsesHandler->getResponse(_number);
         _responseHeaders.insert({ "Content-Type", "application/json; charset=UTF-8" });
+        _responseHeaders.insert({ "Access-Control-Allow-Origin", "*" });
         _responseStatus = 200;
     } else if (isOurServer == STATICT) {
         _responseBody = readResponseFile(context.at("staticPath"));
@@ -290,6 +291,7 @@ std::string RequestsHandler::getResponse(std::istream& stream, const std::map<st
         buffer << _url << std::endl << std::endl << _body << "\r";
         _responseBody = requesterAuth->getResponse(buffer.str());
         _responseHeaders.insert({ "Content-Type", "application/json; charset=UTF-8" });
+        _responseHeaders.insert({ "Access-Control-Allow-Origin", "*" });
         _responseStatus = 200;
     }
     setFirstHeader();

@@ -131,6 +131,9 @@ std::string vec_posts_to_json(std::vector<Post>& vec_posts) {
     for (auto& i : vec_posts) {
         res += post_to_json(i) + ",";
     }
+    if (res[res.length() - 1] != '[') {
+        res.pop_back();
+    }
     res += "]}";
     return res;
 }
