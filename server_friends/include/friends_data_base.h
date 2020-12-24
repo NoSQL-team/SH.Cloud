@@ -38,9 +38,9 @@ public:
 
 	bool delete_friend(int user_1, int user_2);
 
-    bool is_friend(int user_1, int user_2);
+    int is_friend(int user_1, int user_2);
 
-    int get_statistic(int user_1);
+	std::tuple<int, int, int> get_statistic(int user_1);
 
 private:
 	void do_modifying_request(std::string& sql_request);
