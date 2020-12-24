@@ -34,7 +34,6 @@ public:
     Post get_one_post(std::string post_id);
 
 private:
-    std::shared_ptr<pqxx::connection> database_;
     void do_modifying_request(const std::string& sql_request);
     pqxx::result do_select_request(const std::string& sql_request);
 };

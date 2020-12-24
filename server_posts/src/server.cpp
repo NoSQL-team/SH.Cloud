@@ -7,7 +7,7 @@
 
 void TCPServer::add_endpoint() {
     dispatcher.emplace(
-            "/posts/all/",
+            "/api/posts/all/",
             dispatcher_entry{
                     0,
                     false,
@@ -20,7 +20,7 @@ void TCPServer::add_endpoint() {
             }
     );
     dispatcher.emplace(
-            "/posts/fuser/",
+            "/api/posts/fuser/",
             dispatcher_entry{
                     1,
                     false,
@@ -33,7 +33,7 @@ void TCPServer::add_endpoint() {
             });
 
     dispatcher.emplace(
-            "/posts/user/",
+            "/api/posts/user/",
             dispatcher_entry{
                     1,
                     false,
@@ -45,7 +45,7 @@ void TCPServer::add_endpoint() {
                     }
             });
     dispatcher.emplace(
-            "/posts/post/",
+            "/api/posts/post/",
             dispatcher_entry{
                     1,
                     false,
@@ -57,7 +57,7 @@ void TCPServer::add_endpoint() {
                     }
             });
     dispatcher.emplace(
-            "/posts/dlt/",
+            "/api/posts/dlt/",
             dispatcher_entry{
                     2,
                     true,
@@ -69,7 +69,7 @@ void TCPServer::add_endpoint() {
                     }
             });
     dispatcher.emplace(
-            "/posts/like/add/",
+            "/api/posts/like/add/",
             dispatcher_entry{
                     2,
                     true,
@@ -81,7 +81,7 @@ void TCPServer::add_endpoint() {
                     }
             });
     dispatcher.emplace(
-            "/posts/like/del/",
+            "/api/posts/like/del/",
             dispatcher_entry{
                     2,
                     true,
@@ -95,16 +95,16 @@ void TCPServer::add_endpoint() {
 
     // ендпоинты требующие боди
     dispatcher_with_body.emplace(
-            "/posts/create/",
-            dispatcher_entry_with_body{
-                    1,
-                    true,
-                    [this](std::string const& id_request,
-                           std::map<std::string, size_t> const& args,
-                           std::string& body) -> std::string {
-                        return hand.create_post(id_request, args, body);
-                    }
-            });
+        "/api/posts/create/",
+        dispatcher_entry_with_body{
+                0,
+                true,
+                [this](std::string const& id_request,
+                        std::map<std::string, size_t> const& args,
+                        std::string& body) -> std::string {
+                return hand.create_post(id_request, args, body);
+                }
+        });
 
 }
 

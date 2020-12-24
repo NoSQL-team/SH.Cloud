@@ -10,31 +10,26 @@
 #include <chrono>
 
 
-PostsDataBase::PostsDataBase(){
-	try {
-		database_ = std::make_shared<pqxx::connection>("dbname=db_posts host=localhost user=amartery password=password");
-	} catch (const std::exception& e) {
-		std::cerr << e.what() << '\n';
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-	std::cout << "Connecting!" << std::endl;
-}
+PostsDataBase::PostsDataBase() {}
 
 PostsDataBase::~PostsDataBase() {
 //    database_->disconnect();
 }
 
 void PostsDataBase::do_modifying_request(const std::string& sql_request) {
-    pqxx::work W(*database_);
+    pqxx::connection con("dbname=db_posts host=localhost user=amartery password=password port=27007");
+    pqxx::work W(con);
     W.exec(sql_request);
     W.commit();
 }
 
 pqxx::result PostsDataBase::do_select_request(const std::string& sql_request) {
-    pqxx::nontransaction N(*database_);
-    return N.exec(sql_request);
+    pqxx::connection con("dbname=db_posts host=localhost user=amartery password=password port=27007");
+    pqxx::nontransaction N(con);
+    auto res = N.exec(sql_request);
+    N.commit();
+    return res;
 }
-
 
 std::string PostsDataBase::create_post(Post& post) {
     boost::format creating_sql_req =
@@ -177,11 +172,11 @@ std::string PostsDataBase::add_like_by_id(std::string post_id, const std::string
     std::vector<std::string> vec_likes = split(likes, " ");
 
 
-    auto itr = std::find(vec_likes.begin(), vec_likes.end(), user_id);
+    auto itr = std::find(vec_likes.begin(), vec_likes.end(), "i" + user_id);
     // если такого лайка нет
     if (itr == vec_likes.end()) {
         // обновим поле с id пользователей которые поставили лайк
-        std::string updated_likes = likes + " " + user_id;
+        std::string updated_likes = likes + " i" + user_id;
         boost::format creating_sql_req = (boost::format("update posts "
                                                         "set liked_users = '%1%' "
                                                         "where post_id = %2%")
@@ -207,7 +202,7 @@ std::string PostsDataBase::del_like_by_id(std::string post_id, const std::string
 
     std::vector<std::string> vec_likes = split(likes, " ");
     // если лайк есть
-    auto itr = std::find(vec_likes.begin(), vec_likes.end(), user_id);
+    auto itr = std::find(vec_likes.begin(), vec_likes.end(), ("i" + user_id));
     if (itr != vec_likes.end()) {
         vec_likes.erase(itr); // удалим лайк
 

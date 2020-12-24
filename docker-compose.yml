@@ -41,6 +41,9 @@ services:
   noskool-queue-2:
     image: noskool-queue-2
     network_mode: "host"
+  noskool-queue-3:
+    image: noskool-queue-3
+    network_mode: "host"
   users-db:
     image: postgres
     restart: always
@@ -55,3 +58,17 @@ services:
   users-server:
     image: noskool-users
     network_mode: "host"
+  posts-server:
+    image: noskool-posts
+    network_mode: "host"
+  posts-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=amartery
+      - POSTGRES_DB=db_posts
+    ports:
+      - "27007:5432"
+    volumes:
+      - ./server_posts/init.sql:/docker-entrypoint-initdb.d/init.sql
