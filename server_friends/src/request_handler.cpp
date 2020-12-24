@@ -65,23 +65,68 @@ namespace tcp_network {
 		session_->send_response(response);
 	}
 
+	std::string request_are_friends() {
+		std::string response = "{\n"
+							   " \"isFriends\": True,\n"
+							   " \"isHeSub\": False,\n"
+							   " \"isWeSub\": False,\n"
+							   " \"isNotConf\": False";
+
+		return response;
+	}
+
+	std::string request_isNotConf() {
+		std::string response = "{\n"
+							   " \"isFriends\": False,\n"
+							   " \"isHeSub\": False,\n"
+							   " \"isWeSub\": False,\n"
+							   " \"isNotConf\": True";
+
+		return response;
+	}
+
 	void RequestHandler::handle_is_friend() {
-		bool result = database_.is_friend(std::atoi(request_["user_1"].c_str()),
+		int result = database_.is_friend(std::atoi(request_["user_1"].c_str()),
 										  std::atoi(request_["user_2"].c_str()));
 
-		std::string response = (request_["number"] + '\n' + form_post_response(result) + '\r');
-		session_->send_response(response);
+		std::cout << "Результат " << result << std::endl;
+
+		std::string response = "{\n \"isWeSub\": ";
+		if (result == 1 || result == 3)
+			response += "true,\n";
+		else
+			response += "false,\n";
+		response += " \"isHeSub\": ";
+		if (result == 2 || result == 3)
+			response += "true,\n";
+		else
+			response += "false,\n";
+		response += " \"isFriends\": ";
+		response += "false,\n";
+		response += " \"isNotConf\": ";
+		response += "false";
+		if (result == 3)
+			response = request_are_friends();
+		if (result == 0)
+			response = request_isNotConf();
+		response += "\n}";
+		std::string final_response = (request_["number"] + '\n' + response + '\r');
+		std::cout << final_response << std::endl;
+		session_->send_response(final_response);
 	}
 
 
+
 	void RequestHandler::handle_get_statistic() {
-		int result = database_.get_statistic(std::atoi(request_["user_1"].c_str()));
+		auto result = database_.get_statistic(std::atoi(request_["user_1"].c_str()));
+
+//		std::string response =
 
 		std::string response = (request_["number"] + '\n' + form_stat_response(result) + '\r');
 		session_->send_response(response);
 	}
 
-	std::string RequestHandler::form_post_response(bool result) {
+	std::string RequestHandler::form_post_response(int result) {
 		std::string response = "{ \"response\": ";
 		if (result)
 			response += "true";
@@ -91,13 +136,18 @@ namespace tcp_network {
 		return response;
 	}
 
-	std::string RequestHandler::form_stat_response(int amount) {
+	std::string RequestHandler::form_stat_response(std::tuple<int, int, int> amount) {
 		std::stringstream response;
 		response << "{\n \"response\": ";
 		response << "\"true\"";
-		response << ",\n \"data\": ";
+		response << ",\n \"friends_amount\": ";
+		response << std::get<2>(amount) << ",\n";
+		response << " \"we_subscribed\": ";
+		response << std::get<0>(amount) << ",\n";
+		response << " \"he_subscribed\": ";
+		response << std::get<1>(amount);
 
-		response << amount << "\n}";
+		response << "\n}";
 		return response.str();
 	}
 
