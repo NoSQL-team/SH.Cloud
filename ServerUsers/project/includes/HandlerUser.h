@@ -14,12 +14,14 @@
 #include "Session.h"
 #include "UsersDatabase.h"
 
+
 class HandlerUser {
 public:
     explicit HandlerUser(boost::asio::io_service& io_service, Session& session,
                          UsersDatabase& data_base) : session_(session), data_base_(data_base) {}
     ~HandlerUser() = default;
-    static std::map<std::string, std::string> parser_json(std::string& request);
+	std::pair<std::string, std::map<std::string, std::string>> parse_request(std::string& request, int& num_request,
+																			 int& id_user, int& id_exists, int& data_id);
     void handle_request(std::string& request);
     void create_user(int number_request, const std::map<std::string, std::string>& data_user, int user_id) const;
     void data_user(int id, int number_request) const;
@@ -29,6 +31,7 @@ public:
     void id_by_nick(int number_request, std::string& nickname) const;
 
 private:
+	static std::map<std::string, std::string> parser_json(std::string& request);
     Session& session_;
     UsersDatabase& data_base_;
 };

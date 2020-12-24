@@ -33,6 +33,7 @@ private:
     boost::asio::io_service& io_service_;
     boost::asio::ip::tcp::socket socket_;
     char data_[max_length];
+	boost::asio::streambuf _buffer;
     UsersDatabase& data_base_;
 };
 

@@ -12,6 +12,9 @@ if(Boost_FOUND)
 endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 
+find_package(GTest REQUIRED)
+
+include_directories("${GTEST_INCLUDE_DIRS}")
 
 set(INC_DIR ${DIR}project/includes)
 
@@ -38,6 +41,8 @@ add_executable(echo_server echo_server.cpp)
 
 add_executable(test_server test_server.cpp)
 
+add_executable(TESTS project/tests.cpp)
+
 add_executable(client client.cpp)
 target_include_directories(test_parser PUBLIC project/includes/)
 
@@ -57,3 +62,10 @@ target_link_libraries(echo_server ${USED_LIBS})
 target_link_libraries(http_echo_server ${USED_LIBS})
 
 target_link_libraries(client ${USED_LIBS})
+
+
+target_include_directories(TESTS PUBLIC ${INC_DIR})
+
+target_include_directories(TESTS PUBLIC ${TESTS_DIR})
+
+target_link_libraries(TESTS ${GTEST_LIBRARIES} Threads::Threads pthread ServerUsers -lgmock)

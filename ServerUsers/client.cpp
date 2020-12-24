@@ -11,14 +11,16 @@ int main() {
     tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 8082);
     tcp::socket socket(service);
     socket.async_connect(end, [&socket] (const boost::system::error_code& err) {
-        std::string requst = "123\napi/users/create/\n4\n\n{\n"
-							 "  \"firstname\": \"lera\",\n"
-							 "  \"lastname\": \"guseva\",\n"
-							 "  \"nickname\": \"lerakrya\",\n"
-							 "  \"email\": \"lerakrya8@gmail.com\",\n"
-							 "  \"photo\": \"lera.png\",\n"
-							 "  \"password\": \"123456\"\n"
-							 "}";
+//        std::string requst = "123\napi/users/create/\n-1\n\n{\n"
+//							 "  \"firstname\": \"lera\",\n"
+//							 "  \"lastname\": \"guseva\",\n"
+//							 "  \"nickname\": \"lerakrya\",\n"
+//							 "  \"email\": \"lerakrya8@gmail.com\",\n"
+//							 "  \"photo\": \"lera.png\",\n"
+//							 "  \"password\": \"123456\"\n"
+//							 "}\r";
+
+		std::string requst = "123\napi/users/34/\n4\n\n\r";
 
         if(!err) {
             boost::asio::write(socket, boost::asio::buffer(requst));

@@ -11,14 +11,14 @@
 
 class UsersDatabase : public Database {
 public:
-    ~UsersDatabase() override;
+    virtual ~UsersDatabase();
     bool insert(const std::map<std::string, std::string>& users_data, int id_user);
-    std::string data_user(int id);
-    std::string all_users();
-    bool update(const std::map<std::string, std::string>& data, int id_user);
-    bool exist(int id);
-    int get_id();
-    std::string id_by_nick(std::string& nickname);
+	virtual std::string data_user(int id);
+	virtual std::string all_users();
+    virtual bool update(const std::map<std::string, std::string>& data, int id_user);
+	virtual bool exist(int id);
+	virtual int get_id();
+	virtual std::string id_by_nick(std::string& nickname);
 };
 
 #endif //SERVERUSERS_USERSDATABASE_H

@@ -4,7 +4,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-//#include <boost/log/trivial.hpp>
+#include <boost/log/trivial.hpp>
 #include "HandlerUser.h"
 #include <iostream>
 
@@ -32,7 +32,7 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
                     field = "Clastname";
                 }
                 else if (std::string(it->first) == "nickname") {
-                    field = "Dlastname";
+                    field = "Dnickname";
                 }
                 else if (std::string(it->first) == "email") {
                     field = "Eemail";
@@ -47,45 +47,51 @@ std::map<string, string> HandlerUser::parser_json(string& request) {
         return {};
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.16 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp parser_json c.16 " << e.what();
     }
 }
 
+std::pair<string, std::map<string, string>> HandlerUser::parse_request(std::string& request, int& num_request,
+																	   int& id_user, int& id_exists, int& data_id) {
+	auto num = request.find('\n');
+	num_request = atoi(request.substr(0, num).c_str());
+
+	auto find_method = request.find('\n', num + 1);
+	string api_method = request.substr(num + 1, find_method - num - 1);
+	const string str = "api/users/";
+	// название метода или id пользователя или никнейм
+	string method;
+
+	int num_slash = std::count(api_method.begin(), api_method.end(), '/');
+	id_exists = -1;
+	if (num_slash == 4 ) {
+		string find_id = api_method.substr(api_method.find_last_of('/', api_method.size() - 2) + 1);
+		find_id.pop_back();
+		id_exists = atoi(find_id.c_str());
+		method = api_method.substr(str.size(), api_method.find_last_of('/', api_method.size() - 2) - str.size());
+	}
+	else {
+		method = api_method.substr(str.size());
+		method.pop_back();
+	}
+
+	id_user = atoi(request.substr(find_method + 1, request.find("\n\n") - find_method - 1).c_str());
+
+	auto fjson = request.find_first_of('{');
+	string json_body = "";
+	if (fjson != std::string::npos) {
+		json_body = request.substr(fjson);
+	}
+
+	std::map<string, string> parse_json = parser_json(json_body);
+
+	data_id = atoi(method.c_str());
+	return {method, parse_json};
+}
+
 void HandlerUser::handle_request(string& request) {
-    // Номер запроса (для отправки ответа)
-    auto num = request.find('\n');
-    int num_request = atoi(request.substr(0, num).c_str());
-
-    auto find_method = request.find('\n', num + 1);
-    string api_method = request.substr(num + 1, find_method - num - 1);
-    const string str = "api/users/";
-    // название метода или id пользователя или никнейм
-    string method;
-
-    int num_slash = std::count(api_method.begin(), api_method.end(), '/');
-    int id_exists = -1;
-    if (num_slash == 4 ) {
-        string find_id = api_method.substr(api_method.find_last_of('/', api_method.size() - 2) + 1);
-        find_id.pop_back();
-        id_exists = atoi(find_id.c_str());
-        method = api_method.substr(str.size(), api_method.find_last_of('/', api_method.size() - 2) - str.size());
-    }
-    else {
-        method = api_method.substr(str.size());
-        method.pop_back();
-    }
-
-    int id_user = atoi(request.substr(find_method + 1, request.find("\n\n") - find_method - 1).c_str());
-
-    auto fjson = request.find_first_of('{');
-    string json_body = "";
-    if (fjson != std::string::npos) {
-        json_body = request.substr(fjson);
-    }
-
-    std::map<string, string> parse_json = parser_json(json_body);
-
-    int data_id = atoi(method.c_str());
+	int num_request, id_user, id_exists, data_id;
+	auto [method, parse_json] = parse_request(request, num_request, id_user, id_exists, data_id);
 
     if (method == "create") {
         create_user(num_request, parse_json, id_user);
@@ -129,7 +135,7 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 
 		if (parse_answer.at("response") != "ok") {
 			string str_result = std::to_string(number_request) + "\n";
-			str_result += "{\n  \"response\": true \n}";
+			str_result += "{\n  \"response\": false \n}";
 			session_.send_answer(str_result);
 		}
 		else {
@@ -140,7 +146,8 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 		}
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.110 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp create_user c.110 " << e.what();
+
     }
 }
 
@@ -149,15 +156,15 @@ void HandlerUser::data_user(int id, int number_request) const {
         data_base_.data_user(id);
         string result = std::to_string(number_request) + "\n";
         string new_result = data_base_.data_user(id);
-        if (result == "No user") {
-            result += "{\n \"response\": \"false\"\n}";
+        if (new_result == "No user") {
+            result += "{\n \"response\": false \n}";
         } else {
             result += new_result;
         }
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp data_user c.79 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp data_user c.79 " << e.what();
     }
 }
 
@@ -166,7 +173,7 @@ void HandlerUser::all_users(int number_request) const {
         data_base_.all_users();
         string result = std::to_string(number_request) + "\n";
         string new_result = data_base_.all_users();
-        if (result == "No users") {
+        if (new_result == "No users") {
             result += "{\n \"response\": \"false\"\n}";
         } else {
             result += new_result;
@@ -174,7 +181,7 @@ void HandlerUser::all_users(int number_request) const {
         session_.send_answer(result);
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp all_users c.96 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp all_users c.96 " << e.what();
     }
 }
 
@@ -186,7 +193,7 @@ void HandlerUser::update_data(int number_request, const std::map<string, string>
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp change_user_data c.130 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp change_user_data c.130 " << e.what();
     }
 }
 
@@ -198,24 +205,23 @@ void HandlerUser::is_exist(int number_request, int id_user) const {
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp is_exist c.177 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp is_exist c.177 " << e.what();
     }
 }
 
 void HandlerUser::id_by_nick(int number_request, string& nickname) const {
     try {
-        data_base_.all_users();
-        string result = std::to_string(number_request) + "\n";
-        string new_result = data_base_.all_users();
-        if (result == "No user") {
-            result += "{\n \"response\": \"false\"\n}";
-        } else {
-            result += new_result;
-        }
-        session_.send_answer(result);
+    	string result = data_base_.id_by_nick(nickname);
+        string str_result = std::to_string(number_request) + "\n";
+		if (result == "No users") {
+			str_result += "{\n \"response\": \"false\"\n}";
+		} else {
+			str_result += result;
+		}
+        session_.send_answer(str_result);
     }
     catch (std::exception& e) {
-//        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
+        BOOST_LOG_TRIVIAL(error) << "HandlerUser.cpp id_by_nick c.189 " << e.what();
     }
 }
 
