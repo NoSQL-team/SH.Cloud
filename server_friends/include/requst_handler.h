@@ -30,9 +30,9 @@ namespace tcp_network {
 
 		void handle_get_statistic();
 
-		std::string form_stat_response(int amount);
+		std::string form_stat_response(std::tuple<int, int, int> amount);
 
-		std::string form_post_response(bool result);
+		std::string form_post_response(int result);
 
 		std::string form_get_fr_response(const std::vector<int>& friends);
 

@@ -9,6 +9,8 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <algorithm>
+#include <tuple>
 
 DataBase::DataBase(std::map<std::string, std::string> &db_settings)  {
 	str_db_settings = ("dbname=" + db_settings["dbname"] +
@@ -31,16 +33,20 @@ FriendsDataBase::~FriendsDataBase() {}
 
 bool FriendsDataBase::add_friend(int user_1, int user_2) {
 
-	if (is_friend(user_1, user_2)) {
-		std::cout << std::to_string(user_1) + " и "
-		+ std::to_string(user_2) + " уже друзья" << std::endl;
-		return false;
-	}
+//	if (is_friend(user_1, user_2)) {
+//		std::cout << std::to_string(user_1) + " и "
+//		+ std::to_string(user_2) + " уже друзья" << std::endl;
+//		return false;
+//	}
+
+	std::cout << "/* message */" << std::endl;
 
 	auto form_sql_request = [](int user_id_1, int user_id_2){
 		return "insert into friends values (" + std::to_string(user_id_1) + ", "
 			   + std::to_string(user_id_2) + ")";
 	};
+
+	std::cout << "/* message */" << std::endl;
 
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
@@ -59,26 +65,56 @@ std::vector<int> FriendsDataBase::get_all_friends(int user_id) {
 	for (pqxx::result::const_iterator c = r.begin(); c != r.end(); ++c) {
 		result.push_back(c[0].as<int>());
 	}
+	result.push_back(user_id);
 	return result;
 }
 
-bool FriendsDataBase::is_friend(int user_1, int user_2) {
+
+// return value = 1 первый подписан на второго
+// return value = 2 второй подписан на первого
+// return value = 3 друзья
+
+int FriendsDataBase::is_friend(int user_1, int user_2) {
+	int result = 0;
 	std::string sql_request("select count(*) from friends where first_id = "
 	+ std::to_string(user_1) + " and second_id = " + std::to_string(user_2));
 	std::cout << sql_request << std::endl;
 
+
 	pqxx::result r = do_select_request(sql_request);
 
+	std::cout << "/* message */" << std::endl;
+
 	pqxx::result::const_iterator c = r.begin();
-	bool is_friend = c[0].as<int>();
-	if (is_friend) {
-		std::cout << std::to_string(user_1)
-		+ " и " + std::to_string(user_2) + " друзья" << std::endl;
-		return true;
-	}
-	std::cout << std::to_string(user_1)
-				 + " и " + std::to_string(user_2) + " не друзья" << std::endl;
-	return false;
+	bool is_friend_1 = c[0].as<int>();
+	std::cout << "первый друг второго" << is_friend_1 << std::endl;
+	if (is_friend_1)
+		result = 1;
+
+	std::string sql_request_2("select count(*) from friends where first_id = "
+							+ std::to_string(user_2) + " and second_id = " + std::to_string(user_1));
+	std::cout << sql_request_2 << std::endl;
+
+
+	pqxx::result r2 = do_select_request(sql_request_2);
+
+	std::cout << "/* message */" << std::endl;
+	is_friend_1 = false;
+	pqxx::result::const_iterator c2 = r2.begin();
+	is_friend_1 = c2[0].as<int>();
+
+	std::cout << "второй друг перовго" << is_friend_1 << std::endl;
+
+	if (is_friend_1)
+		result += 2;
+//	if (is_friend) {
+//		std::cout << std::to_string(user_1)
+//		+ " и " + std::to_string(user_2) + " друзья" << std::endl;
+//		return true;
+//	}
+//	std::cout << std::to_string(user_1)
+//				 + " и " + std::to_string(user_2) + " не друзья" << std::endl;
+	return result;
 }
 
 bool FriendsDataBase::delete_friend(int user_1, int user_2) {
@@ -104,23 +140,71 @@ bool DataBase::is_opened() const {
 	return false;
 }
 
-int FriendsDataBase::get_statistic(int user_1) {
-	std::string sql_requst = "select count(distinct second_id) "
+std::tuple<int, int, int> FriendsDataBase::get_statistic(int user_1) {
+	std::string sql_requst_1 = "select distinct second_id "
 						  "from friends where first_id = " + std::to_string(user_1);
 
-	std::cout << sql_requst << std::endl;
+	std::cout << sql_requst_1 << std::endl;
 
-	pqxx::result result = do_select_request(sql_requst);
-	int friends_amount = 0;
-	try {
-		pqxx::result::const_iterator c = result.begin();
-		friends_amount = c[0].as<int>();
-	} catch (std::exception& ex) {
-		std::cerr << "Error in get_statistic" << std::endl;
-		return friends_amount;
+	pqxx::result result = do_select_request(sql_requst_1);
+	std::vector<int> user_1_to_user_2;
+	for (pqxx::result::const_iterator c = result.begin(); c != result.end(); ++c) {
+		user_1_to_user_2.push_back(c[0].as<int>());
 	}
-	std::cout << "Число друзей " << friends_amount << std::endl;
-	return friends_amount;
+
+	std::cout << user_1_to_user_2.size() << std::endl;
+
+	std::string sql_requst_2 = "select distinct first_id "
+							   "from friends where second_id = " + std::to_string(user_1);
+
+	std::cout << sql_requst_2 << std::endl;
+
+	pqxx::result result_2 = do_select_request(sql_requst_2);
+	std::vector<int> user_2_to_user_1;
+	for (pqxx::result::const_iterator c = result_2.begin(); c != result_2.end(); ++c) {
+		user_2_to_user_1.push_back(c[0].as<int>());
+	}
+	std::cout << user_2_to_user_1.size() << std::endl;
+
+	int friendship_amount = 0;
+	std::vector<int> el_to_del;
+	for (int id : user_1_to_user_2) {
+		if (std::find(user_2_to_user_1.begin(), user_2_to_user_1.end(), id)
+		!= user_2_to_user_1.end()) {
+			++friendship_amount;
+			el_to_del.push_back(id);
+		}
+	}
+	std::cout << "Число друзей1 " << friendship_amount << std::endl;
+
+//	for (auto id : el_to_del) {
+//		user_1_to_user_2.erase(std::find(user_1_to_user_2.begin(),
+//								   user_1_to_user_2.end(), id));
+//		user_2_to_user_1.erase(std::find(user_2_to_user_1.begin(),
+//								   user_2_to_user_1.end(), id));
+//	}
+	user_1_to_user_2.erase(std::remove_if(user_1_to_user_2.begin(),
+									   user_1_to_user_2.end(), [&el_to_del](int elem){
+		if (std::find(el_to_del.begin(), el_to_del.end(), elem) != el_to_del.end()) {
+			std::cout << "удаляем " << elem << std::endl;
+			return true;
+		}
+		return false;
+	}), user_1_to_user_2.end());
+
+	user_2_to_user_1.erase(std::remove_if(user_2_to_user_1.begin(),
+										  user_2_to_user_1.end(), [&el_to_del](int elem){
+			if (std::find(el_to_del.begin(), el_to_del.end(), elem) != el_to_del.end()) {
+				std::cout << "удаляем " << elem << std::endl;
+				return true;
+			}
+			return false;
+	}), user_2_to_user_1.end());
+
+
+	std::cout << "Число друзей " << friendship_amount << std::endl;
+
+	return std::make_tuple(user_1_to_user_2.size(), user_2_to_user_1.size(), friendship_amount);
 }
 
 

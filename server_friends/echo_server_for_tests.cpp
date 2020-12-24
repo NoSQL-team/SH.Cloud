@@ -11,7 +11,7 @@
 
 using boost::asio::ip::tcp;
 
-const int max_length = 2024;
+const int max_length = 10000;
 
 typedef boost::shared_ptr<tcp::socket> socket_ptr;
 
@@ -22,7 +22,7 @@ void session(socket_ptr sock)
 		char data[max_length];
 
 		boost::system::error_code error;
-		size_t length = sock->read_some(boost::asio::buffer(data), error);
+		size_t length = sock->read_some(boost::asio::buffer(data, 10000), error);
 		std::cout << data << std::endl;
 	}
 	catch (std::exception& e)
