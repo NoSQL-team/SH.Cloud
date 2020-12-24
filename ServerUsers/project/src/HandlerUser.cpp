@@ -202,7 +202,7 @@ void HandlerUser::is_exist(int number_request, int id_user) const {
     }
 }
 
-void HandlerUser::id_by_nick(int number_request, string& nickname) {
+void HandlerUser::id_by_nick(int number_request, string& nickname) const {
     try {
         data_base_.all_users();
         string result = std::to_string(number_request) + "\n";

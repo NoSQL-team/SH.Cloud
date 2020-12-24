@@ -26,7 +26,7 @@ public:
     void all_users(int number_request) const;
     void update_data(int number_request, const std::map<std::string, std::string>& data_user, int user_id) const;
     void is_exist(int number_request, int id_user) const;
-    void id_by_nick(int number_request, std::string& nickname);
+    void id_by_nick(int number_request, std::string& nickname) const;
 
 private:
     Session& session_;
