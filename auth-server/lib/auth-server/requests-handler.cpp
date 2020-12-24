@@ -29,7 +29,7 @@ std::string RequestsHandler::errorAnswer(const std::string& error)
 {
     std::stringstream response;
     logError("Bad request");
-    _ptResponse.put("response", error);
+    _ptResponse.put("error", error);
     boost::property_tree::write_json(response, _ptResponse);
     return (response.str() + '\r');
 }
@@ -49,23 +49,23 @@ std::string RequestsHandler::authRequest()
     }
     catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
-        _ptResponse.put("response", "error");
+        _ptResponse.put("error", "error");
         boost::property_tree::write_json(response, _ptResponse);
         return response.str();
     }
 
     if (r.empty()) {
-        _ptResponse.put("response", "not found user");
+        _ptResponse.put("error", "not found user");
     } else {
         if (r[0][0].c_str() == _accessToken) {
             auto decodeToken = jwt::decode(_accessToken);
             if (decodeToken.get_expires_at() < std::chrono::system_clock::now()) {
-                _ptResponse.put("response", "token not valid");
+                _ptResponse.put("error", "token not valid");
             } else {
                 _ptResponse.put("response", "ok");
             }
         } else {
-            _ptResponse.put("response", "token not valid");
+            _ptResponse.put("error", "token not valid");
         }
     }
 
@@ -88,7 +88,7 @@ std::string RequestsHandler::auth()
     }
     catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
-        _ptResponse.put("response", "not found user");
+        _ptResponse.put("error", "not found user");
         boost::property_tree::write_json(response, _ptResponse);
         return response.str();
     }
@@ -124,15 +124,15 @@ std::string RequestsHandler::auth()
             }
             catch(const std::exception& e) {
                 std::cerr << e.what() << '\n';
-                _ptResponse.put("response", "error");
+                _ptResponse.put("error", "error");
                 boost::property_tree::write_json(response, _ptResponse);
                 return response.str();
             }
         } else {
-            _ptResponse.put("response", "Bad password");
+            _ptResponse.put("error", "Bad password");
         }
     } else {
-        _ptResponse.put("response", "Bad creditance");
+        _ptResponse.put("error", "Bad creditance");
     }
     boost::property_tree::write_json(response, _ptResponse);
     return (response.str() + '\r');
@@ -153,13 +153,13 @@ std::string RequestsHandler::logout()
     }
     catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
-        _ptResponse.put("response", "not found user");
+        _ptResponse.put("error", "not found user");
         boost::property_tree::write_json(response, _ptResponse);
         return response.str();
     }
 
     if (r.empty()) {
-        _ptResponse.put("response", "Not found user");
+        _ptResponse.put("error", "Not found user");
     } else {
         if (r[0][0].c_str() == _accessToken) {
             try {
@@ -180,7 +180,7 @@ std::string RequestsHandler::logout()
                 return response.str();
             }
         } else {
-            _ptResponse.put("response", "Bad token");
+            _ptResponse.put("error", "Bad token");
         }
     }
 
@@ -201,7 +201,7 @@ std::string RequestsHandler::add()
             );
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
-        _ptResponse.put("response", "not found user");
+        _ptResponse.put("error", "not found user");
         boost::property_tree::write_json(response, _ptResponse);
         return response.str();
     }
@@ -221,12 +221,12 @@ std::string RequestsHandler::add()
         }
         catch(const std::exception& e) {
             std::cerr << e.what() << '\n';
-            _ptResponse.put("response", "error");
+            _ptResponse.put("error", "error");
             boost::property_tree::write_json(response, _ptResponse);
             return response.str();
         }
     } else {
-        _ptResponse.put("response", "not unique username");
+        _ptResponse.put("error", "not unique username");
     }
     boost::property_tree::write_json(response, _ptResponse);
     return (response.str() + '\r');
@@ -246,13 +246,13 @@ std::string RequestsHandler::refresh()
             );
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
-        _ptResponse.put("response", "not found user");
+        _ptResponse.put("error", "not found user");
         boost::property_tree::write_json(response, _ptResponse);
         return response.str();
     }
 
     if (r.empty()) {
-        _ptResponse.put("response", "not unique username");
+        _ptResponse.put("error", "not unique username");
     } else {
         if (r[0][1].c_str() == _refreshToken) {
             auto aToken = jwt::create()
@@ -271,7 +271,7 @@ std::string RequestsHandler::refresh()
             _ptResponse.put("response", "ok");
             _ptResponse.put("access_token", aToken);
         } else {
-            _ptResponse.put("response", "token not valid");
+            _ptResponse.put("error", "token not valid");
         }
     }
 
