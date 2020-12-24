@@ -91,7 +91,7 @@ std::string Session::dispatch(std::string const& line) {
             response = parameters_request[0] + "\n\n{\"error\": \"parse request error\"}";
         }
 
-    } else if (parameters_request.size() == 5 || parameters_request.size() == 6) {  // боди есть
+    } else if (parameters_request.size() == 5 || parameters_request.size() == 6 || parameters_request.size() == 7) {  // боди есть
         try {
             RequestWithBody result = parse_with_body(parameters_request);
             // поиск хендлера

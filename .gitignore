@@ -44,3 +44,4 @@ cmake-build-debug/
 tmp/
 .vscode/
 googletest/
+out/
