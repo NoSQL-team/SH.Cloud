@@ -33,20 +33,10 @@ FriendsDataBase::~FriendsDataBase() {}
 
 bool FriendsDataBase::add_friend(int user_1, int user_2) {
 
-//	if (is_friend(user_1, user_2)) {
-//		std::cout << std::to_string(user_1) + " и "
-//		+ std::to_string(user_2) + " уже друзья" << std::endl;
-//		return false;
-//	}
-
-	std::cout << "/* message */" << std::endl;
-
 	auto form_sql_request = [](int user_id_1, int user_id_2){
 		return "insert into friends values (" + std::to_string(user_id_1) + ", "
 			   + std::to_string(user_id_2) + ")";
 	};
-
-	std::cout << "/* message */" << std::endl;
 
 	std::string sql_request = form_sql_request(user_1, user_2);
 	std::cout << sql_request << std::endl;
@@ -80,10 +70,7 @@ int FriendsDataBase::is_friend(int user_1, int user_2) {
 	+ std::to_string(user_1) + " and second_id = " + std::to_string(user_2));
 	std::cout << sql_request << std::endl;
 
-
 	pqxx::result r = do_select_request(sql_request);
-
-	std::cout << "/* message */" << std::endl;
 
 	pqxx::result::const_iterator c = r.begin();
 	bool is_friend_1 = c[0].as<int>();
@@ -98,7 +85,6 @@ int FriendsDataBase::is_friend(int user_1, int user_2) {
 
 	pqxx::result r2 = do_select_request(sql_request_2);
 
-	std::cout << "/* message */" << std::endl;
 	is_friend_1 = false;
 	pqxx::result::const_iterator c2 = r2.begin();
 	is_friend_1 = c2[0].as<int>();
@@ -107,13 +93,7 @@ int FriendsDataBase::is_friend(int user_1, int user_2) {
 
 	if (is_friend_1)
 		result += 2;
-//	if (is_friend) {
-//		std::cout << std::to_string(user_1)
-//		+ " и " + std::to_string(user_2) + " друзья" << std::endl;
-//		return true;
-//	}
-//	std::cout << std::to_string(user_1)
-//				 + " и " + std::to_string(user_2) + " не друзья" << std::endl;
+
 	return result;
 }
 
@@ -177,12 +157,6 @@ std::tuple<int, int, int> FriendsDataBase::get_statistic(int user_1) {
 	}
 	std::cout << "Число друзей1 " << friendship_amount << std::endl;
 
-//	for (auto id : el_to_del) {
-//		user_1_to_user_2.erase(std::find(user_1_to_user_2.begin(),
-//								   user_1_to_user_2.end(), id));
-//		user_2_to_user_1.erase(std::find(user_2_to_user_1.begin(),
-//								   user_2_to_user_1.end(), id));
-//	}
 	user_1_to_user_2.erase(std::remove_if(user_1_to_user_2.begin(),
 									   user_1_to_user_2.end(), [&el_to_del](int elem){
 		if (std::find(el_to_del.begin(), el_to_del.end(), elem) != el_to_del.end()) {
