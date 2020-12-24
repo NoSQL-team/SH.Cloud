@@ -3,6 +3,7 @@
 //
 
 #include "Server.h"
+#include <iostream>
 
 using boost::asio::ip::tcp;
 
@@ -16,18 +17,16 @@ Server::Server(short port) : acceptor_(io_service_,
 
 void Server::start_accept()
 {
-    std::shared_ptr<Session> new_session = std::make_shared<Session>(io_service_);
+    std::cout << "start_accept " << std::endl;
 
-    std::cout << "Обрабатываем1" << std::endl;
     if (!queue_response.empty()) {
-        std::shared_ptr<Session> new_session_1 = std::make_shared<Session>(io_service_);
+        std::cout << "Непустая" << std::endl;
+        std::shared_ptr<Session> new_session_1 = std::make_shared<Session>(io_service_, queue_response);
         send_request(new_session_1);
     }
-    std::cout << "Обрабатываем2" << std::endl;
-    acceptor_.async_accept(new_session->socket(),
-                           boost::bind(&Server::handle_accept, this, new_session,
-                                       boost::asio::placeholders::error));
-    std::cout << "Обрабатываем3" << std::endl;
+    std::shared_ptr<Session> new_session = std::make_shared<Session>(io_service_, queue_response);
+    acceptor_.accept(new_session->socket());
+    handle_accept(new_session);
 }
 
 void Server::send_request(std::shared_ptr<Session> new_session) {
@@ -35,23 +34,16 @@ void Server::send_request(std::shared_ptr<Session> new_session) {
 
         auto req = queue_response.front();
         queue_response.pop();
-        start_accept();
+        new_session->send_request(req);
 }
 
-void Server::handle_accept(std::shared_ptr<Session> new_session,
-                           const boost::system::error_code& error)
+void Server::handle_accept(std::shared_ptr<Session> new_session)
 {
-    if (!error)
-    {
-        std::cout << "Обрабатываеммм" << std::endl;
-        new_session->start(new_session);
-    }
-    else
-    {
-        new_session.reset();
-    }
 
+    std::cout << "Обрабатываеммм" << std::endl;
+    new_session->start(new_session);
     start_accept();
+
 }
 
 
