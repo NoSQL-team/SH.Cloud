@@ -1,15 +1,15 @@
 import * as React from "react";
-import {FC, useState, useEffect} from 'react';
+import {FC, useState, useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 
 import {ProfileCard} from 'modules/ProfileCard';
-import {SmallMoment} from 'components/SmallMoment';
 import {APIUser} from 'utils/api';
 import {IUserProfile, IUserStore} from 'types/user';
 import {ioIError} from 'types/common';
 import {IMoment} from 'types/moments';
 import {setNoneAuth} from 'store/actionsCreators/userActionCreator';
+import {Gallery} from 'components/Gallery';
 
 import './profile-page.scss';
 
@@ -26,7 +26,7 @@ export const ProfilePage: FC<IProfilePageProps> = ({
   const [isNoFound, setIsNotFound] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [moments, setMoments] = useState<IMoment[]>(null);
-
+  
   if (match?.params.id === userStore.id || !match?.params.id) {
     useEffect(() => {
       APIUser.getMe(userStore.id).then(res => {
@@ -81,17 +81,8 @@ export const ProfilePage: FC<IProfilePageProps> = ({
             <div style={{fontSize: 'var(--text-sm)'}}>
               {!match?.params.id ? 'Ваши публикации: ' : 'Публикации пользователя: '}
             </div>
-            <div className={'moments F-R-SP'} >
-              {moments?.map((moment, index) => (
-                <div className={'moment-wrapper'} key={index} >
-                  <SmallMoment
-                    likesQuantity={Number(moment.amount_likes)}
-                    path={moment.attach}
-                    isLiked={(moment.liked_users.indexOf(`i${userStore.id}`) === -1 ? false : true)}
-                    id={Number(moment.post_id)}
-                  />
-                </div>
-              ))}
+            <div className={'moments'} >
+              <Gallery moments={moments} />
             </div>
           </div>
         </div>

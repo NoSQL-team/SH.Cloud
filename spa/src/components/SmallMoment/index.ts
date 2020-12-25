@@ -1,1 +1,0 @@
-export {SmallMoment} from './SmallMoment'

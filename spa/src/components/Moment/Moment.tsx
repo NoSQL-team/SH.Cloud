@@ -56,7 +56,7 @@ export const Moment: FC<MomentProps> = ({
         ) : (
           <Link to={`/profile/${author}`} >
             <div className={'F-R-S'} >
-              <img src={userProfile?.photo} />
+              <img src={userProfile?.photo}/>
               <div className={'author'}>{userProfile?.nickname}</div>
             </div>
           </Link>
@@ -64,9 +64,9 @@ export const Moment: FC<MomentProps> = ({
         <div className={'title-text'}>{title}</div>
       </div>
       <Link to={`/moment/${id}/`} >
-        {imgs.length != 0 && <img src={imgs} width={600} /> }
+        {imgs.length != 0 && <img src={imgs} width={800} className={'moment-image'}/> }
       </Link>
-      <div className={'description'}>
+      <div className={description ? 'description' : ''}>
         {description}
       </div>
       <div className={'icons'} >

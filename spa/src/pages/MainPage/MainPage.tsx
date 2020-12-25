@@ -25,6 +25,7 @@ export const MainPage: FC = () => {
 			})
 	}, []);
 
+	
 	return(
 		<div className={isMobile ? 'main-page-mobile' : 'main-page'}>
 			<div className={'content-wrapper F-C-S'} >

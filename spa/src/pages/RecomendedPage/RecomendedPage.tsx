@@ -2,11 +2,11 @@ import * as React from "react";
 import {FC, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {SmallMoment} from 'components/SmallMoment';
 import {IMoment} from 'types/moments';
 import {ioIError} from 'types/common';
 import {IUserStore} from 'types/user';
 import {APIUser} from 'utils/api';
+import {Gallery} from 'components/Gallery';
 
 import './recomended-page.scss';
 
@@ -27,16 +27,7 @@ export const RecomendedPage: FC = () => {
 	return(
 		<div className={'recomended-page'}>
 			<div className={'content-wrapper F-R-SP'}>
-				{moments?.map((moment, index) => (
-					<div className={'moment-wrapper'} key={index} >
-						<SmallMoment
-							likesQuantity={Number(moment.amount_likes)}
-							path={moment.attach}
-							isLiked={(moment.liked_users.indexOf(`i${userStore.id}`) === -1 ? false : true)}
-							id={Number(moment.post_id)}
-						/>
-					</div>
-				))}
+        <Gallery moments={moments} />
 			</div>
 		</div>
 	);

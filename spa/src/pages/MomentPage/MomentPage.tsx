@@ -47,33 +47,35 @@ export const MomentPage: FC<IMomentPageProps> = ({
 
 	return(
 		<div className={'moment-page'}>
-			<div className={'content-wrapper F-R-SP'} >
-				<img src={moment?.attach} className={'photo'} />
-				<div className={'information F-C-S'}>
-					<div className={'F-R-SP title'}>
-						<div className={'icons'} >
-							{isLikedState ? (
-								<div className={'icon'} onClick={toggleLike} >
-									<LikedIcon />
-								</div> 
-							) : (
-								<div className={'icon'} onClick={toggleLike} >
-									<UnlikedIcon />
-								</div> 
-							)}
-						</div>
-						<Link to={`/profile/${moment?.creator_id}`} >
-							<div className={'F-R-S'} >
-								<img src={userProfile?.photo} />
-								<div className={'author'}>{userProfile?.nickname}</div>
+			<div className={'content-wrapper'} >
+				<div className={'content-wrapper-card F-R-SP'}> 
+					<img src={moment?.attach} className={'photo'} />
+					<div className={'information F-C-S'}>
+						<div className={'F-R-SP title'}>
+							<div className={'icons'} >
+								{isLikedState ? (
+									<div className={'icon'} onClick={toggleLike} >
+										<LikedIcon />
+									</div> 
+								) : (
+									<div className={'icon'} onClick={toggleLike} >
+										<UnlikedIcon />
+									</div> 
+								)}
 							</div>
-						</Link>
-					</div>
-					<div>
-						<hr/>
-					</div>
-					<div className={'description'}>
-						{moment?.text}
+							<Link to={`/profile/${moment?.creator_id}`} >
+								<div className={'F-R-S'} >
+									<img src={userProfile?.photo} />
+									<div className={'author'}>{userProfile?.nickname}</div>
+								</div>
+							</Link>
+						</div>
+						<div>
+							<hr/>
+						</div>
+						<div className={'description'}>
+							{moment?.text}
+						</div>
 					</div>
 				</div>
 			</div>

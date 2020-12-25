@@ -6,53 +6,57 @@
 		padding-top: 25px;
 		margin: 0px auto;
 		width: min-content;
-		.photo {
-			width: 600px;
-			max-height: calc(100vh - var(--header-height) - 50px);
-		}
-		.information {
-			width: 300px;
-			border: solid 1px rgba($color: #000000, $alpha: 0.2);
-			border-left: none;
-			padding: 4px;
-			box-sizing: border-box;
-			.title {
-				align-items: center;
+		.content-wrapper-card {
+			box-shadow: 0 0 16px #333;
+			border-radius: 8px;
+			.photo {
+				width: 600px;
+				max-height: calc(100vh - var(--header-height) - 50px);
+			}
+			.information {
+				width: 300px;
+				border-left: none;
+				padding: 4px;
 				box-sizing: border-box;
-				font-size: var(--text-sm);
-				margin-bottom: 5px;
-				a {
-					text-decoration: none;
-					color: black;
-				}
-				.author {
-					cursor: pointer;
-				}
-				img {
-					width: 20px;
-					height: 20px;
-					border-radius: 20px;
-					margin-right: 5px;
-					cursor: pointer;
-				}
-				.icons {
-					.icon {
+				.title {
+					align-items: center;
+					box-sizing: border-box;
+					font-size: var(--text-sm);
+					margin-bottom: 5px;
+					a {
+						text-decoration: none;
+						color: black;
+					}
+					.author {
 						cursor: pointer;
 					}
+					img {
+						width: 20px;
+						height: 20px;
+						border-radius: 20px;
+						margin-right: 5px;
+						cursor: pointer;
+					}
+					.icons {
+						.icon {
+							cursor: pointer;
+						}
+					}
+				}
+				hr {
+					border: 0;
+					height: 1px;
+					background: #000;
+					background-image: -webkit-linear-gradient(left, #fff, #000, #fff);
+					background-image: -moz-linear-gradient(left, #fff, #000, #fff);
+					background-image: -ms-linear-gradient(left, #fff, #000, #fff);
+					background-image: -o-linear-gradient(left, #fff, #000, #fff);
+				}
+				.description {
+					margin-top: 5px;
 				}
 			}
-			hr {
-				border: 0;
-				height: 1px;
-				background: #000;
-				background-image: -webkit-linear-gradient(left, #fff, #000, #fff);
-				background-image: -moz-linear-gradient(left, #fff, #000, #fff);
-				background-image: -ms-linear-gradient(left, #fff, #000, #fff);
-				background-image: -o-linear-gradient(left, #fff, #000, #fff);
-			}
-			.description {
-				margin-top: 5px;
-			}
 		}
+
 	}
 }

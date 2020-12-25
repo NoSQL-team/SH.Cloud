@@ -1,11 +1,12 @@
 .moment {
-	width: 600px;
-	border: solid 1px rgba($color: #000000, $alpha: 0.2);
+	width: 800px;
+	border-radius: 8px;
 	.title {
 		padding: 4px;
 		align-items: center;
 		box-sizing: border-box;
 		font-size: var(--text-sm);
+		border-radius: 8px;
 		a {
 			text-decoration: none;
 			color: black;
@@ -23,7 +24,11 @@
 	}
 	.description {
 		padding: 4px;
+		border-bottom: solid 1px rgba($color: #000000, $alpha: 0.2);
+	}
+	.moment-image {
 		border-top: solid 1px rgba($color: #000000, $alpha: 0.2);
+		border-bottom: solid 1px rgba($color: #000000, $alpha: 0.2);
 	}
 	.icons {
 		padding: 4px;
