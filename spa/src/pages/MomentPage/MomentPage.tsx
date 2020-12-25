@@ -22,8 +22,8 @@ export const MomentPage: FC<IMomentPageProps> = ({
 }: IMomentPageProps) => {
 
 	const [moment, setMoment] = useState<IMoment>(null);
-  const userStore: IUserStore = useSelector(state => state.user);
-  const [userProfile, setUserProfile] = useState<IUserProfile>(null);
+  	const userStore: IUserStore = useSelector(state => state.user);
+  	const [userProfile, setUserProfile] = useState<IUserProfile>(null);
 	const {isLikedState, toggleLike, setRealLike} = useLike({
     isLiked: (moment?.liked_users.indexOf(`i${userStore.id}`) === -1 ? false : true),
     id: match?.params.id
@@ -63,12 +63,21 @@ export const MomentPage: FC<IMomentPageProps> = ({
 									</div> 
 								)}
 							</div>
-							<Link to={`/profile/${moment?.creator_id}`} >
-								<div className={'F-R-S'} >
-									<img src={userProfile?.photo} />
-									<div className={'author'}>{userProfile?.nickname}</div>
-								</div>
-							</Link>
+							{userStore.id === Number(moment?.creator_id) ? (
+								<Link to={'/profile'} >
+									<div className={'F-R-S'} >
+										<img src={userProfile?.photo} />
+										<div className={'author'}>{userProfile?.nickname}</div>
+									</div>
+								</Link>
+							) : (
+								<Link to={`/profile/${moment?.creator_id}`} >
+									<div className={'F-R-S'} >
+										<img src={userProfile?.photo} />
+										<div className={'author'}>{userProfile?.nickname}</div>
+									</div>
+								</Link>
+							)}
 						</div>
 						<div>
 							<hr/>
