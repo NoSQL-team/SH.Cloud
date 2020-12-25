@@ -12,10 +12,6 @@ export const SIDE_BAR: ISideBarState = {
       isSelected: true,
     },
     {
-      name: 'Сменить пароль',
-      isSelected: false,
-    },
-    {
       name: 'Сменить почту',
       isSelected: false,
     }

@@ -123,6 +123,7 @@ export const LoginPage: FC = () => {
                       {props => (
                         <input 
                           {...props.input}
+                          type={'password'}
                         />
                       )}
                     </Field>
@@ -146,6 +147,7 @@ export const LoginPage: FC = () => {
                       {props => (
                         <input 
                           {...props.input}
+                          type={'email'}
                         />
                       )}
                     </Field>
@@ -166,6 +168,7 @@ export const LoginPage: FC = () => {
                       {props => (
                         <input 
                           {...props.input}
+                          type={'password'}
                         />
                       )}
                     </Field>
@@ -176,6 +179,7 @@ export const LoginPage: FC = () => {
                       {props => (
                         <input 
                           {...props.input}
+                          type={'password'}
                         />
                       )}
                     </Field>

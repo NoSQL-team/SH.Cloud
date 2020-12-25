@@ -160,32 +160,55 @@ export const ProfileSettingsPage: FC = () => {
                   />
                 </div>
               </div>
-              <Form 
-                onSubmit={onSubmitForm}
-              >
+              <Form onSubmit={onSubmitForm}>
                 {props => (
-                  <>
-                    <form onSubmit={props.handleSubmit}>
-                      {formHandlers.map((element, index) => (
-                        <Field name={element.name} key={element.label}>
-                          {props => (
-                            <div className={'ch-input-block'} >
-                              <div className={'ch-input-label'}>
-                                {element.label}
-                              </div>
-                              <div className={'ch-input-label'}>
-                                <input 
-                                  placeholder={element.default}
-                                  {...props.input}
-                                />
-                              </div>
+                  <form onSubmit={props.handleSubmit}>
+                    {formHandlers.map((element) => (
+                      <Field name={element.name} key={element.label}>
+                        {props => (
+                          <div className={'ch-input-block'} >
+                            <div className={'ch-input-label'}>
+                              {element.label}
                             </div>
-                          )}
-                        </Field>
-                      ))}
-                      <button type="submit">Изменить</button>
-                    </form>
-                  </>
+                            <div className={'ch-input-label'}>
+                              <input 
+                                placeholder={element.default}
+                                {...props.input}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </Field>
+                    ))}
+                    <button type="submit">Изменить</button>
+                  </form>
+                )}
+              </Form>
+            </div>
+          }
+          {sideBarState.entries[1].isSelected &&
+            <div className={'content'} >
+              <Form onSubmit={onSubmitForm}>
+                {props => (
+                  <form onSubmit={props.handleSubmit}>
+                    <Field name={'email'}>
+                      {props => (
+                        <div className={'ch-input-block'} >
+                          <div className={'ch-input-label'}>
+                            {'Новая почта'}
+                          </div>
+                          <div className={'ch-input-label'}>
+                            <input 
+                              placeholder={userProfile.email}
+                              {...props.input}
+                              type={'email'}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Field>
+                    <button type="submit">Изменить</button>
+                  </form>
                 )}
               </Form>
             </div>
