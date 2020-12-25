@@ -19,8 +19,7 @@ private:
 
     void send_request(std::shared_ptr<Session> new_session);
 
-    void handle_accept(std::shared_ptr<Session> new_session,
-                       const boost::system::error_code& error);
+    void handle_accept(std::shared_ptr<Session> new_session);
 
     boost::asio::io_service io_service_;
     boost::asio::ip::tcp::acceptor acceptor_;
