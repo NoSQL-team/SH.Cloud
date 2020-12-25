@@ -25,7 +25,7 @@ set(TESTS_DIR ${DIR}/tests)
 include_directories(includes/)
 
 add_library(server_queue STATIC src/Server.cpp src/Session.cpp
-        project/includes/Server.h includes/Session.h)
+        includes/Server.h includes/Session.h)
 
 add_executable(echo_server echo_server.cpp)
 
