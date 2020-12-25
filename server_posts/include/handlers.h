@@ -28,7 +28,6 @@ public:
                             const std::map<std::string, size_t>& args,
                             std::string& body);
 
-
 private:
     PostsDataBase _db;
 };

@@ -10,11 +10,7 @@ void Session::start() {
     read();
 }
 
-
 void Session::read() {
-    // for (size_t i = 0; i < 10000; i++) {
-    //     data_[i] = \"\0\";
-    // }
     io::async_read_until(
             socket,
             incoming,
@@ -28,8 +24,6 @@ void Session::send_response(std::string& response) {
     // указать порт http сервера
     ip::tcp::endpoint ep(ip::address::from_string("127.0.0.1"), 9999);
     ip::tcp::socket sock(service);
-
-    std::cout << response << std::endl;
 
     sock.async_connect(ep, [&sock, &response](const error_code& error) {
         if (!error) {

@@ -15,10 +15,6 @@ namespace tcp_network {
 								request_(request) {}
 
 	void RequestHandler::handle_request() {
-		for (auto [first, second] : request_) {
-			std::cout << first << " " << second << std::endl;
-		}
-
 		if (request_.count("type") && request_["type"] == "add") {
 			handle_add();
 		} else if (request_.count("type") && request_["type"] == "is_friend") {
@@ -41,7 +37,6 @@ namespace tcp_network {
 		// }
 
 		std::string response = (request_["number"] + '\n' + form_post_response(result) + '\r');
-		std::cout << response << std::endl;
 		session_->send_response(response);
 	}
 
@@ -66,20 +61,20 @@ namespace tcp_network {
 	}
 
 	std::string request_are_friends() {
-		std::string response = "{\n"
-							   " \"isFriends\": true,\n"
-							   " \"isHeSub\": false,\n"
-							   " \"isWeSub\": false,\n"
+		std::string response = "{"
+							   " \"isFriends\": true,"
+							   " \"isHeSub\": false,"
+							   " \"isWeSub\": false,"
 							   " \"isNotConf\": false";
 
 		return response;
 	}
 
 	std::string request_isNotConf() {
-		std::string response = "{\n"
-							   " \"isFriends\": false,\n"
-							   " \"isHeSub\": false,\n"
-							   " \"isWeSub\": false,\n"
+		std::string response = "{"
+							   " \"isFriends\": false,"
+							   " \"isHeSub\": false,"
+							   " \"isWeSub\": false,"
 							   " \"isNotConf\": true";
 
 		return response;
@@ -89,20 +84,18 @@ namespace tcp_network {
 		int result = database_.is_friend(std::atoi(request_["user_1"].c_str()),
 										  std::atoi(request_["user_2"].c_str()));
 
-		std::cout << "Результат " << result << std::endl;
-
-		std::string response = "{\n \"isWeSub\": ";
+		std::string response = "{ \"isWeSub\": ";
 		if (result == 1 || result == 3)
-			response += "true,\n";
+			response += "true,";
 		else
-			response += "false,\n";
+			response += "false,";
 		response += " \"isHeSub\": ";
 		if (result == 2 || result == 3)
-			response += "true,\n";
+			response += "true,";
 		else
-			response += "false,\n";
+			response += "false,";
 		response += " \"isFriends\": ";
-		response += "false,\n";
+		response += "false,";
 		response += " \"isNotConf\": ";
 		response += "false";
 		if (result == 3)
@@ -111,23 +104,17 @@ namespace tcp_network {
 			response = request_isNotConf();
 		response += "\n}";
 		std::string final_response = (request_["number"] + '\n' + response + '\r');
-		std::cout << final_response << std::endl;
 		session_->send_response(final_response);
 	}
 
-
-
 	void RequestHandler::handle_get_statistic() {
 		auto result = database_.get_statistic(std::atoi(request_["user_1"].c_str()));
-
-//		std::string response =
-
 		std::string response = (request_["number"] + '\n' + form_stat_response(result) + '\r');
 		session_->send_response(response);
 	}
 
 	std::string RequestHandler::form_post_response(int result) {
-		std::string response = "{ \"response\": ";
+		std::string response = "{\"response\": ";
 		if (result)
 			response += "true";
 		else
@@ -138,25 +125,25 @@ namespace tcp_network {
 
 	std::string RequestHandler::form_stat_response(std::tuple<int, int, int> amount) {
 		std::stringstream response;
-		response << "{\n \"response\": ";
+		response << "{\"response\": ";
 		response << "\"true\"";
-		response << ",\n \"friends_amount\": ";
-		response << std::get<2>(amount) << ",\n";
+		response << ", \"friends_amount\": ";
+		response << std::get<2>(amount) << ",";
 		response << " \"we_subscribed\": ";
-		response << std::get<0>(amount) << ",\n";
+		response << std::get<0>(amount) << ",";
 		response << " \"he_subscribed\": ";
 		response << std::get<1>(amount);
 
-		response << "\n}";
+		response << "}";
 		return response.str();
 	}
 
 
 	std::string RequestHandler::form_get_fr_response(const std::vector<int>& friends) {
 		std::stringstream response;
-		response << "{\n \"response\": ";
+		response << "{\"response\": ";
 		response << "\"true\"";
-		response << ",\n \"data\": [";
+		response << ", \"data\": [";
 
 		int i = 0;
 		for (auto it : friends) {
@@ -165,7 +152,7 @@ namespace tcp_network {
 			response << it;
 			i = 1;
 		}
-		response << "]\n}";
+		response << "]}";
 		return response.str();
 	}
 }

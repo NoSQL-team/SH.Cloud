@@ -4,7 +4,6 @@
 
 #include <stdexcept>
 
-//#include <boost/log/trivial.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
 #include "session.h"
@@ -25,7 +24,6 @@ namespace tcp_network {
 			servers_adrs_.insert({RequestDestination::USER_SERV, {"127.0.0.1", users_port}});
 		} catch (const std::exception& e) {
 			std::cerr << e.what() << std::endl;
-//			BOOST_LOG_TRIVIAL(error) << e.what();
 		}
 	}
 
@@ -52,7 +50,6 @@ namespace tcp_network {
 			return destination;
 		} catch (std::out_of_range& e) {
 			std::cerr << e.what() << std::endl;
-//			BOOST_LOG_TRIVIAL(error) << e.what();
 			return {0, 0};
 		}
 	}
@@ -75,7 +72,6 @@ namespace tcp_network {
 		} else {
 			current_session.reset();
 			std::cerr << error.message() << std::endl;
-//			BOOST_LOG_TRIVIAL(error) << error.message();
 		}
 	}
 }

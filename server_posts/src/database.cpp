@@ -12,9 +12,7 @@
 
 PostsDataBase::PostsDataBase() {}
 
-PostsDataBase::~PostsDataBase() {
-//    database_->disconnect();
-}
+PostsDataBase::~PostsDataBase() {}
 
 void PostsDataBase::do_modifying_request(const std::string& sql_request) {
     pqxx::connection con("dbname=db_posts host=localhost user=amartery password=password port=27007");

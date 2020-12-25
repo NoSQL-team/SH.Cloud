@@ -11,8 +11,6 @@
 
 #include <pqxx/pqxx>
 
-
-
 class DataBase {
 public:
 	explicit DataBase(std::map<std::string, std::string>& db_settings);
