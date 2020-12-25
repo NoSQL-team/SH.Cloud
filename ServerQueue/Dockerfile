@@ -7,7 +7,6 @@ RUN apt-get update && \
     apt-get install gcc -y && \
     apt-get install g++ -y && \
     apt-get install make -y && \
-    apt-get install libssl-dev -y && \
     apt-get install cmake -y
 
 RUN apt-get install libboost-all-dev -y
