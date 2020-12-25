@@ -47,4 +47,4 @@ googletest/
 out/
 static/
 node_modules/
-package-lock.json
+spa/package-lock.json
