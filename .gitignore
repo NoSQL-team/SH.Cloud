@@ -44,7 +44,6 @@ cmake-build-debug/
 tmp/
 .vscode/
 googletest/
-out/
 static/
 node_modules/
 spa/package-lock.json
