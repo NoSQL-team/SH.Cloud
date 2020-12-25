@@ -10,7 +10,7 @@
 #include <boost/asio.hpp>
 #include "UsersDatabase.h"
 
-const int max_length = 10000;
+const int max_length = 100000;
 
 class Session : public std::enable_shared_from_this<Session>
 {

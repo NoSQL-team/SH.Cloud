@@ -11,7 +11,7 @@
 #include <string>
 #include <queue>
 
-const int max_lenght = 10000;
+const int max_lenght = 100000;
 
 class Session : public std::enable_shared_from_this<Session>
 {

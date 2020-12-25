@@ -29,7 +29,7 @@ void Session::send_answer(std::string& answer) {
 void Session::start()
 {
 	std::cout << "start" << std::endl;
-    for (size_t i = 0; i < 10000; i++) {
+    for (size_t i = 0; i < max_length; i++) {
         data_[i] = '\0';
     }
 	socket_.async_read_some(boost::asio::buffer(data_, max_length),

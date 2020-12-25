@@ -5,7 +5,7 @@
 
 void Session::start(std::map<std::string, std::string> context) {
     auto self(shared_from_this()); 
-    for (size_t i = 0; i < 10024; i++) {
+    for (size_t i = 0; i < 100000; i++) {
         buff[i] = '\0';
     }
     _socket.async_read_some(
@@ -14,7 +14,6 @@ void Session::start(std::map<std::string, std::string> context) {
         {
             std::istringstream stream(buff);
             _responseBuffer = headers.getResponse(stream, context);
-            std::cout << _responseBuffer << std::endl;
             if (!(_responseBuffer == "our")) {
                 async_write(
                     _socket,

@@ -16,7 +16,7 @@
 
 namespace tcp_network {
 
-	constexpr uint16_t max_length = 10000;
+	constexpr size_t max_length = 100000;
 
 	class Session : public std::enable_shared_from_this<Session> {
 	public:

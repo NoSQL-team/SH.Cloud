@@ -12,8 +12,8 @@ RUN apt-get update && \
 
 RUN apt-get install libboost-all-dev -y
 
-ADD ./project/includes /app/project/includes
-ADD ./project/src /app/project/src
+ADD ./includes /app/includes
+ADD ./src /app/src
 ADD ./client.cpp /app
 ADD ./echo_server.cpp /app
 ADD ./main.cpp /app

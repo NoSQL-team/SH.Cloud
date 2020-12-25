@@ -13,13 +13,13 @@ endif(Boost_FOUND)
 set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
 
 
-set(INC_DIR ${DIR}project/includes)
+set(INC_DIR ${DIR}includes)
 
-set(SRC_DIR ${DIR}project/src)
+set(SRC_DIR ${DIR}src)
 
 set(TESTS_DIR ${DIR}tests)
 
-include_directories(project/includes/)
+include_directories(includes/)
 
 add_library(ServerUsers STATIC ${SRC_DIR}/Session.cpp ${SRC_DIR}/HandlerUser.cpp
         ${INC_DIR}/Session.h ${SRC_DIR}/Server.cpp ${INC_DIR}/HandlerUser.h
@@ -28,7 +28,7 @@ add_library(ServerUsers STATIC ${SRC_DIR}/Session.cpp ${SRC_DIR}/HandlerUser.cpp
         ${INC_DIR}/Server.h ${SRC_DIR}/UsersDatabase.cpp)
 
 
-target_link_directories(ServerUsers PUBLIC project/includes/)
+target_link_directories(ServerUsers PUBLIC includes/)
 
 add_executable(test_parser main.cpp)
 
@@ -39,7 +39,7 @@ add_executable(echo_server echo_server.cpp)
 add_executable(test_server test_server.cpp)
 
 add_executable(client client.cpp)
-target_include_directories(test_parser PUBLIC project/includes/)
+target_include_directories(test_parser PUBLIC includes/)
 
 add_executable(test_db test_db.cpp)
 

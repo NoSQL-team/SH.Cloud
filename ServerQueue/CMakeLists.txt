@@ -16,16 +16,16 @@ set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBR
 
 
 
-set(INC_DIR ${DIR}/project/includes)
+set(INC_DIR ${DIR}/includes)
 
-set(SRC_DIR ${DIR}/project/src)
+set(SRC_DIR ${DIR}/src)
 
 set(TESTS_DIR ${DIR}/tests)
 
-include_directories(project/includes/)
+include_directories(includes/)
 
-add_library(server_queue STATIC project/src/Server.cpp project/src/Session.cpp
-        project/includes/Server.h project/includes/Session.h)
+add_library(server_queue STATIC src/Server.cpp src/Session.cpp
+        project/includes/Server.h includes/Session.h)
 
 add_executable(echo_server echo_server.cpp)
 
