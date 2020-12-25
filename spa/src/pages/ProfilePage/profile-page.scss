@@ -1,0 +1,29 @@
+.profile-page {
+	height: calc(100vh - var(--header-height));
+	box-sizing: border-box;
+	background-color: var(--page-color);
+	.content-wrapper {
+		width: 800px;
+		margin: 0px auto;
+		box-sizing: border-box;
+		padding-top: 25px;
+		height: 100%;
+		.line {
+			margin: 15px 0px;
+			border: 1px solid rgba($color: #000000, $alpha: 0.2);
+		}
+		.moments {
+			flex-wrap: wrap;
+			margin-top: 5px;
+			overflow: auto;
+			-ms-overflow-style: none;
+			overflow: -moz-scrollbars-none;
+			scrollbar-width: none;
+			box-sizing: border-box;
+			height: calc(100vh - var(--header-height) - 254px - 31px);
+			.moment-wrapper {
+				margin-bottom: 25px;
+			}
+		}
+	}
+}

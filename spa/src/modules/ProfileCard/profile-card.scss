@@ -1,0 +1,19 @@
+.profile-card {
+	align-items: center;
+	img {
+		width: 200px;
+		height: 200px;
+		border-radius: 200px;
+	}
+	.content {
+		font-size: var(--text-sm);
+		height: 150px;
+		.username {
+			font-size: var(--text-l);
+		}
+		.statistics {
+			flex-wrap: wrap;
+			width: 550px;
+		}
+	}
+}
