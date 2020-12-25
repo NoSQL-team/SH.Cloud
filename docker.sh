@@ -33,5 +33,5 @@ docker build -t noskool-queue-3 .
 mv queue_settings.ini queue_settings-3.ini
 
 cd ..
-# # docker-compose down -v
-# docker-compose up
+docker-compose down -v
+docker-compose up
