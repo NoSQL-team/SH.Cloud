@@ -9,7 +9,6 @@
 using boost::asio::ip::tcp;
 
 void Session::send_request(std::string& request) {
-    std::cout << "Пришли отправлять" << std::endl;
     boost::asio::io_service service;
     tcp::socket socket(service);
     socket.async_connect(end_, [&socket, this, &request] (const boost::system::error_code& err) {
@@ -39,7 +38,6 @@ tcp::socket& Session::socket()
 
 void Session::start(std::shared_ptr<Session> session)
 {
-    std::cout << "start" << std::endl;
     socket_.read_some(boost::asio::buffer(data_, max_lenght));
     handle_read(session);
 }
@@ -48,5 +46,3 @@ void Session::handle_read(std::shared_ptr<Session> session) // const boost::syst
 {
     responses_.push(std::string(data_));
 }
-
-

@@ -21,9 +21,7 @@ public:
     boost::asio::ip::tcp::socket& socket();
 
     void start(std::shared_ptr<Session> session);
-
     void send_request(std::string& request);
-
 
 private:
     void handle_read(std::shared_ptr<Session> session);

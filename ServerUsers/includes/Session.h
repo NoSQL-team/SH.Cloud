@@ -10,7 +10,7 @@
 #include <boost/asio.hpp>
 #include "UsersDatabase.h"
 
-const int max_length = 100000;
+const size_t max_length = 100000;
 
 class Session : public std::enable_shared_from_this<Session>
 {
@@ -20,15 +20,11 @@ public:
     {}
 
     boost::asio::ip::tcp::socket& socket();
-
     void send_answer(std::string& answer);
-
     void start();
 
 private:
-	void handle_read(std::shared_ptr<Session> session,
-						   const boost::system::error_code& error);
-
+	void handle_read(std::shared_ptr<Session> session, const boost::system::error_code& error);
 
     boost::asio::io_service& io_service_;
     boost::asio::ip::tcp::socket socket_;
@@ -36,6 +32,5 @@ private:
     UsersDatabase& data_base_;
     boost::asio::streambuf _buffer;
 };
-
 
 #endif //SERVERUSERS_SESSION_H

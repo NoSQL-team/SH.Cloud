@@ -10,17 +10,13 @@ using boost::asio::ip::tcp;
 Server::Server(short port) : acceptor_(io_service_,
                                        boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {
-    std::cout << "constr" << std::endl;
     start_accept();
     io_service_.run();
 }
 
 void Server::start_accept()
 {
-    std::cout << "start_accept " << std::endl;
-
     if (!queue_response.empty()) {
-        std::cout << "Непустая" << std::endl;
         std::shared_ptr<Session> new_session_1 = std::make_shared<Session>(io_service_, queue_response);
         send_request(new_session_1);
     }
@@ -30,20 +26,13 @@ void Server::start_accept()
 }
 
 void Server::send_request(std::shared_ptr<Session> new_session) {
-        std::cout << "Обрабатываем" << std::endl;
-
-        auto req = queue_response.front();
-        queue_response.pop();
-        new_session->send_request(req);
+    auto req = queue_response.front();
+    queue_response.pop();
+    new_session->send_request(req);
 }
 
 void Server::handle_accept(std::shared_ptr<Session> new_session)
 {
-
-    std::cout << "Обрабатываеммм" << std::endl;
     new_session->start(new_session);
     start_accept();
-
 }
-
-

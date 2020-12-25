@@ -33,6 +33,4 @@ private:
     UsersDatabase& data_base_;
 };
 
-
-
 #endif //SERVERUSERS_HANDLERUSER_H

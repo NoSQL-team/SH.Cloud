@@ -13,8 +13,8 @@ tcp::socket& Session::socket()
     return socket_;
 }
 
-void Session::send_answer(std::string& answer) {
-	std::cout << "ООТвет " << answer << std::endl;
+void Session::send_answer(std::string& answer)
+{
     boost::asio::io_service service;
     tcp::endpoint end(boost::asio::ip::address::from_string("127.0.0.1"), 9999);
     tcp::socket socket(service);
@@ -28,7 +28,6 @@ void Session::send_answer(std::string& answer) {
 
 void Session::start()
 {
-	std::cout << "start" << std::endl;
     for (size_t i = 0; i < max_length; i++) {
         data_[i] = '\0';
     }
@@ -37,20 +36,14 @@ void Session::start()
 										boost::asio::placeholders::error));
 }
 
-
 void Session::handle_read(std::shared_ptr<Session> session, const boost::system::error_code& error)
 {
-    if (!error)
-    {
-        std::cout << data_ << std::endl;
-
-        auto handler = std::make_shared<HandlerUser>(io_service_,
-													 *session.get(), data_base_);
+    if (!error) {
+        auto handler = std::make_shared<HandlerUser>(io_service_, *session.get(), data_base_);
         auto str = std::string(data_);
         handler->handle_request(str);
     }
-    else
-    {
+    else {
 		session.reset();
     }
 }

@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-lpqxx -lpq")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
-find_package(Boost REQUIRED COMPONENTS system thread regex log)
+find_package(Boost REQUIRED COMPONENTS system thread regex log_setup log)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     link_directories(${Boost_LIBRARY_DIRS})
 endif(Boost_FOUND)
-set(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY} ${Boost_LOG_LIBRARY})
-
+set(USED_LIBS ${Boost_LIBRARIES})
+add_definitions(-DBOOST_LOG_DYN_LINK)
 
 set(INC_DIR ${DIR}includes)
 

@@ -2,11 +2,12 @@
 	width: 800px;
 	border-radius: 8px;
 	.title {
-		padding: 4px;
+		padding: 8px;
 		align-items: center;
 		box-sizing: border-box;
 		font-size: var(--text-sm);
 		border-radius: 8px;
+		background-color: white;
 		a {
 			text-decoration: none;
 			color: black;
@@ -23,15 +24,18 @@
 		}
 	}
 	.description {
-		padding: 4px;
+		padding: 8px;
 		border-bottom: solid 1px rgba($color: #000000, $alpha: 0.2);
+		background-color: white;
 	}
 	.moment-image {
 		border-top: solid 1px rgba($color: #000000, $alpha: 0.2);
 		border-bottom: solid 1px rgba($color: #000000, $alpha: 0.2);
 	}
 	.icons {
-		padding: 4px;
+		padding: 8px;
+		background-color: white;
+		border-radius: 8px;
 		.icon {
 			cursor: pointer;
 			width: min-content;
