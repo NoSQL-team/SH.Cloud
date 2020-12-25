@@ -13,7 +13,6 @@ void Session::start(std::map<std::string, std::string> context) {
         _strand.wrap([this, self, context](const error_code& e, std::size_t s)
         {
             std::istringstream stream(buff);
-            std::cout << buff << std::endl;
             _responseBuffer = headers.getResponse(stream, context);
             std::cout << _responseBuffer << std::endl;
             if (!(_responseBuffer == "our")) {

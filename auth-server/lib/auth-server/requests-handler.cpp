@@ -226,7 +226,7 @@ std::string RequestsHandler::add()
             return response.str();
         }
     } else {
-        _ptResponse.put("error", "not unique username");
+        _ptResponse.put("response", "not unique username");
     }
     boost::property_tree::write_json(response, _ptResponse);
     return (response.str() + '\r');

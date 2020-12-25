@@ -20,6 +20,6 @@ ADD ./main.cpp /app/src
 RUN cd /app/src/ && mkdir tmp && cd tmp && mkdir out && cmake .. && make && cd ..
 
 ADD ./lib/http-server/noskoolHTTP.ini /
-ADD ./static/out /out
+ADD ./static /out
 
 CMD ["/bin/sh", "-c", "/app/src/tmp/main >&1"]

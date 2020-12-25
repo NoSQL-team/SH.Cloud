@@ -27,11 +27,17 @@ export const ProfilePage: FC<IProfilePageProps> = ({
   const dispatch = useDispatch();
   const [moments, setMoments] = useState<IMoment[]>(null);
 
-  if (!match?.params.id) {
+  if (match?.params.id === userStore.id || !match?.params.id) {
     useEffect(() => {
       APIUser.getMe(userStore.id).then(res => {
         if (!ioIError(res)) {
           setUserProfile(res);
+          APIUser.getUser(userStore.id)
+            .then(res => {
+              if (!ioIError(res)) {
+                setMoments(res.data);
+              }
+            });
         } else {
           dispatch(setNoneAuth());
         }
@@ -44,21 +50,18 @@ export const ProfilePage: FC<IProfilePageProps> = ({
           if (!ioIError(res)) {
             setUserProfile(res);
             setIsNotFound(false);
+            APIUser.getUser(match?.params.id)
+              .then(res => {
+                if (!ioIError(res)) {
+                  setMoments(res.data);
+                }
+              });
           } else {
             setIsNotFound(true);
           }
         });
     }, []);
   }
-
-	useEffect(() => {
-		APIUser.getUser(userStore.id)
-			.then(res => {
-				if (!ioIError(res)) {
-					setMoments(res.data);
-				}
-			})
-	}, []);
 
 	return(
     <>

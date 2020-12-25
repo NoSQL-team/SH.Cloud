@@ -31,6 +31,7 @@ const ssize_t OUR_SERVER_REQUEST = 4;
 const ssize_t API_AUTH_REQUEST_OUR = 5;
 
 extern size_t number;
+extern std::mutex globalMutex;
 extern std::mutex ResponsesHandler::_mutex;
 extern std::mutex RequesterRouter::_requesterMutex;
 extern std::mutex RequesterAuth::_requesterAuthMutex;
@@ -227,8 +228,10 @@ void RequestsHandler::setFirstHeader()
 
 std::string RequestsHandler::formationRequest()
 {
+    std::lock_guard<std::mutex> lock(globalMutex);
     std::stringstream buffer;
     number++;
+    _number++;
     buffer
         << number << "\n"
         << _url << "\n"
@@ -272,8 +275,8 @@ std::string RequestsHandler::getResponse(std::istream& stream, const std::map<st
         responsesHandler->setResponse(_body, _number);
     } else if (isOurServer == HTTP_REQUEST || isOurServer == OUR_SERVER_REQUEST) {
         RequesterRouter* requester = RequesterRouter::getInstance();
-        requester->sendRequest(formationRequest(), [this]() { isResponseReady = true; }, number + 1);
-        _number = number;
+            _number = number;
+            requester->sendRequest(formationRequest(), [this]() { isResponseReady = true; }, _number + 1);
         while (!isResponseReady) {
             std::this_thread::sleep_for(std::chrono::microseconds(100));
         }
