@@ -50,6 +50,12 @@ std::string PostsDataBase::create_post(Post& post) {
 
 
 std::string PostsDataBase::delete_post(std::string& post_id, std::string& user_id) {
+    // проверим существование такого поста
+    if (!post_exist(post_id)) {
+        return "error";
+    }
+
+    // достаем пользователя
     boost::format raw_sql_req =
             (boost::format("select creator_id from posts where post_id = %1%")%post_id);
     std::string sql_req = boost::str(raw_sql_req);
@@ -76,8 +82,59 @@ std::string PostsDataBase::delete_post(std::string& post_id, std::string& user_i
 }
 
 
-std::vector<Post> PostsDataBase::get_all_posts() {
-    std::string sql_request = "select * from posts";
+std::vector<Post> PostsDataBase::get_all_posts(const std::string& sql_limit, const std::string& sql_offset) {
+    std::string sql_request = "select * from posts limit " + sql_limit + " offset " + sql_offset;
+    pqxx::result r = do_select_request(sql_request);
+
+    std::vector<Post> result;
+    for (const auto& row: r) {
+        Post temp(
+                row[1].as<int>(),
+                row[3].as<std::string>(),
+                row[4].as<std::string>(),
+                row[5].as<std::string>(),
+                row[2].as<std::string>(),
+                row[0].as<int>(),
+                row[6].as<int>(),
+                row[7].as<std::string>());
+        result.push_back(temp);
+    }
+    return result;
+}
+
+
+std::vector<Post> PostsDataBase::get_popular_posts(const std::string& sql_limit, const std::string& sql_offset) {
+    std::string sql_request = "select * from posts order by amount_likes desc "
+                              "limit " + sql_limit + " offset " + sql_offset;
+    pqxx::result r = do_select_request(sql_request);
+
+    std::vector<Post> result;
+    for (const auto& row: r) {
+        Post temp(
+                row[1].as<int>(),
+                row[3].as<std::string>(),
+                row[4].as<std::string>(),
+                row[5].as<std::string>(),
+                row[2].as<std::string>(),
+                row[0].as<int>(),
+                row[6].as<int>(),
+                row[7].as<std::string>());
+        result.push_back(temp);
+    }
+    return result;
+}
+
+
+std::vector<Post> PostsDataBase::get_user_posts(std::string user_id, const std::string& sql_limit, const std::string& sql_offset) {
+    boost::format creating_sql_req =
+            (boost::format("select * from posts "
+                           "where creator_id = %1% "
+                           "limit %2% "
+                           "offset %3%")
+             %user_id
+             %sql_limit
+             %sql_offset);
+    std::string sql_request = boost::str(creating_sql_req);
     pqxx::result r = do_select_request(sql_request);
     std::vector<Post> result;
     for (const auto& row: r) {
@@ -96,25 +153,18 @@ std::vector<Post> PostsDataBase::get_all_posts() {
 }
 
 
-std::vector<Post> PostsDataBase::get_user_posts(std::string user_id) {
-    boost::format creating_sql_req =
-            (boost::format("select * from posts where creator_id = %1%")%user_id);
-    std::string sql_request = boost::str(creating_sql_req);
-    pqxx::result r = do_select_request(sql_request);
-    std::vector<Post> result;
-    for (const auto& row: r) {
-        Post temp(
-                row[1].as<int>(),
-                row[3].as<std::string>(),
-                row[4].as<std::string>(),
-                row[5].as<std::string>(),
-                row[2].as<std::string>(),
-                row[0].as<int>(),
-                row[6].as<int>(),
-                row[7].as<std::string>());
-        result.push_back(temp);
+bool PostsDataBase::post_exist(std::string post_id) {
+    // проверим существование такого поста
+    boost::format exist_sql_req_raw =
+            (boost::format("select exists(select post_id from posts where post_id = %1%)")%post_id);
+    std::string exist_sql_req = boost::str(exist_sql_req_raw);
+    pqxx::result exist = do_select_request(exist_sql_req);
+    auto exist_flag = exist[0][0].as<std::string>();
+    if (exist_flag == "t") {
+        return true;
+    } else {
+        return false;
     }
-    return result;
 }
 
 
@@ -137,9 +187,15 @@ Post PostsDataBase::get_one_post(std::string post_id) {
 }
 
 
-std::vector<Post> PostsDataBase::get_posts_for_user(const std::string& friends_id) {
+std::vector<Post> PostsDataBase::get_posts_for_user(const std::string& friends_id, std::string sql_limit, std::string sql_offset) {
     boost::format creating_sql_req =
-            (boost::format("select * from posts where creator_id in(%1%) order by creation_date desc")%friends_id);
+            (boost::format("select * from posts "
+                           "where creator_id in(%1%) order by creation_date desc "
+                           "limit %2% "
+                           "offset %3%")
+             %friends_id
+             %sql_limit
+             %sql_offset);
     std::string sql_request = boost::str(creating_sql_req);
     pqxx::result r = do_select_request(sql_request);
     std::vector<Post> result;
@@ -166,6 +222,11 @@ std::string PostsDataBase::get_likes(const std::string& post_id) {
 }
 
 std::string PostsDataBase::add_like_by_id(std::string post_id, const std::string& user_id) {
+    // проверим существование такого поста
+    if (!post_exist(post_id)) {
+        return "error";
+    }
+
     std::string likes = get_likes(post_id);
     std::vector<std::string> vec_likes = split(likes, " ");
 
@@ -196,6 +257,10 @@ std::string PostsDataBase::add_like_by_id(std::string post_id, const std::string
 }
 
 std::string PostsDataBase::del_like_by_id(std::string post_id, const std::string& user_id) {
+    // проверим существование такого поста
+    if (!post_exist(post_id)) {
+        return "error";
+    }
     std::string likes = get_likes(post_id);
 
     std::vector<std::string> vec_likes = split(likes, " ");
