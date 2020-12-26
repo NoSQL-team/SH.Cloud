@@ -172,19 +172,19 @@ std::string UsersDatabase::find(std::string& nickname) {
 
 	pqxx::result R = select_(sql_request);
 
-	string answer = "{\n";
+	string answer = "{\"data\":[";
 	int i = 0;
 	for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
-		if (i != 0) {
-			answer += ",\n";
-		}
+        answer += "{";
 		i++;
-		answer += "  \"id\": " + c[0].as<string>() + ",\n";
+		answer += "  \"id\": " + c[0].as<string>() + ",";
 		answer += "  \"nickname\": \"" + c[1].as<string>() + "\"";
+        answer += "},";
 	}
-	answer += "\n}";
+    answer.pop_back();
+	answer += "]}";
 
-	if (answer == "{\n\n}") {
+	if (answer == "{}") {
 		return "No users";
 	}
 

@@ -102,6 +102,8 @@ void HandlerUser::handle_request(string& request)
     
     int data_id = atoi(method.c_str());
 
+    std::cout << method << std::endl;
+
     if (method == "create") {
         create_user(num_request, parse_json, id_user);
     }
@@ -114,7 +116,7 @@ void HandlerUser::handle_request(string& request)
     else if (method == "exists") {
         is_exist(num_request, id_exists);
     }
-	else if (method == "find") {
+	else if (method == "fin") {
 		find_user(num_request, find_nickname);
 	}
     else if (data_id != 0) {
@@ -153,7 +155,7 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 
 		if (parse_answer.at("response") != "ok") {
 			string str_result = std::to_string(number_request) + "\n";
-			str_result += "{\"response\": true}\r";
+			str_result += "{\n\"response\": true\n}\r";
 			session_.send_answer(str_result);
 		}
 		else {
@@ -164,7 +166,7 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 		}
     }
     catch (std::exception& e) {
-    	string error = "{ \"error\": \"false\" }";
+    	string error = "{\n\"error\":\"false\"\n}";
     	session_.send_answer(error);
         logError("HandlerUser.cpp create_user c.110 " + string(e.what()));
     }
@@ -193,7 +195,7 @@ void HandlerUser::all_users(int number_request) const
 {
     try {
         data_base_.all_users();
-        string result = std::to_string(number_request);
+        string result = std::to_string(number_request) + "\n";
         string new_result = data_base_.all_users();
         if (new_result == "No users") {
             result += "{\"error\": \"false\"}";
@@ -212,7 +214,7 @@ void HandlerUser::update_data(int number_request, const std::map<string, string>
 {
     try {
         int result = data_base_.update(data_user, user_id);
-        string str_result = std::to_string(number_request);
+        string str_result = std::to_string(number_request) + "\n";
         str_result += "{\"response\": " + std::to_string(result) + "}";
         log("update user");
         session_.send_answer(str_result);
@@ -226,7 +228,7 @@ void HandlerUser::is_exist(int number_request, int id_user) const
 {
     try {
         int result = data_base_.exist(id_user);
-        string str_result = std::to_string(number_request);
+        string str_result = std::to_string(number_request) + "\n";
         str_result += "{\"response\": " + std::to_string(result) + "}";
         log("is exist user");
         session_.send_answer(str_result);
@@ -263,9 +265,10 @@ void HandlerUser::find_user(int number_request, std::string& nickname) const {
 		} else {
 			str_result += result;
 		}
+        log("find user");
 		session_.send_answer(str_result);
 	}
 	catch (std::exception& e) {
-		std::cerr << e.what() <<std::endl;
+        logError(string(e.what()));
 	}
 }
