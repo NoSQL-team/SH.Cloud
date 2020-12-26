@@ -1,6 +1,5 @@
 import * as React from "react";
 import {FC, useState, useCallback} from 'react';
-import {cn} from '@bem-react/classname';
 import {useDispatch} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Form, Field} from 'react-final-form';
@@ -12,8 +11,6 @@ import {IRegForm, ioIRegForm, ioIError} from 'types/common';
 import {IUserAuthData, ioIUserAuthData} from 'types/user';
 
 import './login-page.scss';
-
-const cnLoginPage = cn('login-page');
 
 export const LoginPage: FC = () => {
 
@@ -100,7 +97,7 @@ export const LoginPage: FC = () => {
 
 	return(
     <>
-      <div className={cnLoginPage()}>
+      <div className={'login-page'}>
         <div className={isLoginForm ? 'form-wrapper-login' : 'form-wrapper-reg'}>
           {isLoginForm ? (
             <Form

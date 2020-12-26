@@ -14,7 +14,8 @@ import {
   ProfilePage,
   RecomendedPage,
   MomentPage,
-  ProfileSettingsPage
+  ProfileSettingsPage,
+  SearchPage
 } from 'pages';
 import {setUserAuths} from 'store/actionsCreators/userActionCreator';
 import {useModalWindow} from 'hooks/useModalWindow';
@@ -48,6 +49,7 @@ export const App: FC = () => {
           <Route path="/" exact render={() => <MainPage />} />
           <Route path="/recomended" exact render={() => <RecomendedPage />} />
           <Route path="/moment/:id" exact render={(props) => <MomentPage {...props} />} />
+          <Route path="/find-friends" exact render={() => <SearchPage />} />
           {isOpen && (
             <MomentCreatePopup 
               toggleModal={toggleModal}

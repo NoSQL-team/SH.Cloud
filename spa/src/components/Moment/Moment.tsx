@@ -2,7 +2,7 @@ import * as React from "react";
 import {ReactElement, FC, useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {isMobile} from 'react-device-detect';
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux';
 
 import {MomentDto} from 'models/MomentDto';
 import {APIUser} from 'utils/api';

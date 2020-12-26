@@ -24,3 +24,9 @@ export interface IUserProfile {
 export interface IUserId {
 	id: string
 }
+
+export interface IFindUser {
+	id: number;
+	nickname: string;
+	photo: string;
+}

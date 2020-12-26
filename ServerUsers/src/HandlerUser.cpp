@@ -82,7 +82,6 @@ void HandlerUser::handle_request(string& request)
 	string find_nickname;
     if (num_slash == 4 ) {
 		find_nickname = api_method.substr(api_method.find_last_of('/', api_method.size() - 2) + 1);
-		find_nickname.pop_back();
         id_exists = atoi(find_nickname.c_str());
         method = api_method.substr(str.size(), api_method.find_last_of('/', api_method.size() - 2) - str.size());
     }

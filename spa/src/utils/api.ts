@@ -1,5 +1,5 @@
 import {ITokens, IAccess} from 'types/tokens';
-import {IUserAuthData, IUserProfile, IUserId} from 'types/user';
+import {IUserAuthData, IUserProfile, IUserId, IFindUser} from 'types/user';
 import {IGetData, IError, ISucces, IChangeUserForm, IRegForm, ioIError} from 'types/common';
 import {IIsFriendStruct, IUserFriendsStat} from 'types/friends';
 import {ICreateMoment} from 'types/moments';
@@ -15,6 +15,14 @@ export class APIUser {
 			mode: "cors"
 		});
 		let responseJSON: Promise<ITokens | IError> = response.json();
+		return responseJSON;
+	}
+	static findFriends = async (substring: string):Promise<IGetData<IFindUser[]> | IError> => {
+		let response = await fetch(API + `/api/users/find/${substring}`, {
+			method: 'GET',
+			mode: "cors"
+		});
+		let responseJSON: Promise<IGetData<IFindUser[]> | IError> = response.json();
 		return responseJSON;
 	}
 	static getAccessToken = async (token: string, userId: number):Promise<IAccess | IError> => {

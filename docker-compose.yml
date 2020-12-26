@@ -67,9 +67,9 @@ services:
   users-server:
     image: noskool-users
     network_mode: "host"
-  posts-server:
-    image: noskool-posts
-    network_mode: "host"
+  # posts-server:
+  #   image: noskool-posts
+  #   network_mode: "host"
   posts-db:
     image: postgres
     restart: always

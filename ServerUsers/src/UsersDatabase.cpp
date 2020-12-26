@@ -167,7 +167,7 @@ int UsersDatabase::get_id() {
 }
 
 std::string UsersDatabase::find(std::string& nickname) {
-	string sql_request("SELECT id, nickname FROM Users WHERE nickname like ");
+	string sql_request("SELECT id, nickname, photo FROM Users WHERE nickname like ");
 	sql_request += "\'" + nickname + "%\'";
 
 	pqxx::result R = select_(sql_request);
@@ -178,10 +178,13 @@ std::string UsersDatabase::find(std::string& nickname) {
         answer += "{";
 		i++;
 		answer += "  \"id\": " + c[0].as<string>() + ",";
-		answer += "  \"nickname\": \"" + c[1].as<string>() + "\"";
+		answer += "  \"nickname\": \"" + c[1].as<string>() + "\",";
+		answer += "  \"photo\": \"" + c[2].as<string>() + "\"";
         answer += "},";
 	}
-    answer.pop_back();
+    if (i != 0) {
+        answer.pop_back();
+    }
 	answer += "]}";
 
 	if (answer == "{}") {
