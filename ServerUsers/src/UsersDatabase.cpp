@@ -87,7 +87,7 @@ using std::string;
         string answer = "{";
 
         for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
-            answer += "  \"id\": \"" + c[0].as<string>() + "\" ,";
+            answer += "  \"id\": " + c[0].as<string>();
         }
         answer += "}";
 
@@ -111,7 +111,7 @@ using std::string;
         answer += "}";
 
         if (answer == "{}") {
-            return "No user";
+            return "No users";
         }
         return answer;
     }
@@ -164,4 +164,29 @@ int UsersDatabase::get_id() {
         id = 0;
     }
 	return ++id;
+}
+
+std::string UsersDatabase::find(std::string& nickname) {
+	string sql_request("SELECT id, nickname FROM Users WHERE nickname like ");
+	sql_request += "\'" + nickname + "%\'";
+
+	pqxx::result R = select_(sql_request);
+
+	string answer = "{\n";
+	int i = 0;
+	for (pqxx::result::const_iterator c = R.begin(); c != R.end(); ++c) {
+		if (i != 0) {
+			answer += ",\n";
+		}
+		i++;
+		answer += "  \"id\": " + c[0].as<string>() + ",\n";
+		answer += "  \"nickname\": \"" + c[1].as<string>() + "\"";
+	}
+	answer += "\n}";
+
+	if (answer == "{\n\n}") {
+		return "No users";
+	}
+
+	return answer;
 }
