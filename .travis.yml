@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  - sudo bash docker.sh
+  - sudo bash ci_build.sh
