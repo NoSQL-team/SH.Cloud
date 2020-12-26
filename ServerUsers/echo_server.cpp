@@ -20,7 +20,7 @@ void session(socket_ptr sock)
 		boost::system::error_code error;
 		size_t length = sock->read_some(boost::asio::buffer(data), error);
 		std::cout << data << std::endl;
-		std::string response = "{\n  \"response\": \"ok\"\n}";
+		std::string response = "{\n  \"response\": \"ok\"\n}\r";
 		sock->write_some(boost::asio::buffer(response));
 	}
 	catch (std::exception& e)

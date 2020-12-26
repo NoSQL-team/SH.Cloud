@@ -43,7 +43,24 @@ using std::string;
             answer += "  \"lastname\": \"" + c[2].as<string>() + "\",";
             answer += "  \"nickname\": \"" + c[3].as<string>() + "\",";
             answer += "  \"email\": \"" + c[4].as<string>() + "\",";
-            answer += "  \"photo\": \"" + c[5].as<string>() + "\"";
+            if (c[5].is_null()) {
+				answer += "  \"photo\": \"\",";
+            }
+            else {
+            	answer += "  \"photo\": \"" + c[5].as<string>() + "\",";
+            }
+            if (c[6].is_null()) {
+				answer += "  \"status\": \"\",";
+            }
+            else {
+				answer += "  \"status\": \"" + c[6].as<string>() + "\",";
+			}
+            if (c[7].is_null()) {
+				answer += "  \"ico_status\": \"\"";
+            }
+            else {
+				answer += "  \"ico_status\": \"" + c[7].as<string>() + "\"";
+			}
         }
         answer += "}";
 
@@ -117,10 +134,10 @@ using std::string;
     }
 
     bool UsersDatabase::update(const std::map<string, string>& data, int id_user) {
-        // if (data.at("Aid") != std::to_string(id_user)) {
-        //     std::cout << "/* message error*/" << std::endl;
-        //     return false;
-        // }
+         if (data.at("Aid") != std::to_string(id_user)) {
+             std::cout << "/* message error*/" << std::endl;
+             return false;
+         }
 
         string sql_request("UPDATE users SET ");
         int i = 0;
