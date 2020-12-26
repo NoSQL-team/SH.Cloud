@@ -4,7 +4,7 @@
 # docker rmi -f $RESULT
 # RESULT=$(docker ps -a -q)
 # docker rmi -f $RESULT
-
+docker-compose down -v
 cd http-server
 docker build -t noskool-http .
 cd ../auth-server
