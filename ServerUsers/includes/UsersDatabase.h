@@ -19,6 +19,7 @@ public:
     bool exist(int id);
     int get_id();
     std::string id_by_nick(std::string& nickname);
+	std::string find(std::string& nickname);
 };
 
 #endif //SERVERUSERS_USERSDATABASE_H
