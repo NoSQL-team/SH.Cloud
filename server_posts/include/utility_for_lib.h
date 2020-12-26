@@ -7,8 +7,7 @@
 
 #include "../include/types.h"
 #include "../include/post.h"
-
-
+#include <vector>
 
 // десерелизует json
 std::map<std::string, std::string> parser_json(std::string& request);
@@ -50,10 +49,9 @@ std::string reduce(std::string& str,
 bool is_authorized(const std::string& user_id);
 
 // проеверяем есть ли право что-либо делать у пользователя
-bool check_access(bool required_auth, bool is_authorized)
+bool check_access(bool required_auth, bool is_authorized);
 
 // получаем вектор из id друзей пользователя user_id
 std::vector<std::string> get_friends_id(std::string& user_id);
-
 
 #endif //MAIN_TP_UTILITY_H
