@@ -11,5 +11,4 @@ docker build -t noskool-posts .
 cd ../ServerUsers
 docker build -t noskool-users .
 cd ../server_friends
-cd ../ServerQueue
 docker build -t noskool-friends .
