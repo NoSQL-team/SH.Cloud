@@ -19,6 +19,7 @@ import {
 import {setUserAuths} from 'store/actionsCreators/userActionCreator';
 import {useModalWindow} from 'hooks/useModalWindow';
 import {MomentCreatePopup} from 'modules/MomentCreatePopup';
+import GuthubIcon from 'assests/app/icons/github.svg';
 
 import './app.scss'
 
@@ -52,6 +53,9 @@ export const App: FC = () => {
               toggleModal={toggleModal}
             />
           )}
+          <a href="https://github.com/NoSQL-team" className={'github-icon'} target="blank">
+            <GuthubIcon />
+          </a>
         </div>
       </Router> 
     </>

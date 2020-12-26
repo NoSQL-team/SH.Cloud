@@ -54,6 +54,7 @@ export const LoginPage: FC = () => {
         values?.repeat_password &&
         values?.password
       ) {
+        console.log(values)
         APIUser.regUser(values)
           .then(resReg => {
             console.log(resReg)

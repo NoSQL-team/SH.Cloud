@@ -6,6 +6,7 @@ import ProfileIcon from 'assests/header/icons/profile.svg';
 import CompassIcon from 'assests/header/icons/compass.svg';
 import HomeIcon from 'assests/header/icons/home.svg';
 import PlusIcon from 'assests/header/icons/plus.svg';
+import FindIcon from 'assests/header/icons/find.svg';
 import {HEADER_TITLE} from 'constants/header';
 
 import './header.scss'
@@ -36,6 +37,11 @@ export const Header: FC<HeaderProps> = ({
 						<Link to={'/'}>
 							<div className={'home'} onClick={closeWindow} >
 								<HomeIcon />
+							</div>
+						</Link>
+						<Link to={'/find-friends'}>
+							<div className={'home'} onClick={closeWindow} >
+								<FindIcon />
 							</div>
 						</Link>
 						<Link to={'/recomended'} >

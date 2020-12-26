@@ -36,11 +36,12 @@
 		padding: 8px;
 		background-color: white;
 		border-radius: 8px;
+		align-items: center;
 		.icon {
 			cursor: pointer;
 			width: min-content;
 			height: min-content;
-			opacity: .7;
+			margin-right: 5px;
 		}
 	}
 }

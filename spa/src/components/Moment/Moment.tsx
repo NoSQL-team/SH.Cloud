@@ -24,7 +24,7 @@ export const Moment: FC<MomentProps> = ({
   isLiked,
   title,
   id,
-  description
+  description,
 }: MomentProps): ReactElement => {
 
   const [userProfile, setUserProfile] = useState<IUserProfile>(null);
@@ -79,6 +79,7 @@ export const Moment: FC<MomentProps> = ({
             <UnlikedIcon />
           </div> 
         )}
+        {}
       </div>
     </div>
   );

@@ -38,6 +38,7 @@ export const MainPage: FC = () => {
 							isLiked={(moment.liked_users.indexOf(`i${userStore.id}`) === -1 ? false : true)}
 							id={Number(moment.post_id)}
 							description={moment.text}
+							amount_likes={Number(moment.amount_likes)}
 						/>
 					</div>
 				))}

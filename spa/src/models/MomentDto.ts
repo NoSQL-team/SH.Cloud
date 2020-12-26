@@ -5,4 +5,5 @@ export type MomentDto = {
 	title: string;
 	id: number;
 	description: string;
+	amount_likes: number;
 }
