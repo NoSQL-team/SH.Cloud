@@ -261,7 +261,7 @@ void HandlerUser::find_user(int number_request, std::string& nickname) const {
 		string result = data_base_.find(nickname);
 		string str_result = std::to_string(number_request) + "\n";
 		if (result == "No users") {
-			str_result += "{\n \"response\": \"false\"\n}";
+			str_result += "{\"response\": \"false\"}";
 		} else {
 			str_result += result;
 		}
