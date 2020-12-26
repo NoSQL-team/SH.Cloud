@@ -215,4 +215,17 @@ std::vector<std::string> get_friends_id(std::string& user_id) {
     }
 }
 
+
+bool check_access(bool required_auth, bool is_authorized) {
+    if (!required_auth) {
+        return true;
+    } else {
+        if (is_authorized) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 #endif //MAIN_TP_UTILITY_H

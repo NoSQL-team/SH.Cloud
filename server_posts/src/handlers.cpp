@@ -7,15 +7,13 @@
 
 
 std::string Handlers::for_user(const std::string& id_request, const std::map<std::string, size_t>& args) {
-
-    // TODO: получить need posts oт friends
-    // TODO: отправка запроса на сервер friends, ответ которого нужно
-    // TODO: нужно преобразовать в вектор из post_id которые нужно достать из БД
     std::string usr_id = std::to_string(args.at("user_id"));
+    std::string sql_limit = std::to_string(args.at("limit"));
+    std::string sql_offset = std::to_string(args.at("offset"));
 
     std::vector<std::string> friends = get_friends_id(usr_id);
 
-    if (friends.size() != 0) {
+    if (!friends.empty()) {
         // преобразуем вектор к строке с запятыми чтобы использовать в IN SQL
         std::ostringstream oss;
         std::copy(friends.begin(), friends.end() - 1,
@@ -23,7 +21,7 @@ std::string Handlers::for_user(const std::string& id_request, const std::map<std
         oss << friends.back(); // копируем последний символ, чтобы не было пробела в конце
         std::string need_posts = oss.str();
 
-        std::vector<Post> vec_posts = _db.get_posts_for_user(need_posts);
+        std::vector<Post> vec_posts = _db.get_posts_for_user(need_posts, sql_limit, sql_offset);
         std::string posts = vec_posts_to_json(vec_posts);
         return id_request + "\n\n" + posts;
     } else {
@@ -35,7 +33,20 @@ std::string Handlers::for_user(const std::string& id_request, const std::map<std
 
 
 std::string Handlers::all_posts(const std::string& id_request, const std::map<std::string, size_t>& args) {
-    std::vector<Post> vec_posts = _db.get_all_posts();
+    std::string sql_limit = std::to_string(args.at("limit"));
+    std::string sql_offset = std::to_string(args.at("offset"));
+
+    std::vector<Post> vec_posts = _db.get_all_posts(sql_limit, sql_offset);
+    std::string posts = vec_posts_to_json(vec_posts);
+    return id_request + "\n\n" + posts;
+}
+
+
+std::string Handlers::popular_posts(const std::string& id_request, const std::map<std::string, size_t>& args) {
+    std::string sql_limit = std::to_string(args.at("limit"));
+    std::string sql_offset = std::to_string(args.at("offset"));
+
+    std::vector<Post> vec_posts = _db.get_popular_posts(sql_limit, sql_offset);
     std::string posts = vec_posts_to_json(vec_posts);
     return id_request + "\n\n" + posts;
 }
@@ -43,8 +54,10 @@ std::string Handlers::all_posts(const std::string& id_request, const std::map<st
 
 std::string Handlers::user_posts(std::string const& id_request, std::map<std::string, size_t> const& args) {
     std::string usr_id = std::to_string(args.at("user_id"));
+    std::string sql_limit = std::to_string(args.at("limit"));
+    std::string sql_offset = std::to_string(args.at("offset"));
 
-    std::vector<Post> vec_posts = _db.get_user_posts(usr_id);
+    std::vector<Post> vec_posts = _db.get_user_posts(usr_id, sql_limit, sql_offset);
     std::string posts = vec_posts_to_json(vec_posts);
 
     return id_request + "\n\n" + posts;
@@ -53,8 +66,12 @@ std::string Handlers::user_posts(std::string const& id_request, std::map<std::st
 
 std::string Handlers::one_post(std::string const& id_request, std::map<std::string, size_t> const& args) {
     std::string post_id = std::to_string(args.at("post_id"));
-    Post one = _db.get_one_post(post_id);
-    return id_request + "\n\n" + post_to_json(one);
+    if (_db.post_exist(post_id)) {
+        Post one = _db.get_one_post(post_id);
+        return id_request + "\n\n" + post_to_json(one);
+    } else {
+        return id_request + "\n\n" + "{\"response\": \"error\"}";
+    }
 }
 
 

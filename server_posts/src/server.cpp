@@ -9,7 +9,20 @@ void TCPServer::add_endpoint() {
     dispatcher.emplace(
             "/api/posts/all/",
             dispatcher_entry{
-                    0,
+                    2,
+                    false,
+                    [this](
+                            const std::string& id_request,
+                            const std::map<std::string, size_t>& args
+                    ) -> std::string{
+                        return hand.all_posts(id_request, args);
+                    }
+            }
+    );
+    dispatcher.emplace(
+            "/api/posts/popular/",
+            dispatcher_entry{
+                    2,
                     false,
                     [this](
                             const std::string& id_request,
@@ -22,7 +35,7 @@ void TCPServer::add_endpoint() {
     dispatcher.emplace(
             "/api/posts/fuser/",
             dispatcher_entry{
-                    1,
+                    3,
                     false,
                     [this](
                             const std::string& id_request,
@@ -35,7 +48,7 @@ void TCPServer::add_endpoint() {
     dispatcher.emplace(
             "/api/posts/user/",
             dispatcher_entry{
-                    1,
+                    3,
                     false,
                     [this](
                             const std::string& id_request,
@@ -95,16 +108,16 @@ void TCPServer::add_endpoint() {
 
     // ендпоинты требующие боди
     dispatcher_with_body.emplace(
-        "/api/posts/create/",
-        dispatcher_entry_with_body{
-                0,
-                true,
-                [this](std::string const& id_request,
-                        std::map<std::string, size_t> const& args,
-                        std::string& body) -> std::string {
-                return hand.create_post(id_request, args, body);
-                }
-        });
+            "/api/posts/create/",
+            dispatcher_entry_with_body{
+                    0,
+                    true,
+                    [this](std::string const& id_request,
+                           std::map<std::string, size_t> const& args,
+                           std::string& body) -> std::string {
+                        return hand.create_post(id_request, args, body);
+                    }
+            });
 
 }
 

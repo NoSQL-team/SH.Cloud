@@ -42,7 +42,7 @@ void Session::on_read(error_code error, std::size_t bytes_transferred) {
         std::string line;
         std::string full_line = "";
         while(std::getline(stream, line)) {
-            full_line += line + " ";
+            full_line += line + "\n";
         }
         incoming.consume(bytes_transferred);
         std::string trim_full_line = reduce(full_line);
@@ -59,16 +59,30 @@ void Session::on_read(error_code error, std::size_t bytes_transferred) {
 std::string Session::dispatch(std::string const& line) {
     std::string response; // строка ответа
 
-    auto parameters_request = split(line, " ");
+    auto end_main_command = line.find("\n\n");
 
-    if (parameters_request.size() == 4) { // боди нет
+    std::string main_command;
+    std::copy(line.begin(), line.begin() + end_main_command, std::back_inserter(main_command));
+    auto parameters_request = split(main_command, "\n");
+
+    auto start_body = line.find('{');
+    auto end_body = line.rfind('}');
+    std::string body;
+    std::copy(line.begin() + start_body, line.begin() + end_body + 1, std::back_inserter(body));
+
+    // если есть боди добавляем
+    if (body.size() > 1) {
+        parameters_request.push_back(body);
+    }
+
+    if (parameters_request.size() == 3) { // боди нет
         try {
             RequestWithoutBody result = parse_without_body(parameters_request);
             // поиск хендлера
             if(auto it = dispatcher.find(result.command); it != dispatcher.cend()) {
                 auto const& entry = it->second;
                 // проверяем количество параметров из url и авторизирован ли пользователь
-                // if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
+                //if(entry.args == result.args.size() && check_access(entry.required_auth, result.is_authorized)) {
                     try {
                         // вызов хендлера
                         response =  entry.handler(result.id_request, result.args);
@@ -85,14 +99,14 @@ std::string Session::dispatch(std::string const& line) {
             response = parameters_request[0] + "\n\n{\"error\": \"parse request error\"}";
         }
 
-    } else if (parameters_request.size() == 5 || parameters_request.size() == 6 || parameters_request.size() == 7) {  // боди есть
+    } else if (parameters_request.size() == 4) {  // боди есть
         try {
             RequestWithBody result = parse_with_body(parameters_request);
             // поиск хендлера
             if(auto it = dispatcher_with_body.find(result.command); it != dispatcher_with_body.cend()) {
                 auto const& entry = it->second;
                 // проверяем количество параметров из url и авторизирован ли пользователь
-                // if(entry.args == result.args.size() && entry.required_auth == result.is_authorized) {
+                // if(entry.args == result.args.size() && check_access(entry.required_auth, result.is_authorized)) {
                     try {
                         // вызов хендлера
                         response = entry.handler(result.id_request, result.args, result.body);

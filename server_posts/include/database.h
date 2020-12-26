@@ -27,10 +27,13 @@ public:
     std::string add_like_by_id(std::string post_id, const std::string& user_id);
     std::string del_like_by_id(std::string post_id, const std::string& user_id);
 
+    bool post_exist(std::string post_id);
 
-    std::vector<Post> get_all_posts();
-    std::vector<Post> get_user_posts(std::string user_id);
-    std::vector<Post> get_posts_for_user(const std::string& friends_id);
+    std::vector<Post> get_all_posts(const std::string& sql_limit, const std::string& sql_offset);
+    std::vector<Post> get_popular_posts(const std::string& sql_limit, const std::string& sql_offset);
+    std::vector<Post> get_user_posts(std::string user_id, const std::string& sql_limit, const std::string& sql_offset);
+    std::vector<Post> get_posts_for_user(const std::string& friends_id, std::string sql_limit, std::string sql_offset);
+
     Post get_one_post(std::string post_id);
 
 private:
