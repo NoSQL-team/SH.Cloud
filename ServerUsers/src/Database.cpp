@@ -9,7 +9,7 @@ void Database::insert_(std::string& request) {
     pqxx::work W(con);
     W.exec(request);
     W.commit();
-//    con.disconnect();
+    con.disconnect();
 }
 
 pqxx::result Database::select_(std::string& request) {
@@ -17,7 +17,7 @@ pqxx::result Database::select_(std::string& request) {
     pqxx::nontransaction N(con);
     pqxx::result R (N.exec( request ));
     N.commit();
-//    con.disconnect();
+    con.disconnect();
     return R;
 }
 
