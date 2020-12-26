@@ -53,6 +53,12 @@ std::map<string, string> HandlerUser::parser_json(string& request)
                 else if (std::string(it->first) == "photo") {
                     field = "Fphoto";
                 }
+				else if (std::string(it->first) == "status") {
+					field = "Gstatus";
+				}
+				else if (std::string(it->first) == "ico_status") {
+					field = "Hico_status";
+				}
                 result[field] = it->second.get_value<string>();
             }
             return result;
@@ -86,7 +92,7 @@ void HandlerUser::handle_request(string& request)
         method = api_method.substr(str.size(), api_method.find_last_of('/', api_method.size() - 2) - str.size());
     }
     else {
-        method = api_method.substr(str.size());
+        method = api_method.substr(str.size() - 1);
     }
     method.pop_back();
     int id_user = atoi(request.substr(find_method + 1, request.find("\n\n") - find_method - 1).c_str());
@@ -165,7 +171,7 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 		}
     }
     catch (std::exception& e) {
-    	string error = "{\n\"error\":\"false\"\n}";
+    	string error = std::to_string(number_request) + "\n{ \"error\": false }";
     	session_.send_answer(error);
         logError("HandlerUser.cpp create_user c.110 " + string(e.what()));
     }
@@ -186,6 +192,8 @@ void HandlerUser::data_user(int id, int number_request) const
         session_.send_answer(result);
     }
     catch (std::exception& e) {
+		string error = std::to_string(number_request) + "\n{ \"error\": false }";
+		session_.send_answer(error);
         logError("HandlerUser.cpp data_user c.79 " + string(e.what()));
     }
 }
@@ -205,6 +213,8 @@ void HandlerUser::all_users(int number_request) const
         session_.send_answer(result);
     }
     catch (std::exception& e) {
+		string error = std::to_string(number_request) + "\n{ \"error\": false }";
+		session_.send_answer(error);
         logError("HandlerUser.cpp all_users c.96 " + string(e.what()));
     }
 }
@@ -219,6 +229,8 @@ void HandlerUser::update_data(int number_request, const std::map<string, string>
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
+		string error = std::to_string(number_request) + "\n{ \"error\": false }";
+		session_.send_answer(error);
         logError("HandlerUser.cpp change_user_data c.130 " + string(e.what()));
     }
 }
@@ -233,6 +245,8 @@ void HandlerUser::is_exist(int number_request, int id_user) const
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
+		string error = std::to_string(number_request) + "\n{ \"error\": false }";
+		session_.send_answer(error);
         logError("HandlerUser.cpp is_exist c.177 " + string(e.what()));
     }
 }
@@ -251,6 +265,8 @@ void HandlerUser::id_by_nick(int number_request, string& nickname)
         session_.send_answer(str_result);
     }
     catch (std::exception& e) {
+		string error = std::to_string(number_request) + "\n{ \"error\": false }";
+		session_.send_answer(error);
         logError("HandlerUser.cpp id_by_nick c.189 " + string(e.what()));
     }
 }
@@ -268,6 +284,8 @@ void HandlerUser::find_user(int number_request, std::string& nickname) const {
 		session_.send_answer(str_result);
 	}
 	catch (std::exception& e) {
+		string error = std::to_string(number_request) + "\n{ \"error\": false }";
+		session_.send_answer(error);
         logError(string(e.what()));
 	}
 }
