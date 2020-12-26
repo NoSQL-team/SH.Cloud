@@ -65,6 +65,21 @@
 					width: 60%;
 				}
 			}
+			.icons-table {
+				width: 100%;
+				flex-wrap: wrap;
+				img {
+					width: 75px;
+					height: 75px;
+					cursor: pointer;
+					opacity: .3;
+				}
+				.active {
+					width: 75px;
+					height: 75px;
+					opacity: 1;
+				}
+			}
 		}
 	}
 }

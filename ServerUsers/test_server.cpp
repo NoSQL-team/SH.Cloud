@@ -7,13 +7,10 @@
 
 int main(int argc, char* argv[])
 {
-    std::cout << "hello";
-    try
-    {
-            Server(12012);
+    try {
+        Server(12012);
     }
-    catch (std::exception& e)
-    {
+    catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << "\n";
     }
 

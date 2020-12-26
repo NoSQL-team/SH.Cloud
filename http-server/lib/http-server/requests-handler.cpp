@@ -254,9 +254,13 @@ void RequestsHandler::authHandler() {
         std::string res = requesterAuth->getResponse("/api/auth/authRequest/\n\n" + buffer.str() + '\r');
         std::istringstream b(res);
         boost::property_tree::read_json(b, _ptBuffer);
-        if (_ptBuffer.get<std::string>("response") == "ok") {
-            _user_auth_id = lexical_cast<ssize_t>(splitVect[1]);
-        } else {
+        try {
+            if (_ptBuffer.get<std::string>("response") == "ok") {
+                _user_auth_id = lexical_cast<ssize_t>(splitVect[1]);
+            } else {
+                _user_auth_id = -1;
+            }
+        } catch(const std::exception& e) {
             _user_auth_id = -1;
         }
     }

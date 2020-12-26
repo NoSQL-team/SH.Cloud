@@ -8,8 +8,12 @@ interface ISideBarState {
 export const SIDE_BAR: ISideBarState = {
   entries: [
     {
-      name: 'Редактирование профиля',
+      name: 'Сменить настроение',
       isSelected: true,
+    },
+    {
+      name: 'Редактирование профиля',
+      isSelected: false,
     },
     {
       name: 'Сменить почту',

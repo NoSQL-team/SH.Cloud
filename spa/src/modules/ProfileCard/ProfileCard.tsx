@@ -20,7 +20,9 @@ interface ProfileCardProps {
 	momentsQuantity: number,
 	firstName: string,
 	lastName: string,
-	userNumber: number | undefined
+  userNumber: number | undefined,
+  status: string,
+  ico_status: string,
 }
 
 export const ProfileCard: FC<ProfileCardProps> = ({
@@ -29,12 +31,14 @@ export const ProfileCard: FC<ProfileCardProps> = ({
 	momentsQuantity,
 	lastName,
 	firstName,
-	userNumber
+  userNumber,
+  status,
+  ico_status
 }: ProfileCardProps) => {
 
 	const [isRedProfileSettings, setIsRedProfileSettings] = useState<boolean>(false);
-  const [userFriendsStat, setUserFriendsStat] = useState<IUserFriendsStat>(null);
-  const [isFriendStruct, setIsFriendStruct] = useState<IIsFriendStruct>(null);
+	const [userFriendsStat, setUserFriendsStat] = useState<IUserFriendsStat>(null);
+	const [isFriendStruct, setIsFriendStruct] = useState<IIsFriendStruct>(null);
 	const userStore: IUserStore = useSelector(state => state.user);
 	const dispatch = useDispatch();
 	const onLogout = useCallback(() => {
@@ -93,7 +97,12 @@ export const ProfileCard: FC<ProfileCardProps> = ({
 				<img src={photoPath} alt=""/>
 				<div className={'content F-C-SP'} >
 					<div className={'F-R-SP'} >
-						<div className={'username'}>{name}</div>
+						<div className={'user-status F-R-S'} >
+              <div className={'username'}>
+                {name}
+              </div>
+              <img src={ico_status} />
+            </div>
 						{!userNumber ? (
 							<div style={{cursor: 'pointer'}} onClick={() => setIsRedProfileSettings(true)} >
 								<SettingsIcon />
@@ -115,7 +124,8 @@ export const ProfileCard: FC<ProfileCardProps> = ({
 					</div>
 					<div>{`${firstName} ${lastName}`}</div>
 					{!userNumber &&
-						<div className={'F-R-FE'} >
+						<div className={'F-R-SP'} style={{alignItems: 'center'}} >
+              <div>{'Статус: ' + status}</div>
 							<button onClick={onLogout}>Выйти</button>
 						</div>
 					}
