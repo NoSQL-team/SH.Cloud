@@ -46,21 +46,12 @@ export const Moment: FC<MomentProps> = ({
   return(
     <div className={isMobile ? 'moment-mobile' : 'moment'} >
       <div className={'F-R-SP title'} >
-        {userStore.id === author ? (
-          <Link to={`/profile`} >
-            <div className={'F-R-S'} >
-              <img src={userProfile?.photo} />
-              <div className={'author'}>{userProfile?.nickname}</div>
-            </div>
-          </Link>
-        ) : (
-          <Link to={`/profile/${author}`} >
-            <div className={'F-R-S'} >
-              <img src={userProfile?.photo}/>
-              <div className={'author'}>{userProfile?.nickname}</div>
-            </div>
-          </Link>
-        )}
+        <Link to={userStore.id === author ? '/profile' : `/profile/${author}`} >
+          <div className={'F-R-S title-content'} >
+            <img src={userProfile?.photo} />
+            <div className={'author'}>{userProfile?.nickname}</div>
+          </div>
+        </Link>
         <div className={'title-text'}>{title}</div>
       </div>
       <Link to={`/moment/${id}/`} >

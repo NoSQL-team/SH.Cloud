@@ -134,10 +134,10 @@ using std::string;
     }
 
     bool UsersDatabase::update(const std::map<string, string>& data, int id_user) {
-         if (data.at("Aid") != std::to_string(id_user)) {
-             std::cout << "/* message error*/" << std::endl;
-             return false;
-         }
+        //  if (data.at("Aid") != std::to_string(id_user)) {
+        //      std::cout << "/* message error*/" << std::endl;
+        //      return false;
+        //  }
 
         string sql_request("UPDATE users SET ");
         int i = 0;

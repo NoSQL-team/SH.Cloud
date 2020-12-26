@@ -180,7 +180,6 @@ void HandlerUser::create_user(int number_request, const std::map<string, string>
 void HandlerUser::data_user(int id, int number_request) const 
 {
     try {
-        data_base_.data_user(id);
         string result = std::to_string(number_request) + "\n";
         string new_result = data_base_.data_user(id);
         if (new_result == "No user") {

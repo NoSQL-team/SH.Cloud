@@ -7,5 +7,7 @@ create table users
     lastname  text not null,
     nickname  text not null,
     email     text not null,
-    photo     text
+    photo     text,
+    status    text,
+    ico_status text
 );

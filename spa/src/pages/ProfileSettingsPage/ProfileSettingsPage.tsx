@@ -11,6 +11,7 @@ import {ioIError, IChangeUserForm} from 'types/common';
 import {setNoneAuth} from 'store/actionsCreators/userActionCreator';
 import {Form, Field} from 'react-final-form';
 import {storage} from '../../firebase';
+import {statuses} from 'constants/status';
 
 import './profile-settings-page.scss';
 
@@ -110,6 +111,22 @@ export const ProfileSettingsPage: FC = () => {
       });
   }, []);
 
+  const onClickIcon = useCallback((index: number) => 
+    (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+      APIUser.changeUserData(
+          userStore.refreshToken,
+          {'ico_status': statuses[index],
+          id: String(userStore.id)},
+          userStore.id
+        )
+        .then((res) => {
+          if (!ioIError(res)) {
+            console.log('awdawd')
+            refreshProfile();
+          }
+        });
+  }, []);
+
 	return(
     <>
       {!userStore.refreshToken && <Redirect to={'/login'} />}
@@ -135,7 +152,7 @@ export const ProfileSettingsPage: FC = () => {
               </div>
             ))}
           </div>
-          {sideBarState.entries[0].isSelected && 
+          {sideBarState.entries[1].isSelected && 
             <div className={'content'} >
               <div className={'title F-R-S'} >
                 <img 
@@ -186,7 +203,7 @@ export const ProfileSettingsPage: FC = () => {
               </Form>
             </div>
           }
-          {sideBarState.entries[1].isSelected &&
+          {sideBarState.entries[2].isSelected &&
             <div className={'content'} >
               <Form onSubmit={onSubmitForm}>
                 {props => (
@@ -199,9 +216,46 @@ export const ProfileSettingsPage: FC = () => {
                           </div>
                           <div className={'ch-input-label'}>
                             <input 
-                              placeholder={userProfile.email}
+                              placeholder={userProfile?.email}
                               {...props.input}
                               type={'email'}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Field>
+                    <button type="submit">Изменить</button>
+                  </form>
+                )}
+              </Form>
+            </div>
+          }
+          {sideBarState.entries[0].isSelected &&
+            <div className={'content'} >
+              <div className={'icons-table F-R-SP'}>
+                {statuses.map((status, index) => (
+                  <div key={index} >
+                    <img
+                      src={status}
+                      className={userProfile?.ico_status === status ? 'active' : ''}
+                      onClick={onClickIcon(index)}
+                    />
+                  </div>
+                ))}
+              </div>
+              <Form onSubmit={onSubmitForm}>
+                {props => (
+                  <form onSubmit={props.handleSubmit}>
+                    <Field name={'status'}>
+                      {props => (
+                        <div className={'ch-input-block'} >
+                          <div className={'ch-input-label'}>
+                            {'Новый статус'}
+                          </div>
+                          <div className={'ch-input-label'}>
+                            <input 
+                              placeholder={userProfile?.status}
+                              {...props.input}
                             />
                           </div>
                         </div>

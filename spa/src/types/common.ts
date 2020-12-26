@@ -25,6 +25,8 @@ export interface IChangeUserForm {
   firstname?: string;
   lastname?: string;
   photo?: string;
+  status?: string;
+  ico_status?: string;
   id: string;
 }
 

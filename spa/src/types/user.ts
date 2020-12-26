@@ -19,6 +19,8 @@ export interface IUserProfile {
 	nickname: string;
 	email: string;
 	photo: string;
+	status: string;
+	ico_status: string;
 }
 
 export interface IUserId {
