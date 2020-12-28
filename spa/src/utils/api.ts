@@ -141,7 +141,7 @@ export class APIUser {
 		return responseJSON;
 	}
 	static getUserTape = async (userId: number):Promise<IGetData<IMoment[]> | IError> => {
-		let response = await fetch(API + `/api/posts/fuser/?user_id=${userId}&limit=10&offset=0`, {
+		let response = await fetch(API + `/api/posts/fuser/?user_id=${userId}&limit=30&offset=0`, {
 			method: 'GET',
 			mode: 'cors'
 		});
@@ -191,7 +191,7 @@ export class APIUser {
 		return responseJSON;
 	}
 	static getAllMoments = async ():Promise<IGetData<IMoment[]> | IError> => {
-		let response = await fetch(API + `/api/posts/all/?limit=10&offset=0`, {
+		let response = await fetch(API + `/api/posts/all/?limit=30&offset=0`, {
 			method: 'GET',
 			mode: 'cors'
 		});
@@ -199,7 +199,7 @@ export class APIUser {
 		return responseJSON;
 	}
 	static getUser = async (userId: number):Promise<IGetData<IMoment[]> | IError> => {
-		let response = await fetch(API + `/api/posts/user/?user_id=${userId}&limit=10&offset=0`, {
+		let response = await fetch(API + `/api/posts/user/?user_id=${userId}&limit=30&offset=0`, {
 			method: 'GET',
 			mode: 'cors'
 		});
