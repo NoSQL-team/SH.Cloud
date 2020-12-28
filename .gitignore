@@ -31,6 +31,19 @@
 *.out
 *.app
 
+#CLion
+.idea/
+
+#CMake
+cmake-build-debug/
+#MacOs
+.DS_Store
+
+#CMake
+cmake-build-debug/
 tmp/
 .vscode/
 googletest/
+static/
+node_modules/
+spa/package-lock.json

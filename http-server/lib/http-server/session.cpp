@@ -1,14 +1,18 @@
 #include "http-server.hpp"
 
+
+#include <cstring>
+
 void Session::start(std::map<std::string, std::string> context) {
-    auto self(shared_from_this());
-    asio::async_read_until(
-        _socket,
-        _buffer,
-        '\r', 
+    auto self(shared_from_this()); 
+    for (size_t i = 0; i < 100000; i++) {
+        buff[i] = '\0';
+    }
+    _socket.async_read_some(
+        buffer(buff),
         _strand.wrap([this, self, context](const error_code& e, std::size_t s)
         {
-            std::istream stream(&_buffer);
+            std::istringstream stream(buff);
             _responseBuffer = headers.getResponse(stream, context);
             if (!(_responseBuffer == "our")) {
                 async_write(
@@ -18,5 +22,5 @@ void Session::start(std::map<std::string, std::string> context) {
                 );
             }
         })
-    );  
+    );
 }

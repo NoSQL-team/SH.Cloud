@@ -1,0 +1,38 @@
+.Header {
+	height: var(--header-height);
+	background-color: white;
+	width: 100%;
+	box-sizing: border-box;
+	box-shadow: 0 0 15px black;
+	position: relative;
+	z-index: 10;
+	.header-container {
+		align-items: center;
+		margin: 0 auto;
+		width: 1200px;
+		height: 100%;
+		.icons {
+			min-width: 220px;
+			.profile {
+				cursor: pointer;
+			}
+			.compass {
+				cursor: pointer;
+			}
+			.home {
+				cursor: pointer;
+			}
+			.plus {
+				cursor: pointer;
+			}
+		}
+		a {
+			text-decoration: none;
+			.title-text {
+				font-size: var(--text-l);
+				text-decoration: none;
+				color: black;
+			}
+		}
+	}
+}

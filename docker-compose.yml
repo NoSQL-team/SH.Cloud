@@ -1,0 +1,84 @@
+version: '3.1'
+
+volumes:
+  database-users:
+  database-friends:
+  database-posts:
+  database-auth:
+
+services:
+  friends-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=andrewkireev
+      - POSTGRES_DB=Friends
+    ports:
+      - "27002:5432"
+    volumes:
+      - ./server_friends/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database-friends:/var/lib/postgresql/data/
+  friends-server:
+    image: noskool-friends
+    network_mode: "host"
+  auth-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=cuzkov
+      - POSTGRES_DB=auth
+    ports:
+      - "27001:5432"
+    volumes:
+      - ./auth-server/lib/auth-server/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database-auth:/var/lib/postgresql/data/
+  auth-server:
+    image: noskool-auth
+    network_mode: "host"
+  http-server:
+    image: noskool-http
+    network_mode: "host"
+  router:
+    image: noskool-router
+    network_mode: "host"
+  noskool-queue-1:
+    image: noskool-queue-1
+    network_mode: "host"
+  noskool-queue-2:
+    image: noskool-queue-2
+    network_mode: "host"
+  noskool-queue-3:
+    image: noskool-queue-3
+    network_mode: "host"
+  users-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=lera
+      - POSTGRES_DB=users
+    ports:
+      - "27003:5432"
+    volumes:
+      - ./ServerUsers/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database-users:/var/lib/postgresql/data/
+  users-server:
+    image: noskool-users
+    network_mode: "host"
+  posts-server:
+    image: noskool-posts
+    network_mode: "host"
+  posts-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=amartery
+      - POSTGRES_DB=db_posts
+    ports:
+      - "27007:5432"
+    volumes:
+      - ./server_posts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database-posts:/var/lib/postgresql/data/

@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+    ],
+    "moduleResolution": "node",
+    "jsx": "react",
+    "baseUrl": "src",
+    "paths": {
+      "components/*": [
+        "components/*"
+      ],
+      "app/*": [
+        "app/*"
+      ],
+      "pages/*": [
+        "pages/*"
+      ],
+      "hooks/*": [
+        "hooks/*"
+      ],
+      "core/*": [
+        "core/*"
+      ],
+      "common/*": [
+        "common/*"
+      ],
+      "types/*": [
+        "types/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*",
+    "./custom.d.ts"
+  ]
+}

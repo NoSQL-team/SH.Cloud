@@ -1,0 +1,52 @@
+.F-R-SP {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.F-C-S {
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+}
+
+.F-C-SP {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.F-R-S {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+}
+
+.F-C-C {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.F-R-FE {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+:root {
+	--header-height: 70px;
+	--page-color: MintCream;
+	--text-s: 10px;
+	--text-sm: 15px;
+	--text-m: 20px;
+	--text-ml: 25px;
+	--text-l: 30px;
+	--text-xl: 40px;
+	font-family: 'Comfortaa', cursive;
+}
+
+#wrapper {
+	height: 100vh;
+	box-sizing: border-box;
+}

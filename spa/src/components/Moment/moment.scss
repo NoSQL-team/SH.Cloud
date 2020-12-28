@@ -1,0 +1,56 @@
+.moment {
+	width: 800px;
+	border-radius: 8px;
+	.title {
+		padding: 8px;
+		align-items: center;
+		box-sizing: border-box;
+		font-size: var(--text-sm);
+		border-radius: 8px;
+		background-color: white;
+		text-decoration: none;
+		a {
+			text-decoration: none;
+			color: black;
+			.title-content {
+				align-items: center;
+				text-decoration: none;
+				color: black;
+				.author {
+					cursor: pointer;
+					height: min-content;
+					text-decoration: none;
+					color: black;
+				}
+				img {
+					width: 20px;
+					height: 20px;
+					border-radius: 20px;
+					margin-right: 5px;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+	.description {
+		padding: 8px;
+		border-bottom: solid 1px rgba($color: #000000, $alpha: 0.2);
+		background-color: white;
+	}
+	.moment-image {
+		border-top: solid 1px rgba($color: #000000, $alpha: 0.2);
+		border-bottom: solid 1px rgba($color: #000000, $alpha: 0.2);
+	}
+	.icons {
+		padding: 8px;
+		background-color: white;
+		border-radius: 8px;
+		align-items: center;
+		.icon {
+			cursor: pointer;
+			width: min-content;
+			height: min-content;
+			margin-right: 5px;
+		}
+	}
+}
